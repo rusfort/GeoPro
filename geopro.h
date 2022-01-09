@@ -15,6 +15,9 @@ public:
     explicit GeoPro(QWidget *parent = 0);
     ~GeoPro();
 
+private slots:
+    void on_actionClose_triggered();
+
 private:
     Ui::GeoPro *ui;
 };

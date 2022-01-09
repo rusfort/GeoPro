@@ -32,3 +32,6 @@ HEADERS += \
 
 FORMS += \
         geopro.ui
+
+RESOURCES += \
+    res.qrc

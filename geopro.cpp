@@ -12,3 +12,8 @@ GeoPro::~GeoPro()
 {
     delete ui;
 }
+
+void GeoPro::on_actionClose_triggered()
+{
+    QApplication::quit();
+}
