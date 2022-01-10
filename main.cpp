@@ -1,4 +1,6 @@
 #include "geopro.h"
+#include "geometry_main.h"
+#include "grwidget.h"
 #include <QApplication>
 #include <QSurfaceFormat>
 
@@ -12,6 +14,8 @@ int main(int argc, char *argv[])
 
     GeoPro w;
     w.show();
+    GraphWidget widget;
+    widget.show();
 
     return a.exec();
 }

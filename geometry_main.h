@@ -22,34 +22,36 @@ public:
     }
 };
 
-class Point : public GOBJ{
-public:
-    double x;
-    double y;
-private:
+class STYLE{
+protected:
     DrStyle style;
 public:
-    Point(double x0, double y0, DrStyle st0 = DrStyle::None);
-    ~Point();
+    STYLE(DrStyle st0);
+    ~STYLE();
     inline void change_style(DrStyle st){
         style = st;
+    }
+    inline DrStyle get_style(DrStyle st) const{
+        return st;
     }
 };
 
-class Line : public GOBJ{
+class Point : public GOBJ, public STYLE{
 public:
-    double x1;
-    double y1;
-    double x2;
-    double y2;
-private:
-    DrStyle style;
+    double x;
+    double y;
+public:
+    Point(double x0, double y0, DrStyle st0 = DrStyle::None);
+    ~Point();
+};
+
+class Line : public GOBJ, public STYLE{
+public:
+    Point p1;
+    Point p2;
 public:
     Line(double x01, double y01, double x02, double y02, DrStyle st0 = DrStyle::None);
     ~Line();
-    inline void change_style(DrStyle st){
-        style = st;
-    }
 };
 
 #endif // GEOMETRY_MAIN_H

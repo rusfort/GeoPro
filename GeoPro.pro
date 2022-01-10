@@ -28,13 +28,17 @@ SOURCES += \
         geopro.cpp \
     painthelper.cpp \
     widget.cpp \
-    geometry_main.cpp
+    geometry_main.cpp \
+    grwidget.cpp \
+    testgraph.cpp
 
 HEADERS += \
         geopro.h \
     painthelper.h \
     widget.h \
-    geometry_main.h
+    geometry_main.h \
+    grwidget.h \
+    testgraph.h
 
 FORMS += \
         geopro.ui

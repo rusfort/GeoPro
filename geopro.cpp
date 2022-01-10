@@ -2,6 +2,7 @@
 #include "ui_geopro.h"
 #include "painthelper.h"
 #include "widget.h"
+#include "geometry_main.h"
 
 #include <QGridLayout>
 #include <QLabel>
