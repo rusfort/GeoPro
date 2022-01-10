@@ -2,7 +2,10 @@
 #define GEOPRO_H
 
 #include <QMainWindow>
+#include <QGraphicsView>
+#include <QtGui>
 #include "painthelper.h"
+#include "grwidget.h"
 
 namespace Ui {
 class GeoPro;
@@ -19,11 +22,8 @@ public:
 private slots:
     void on_actionClose_triggered();
 
-    void on_graph_destroyed();
-
 private:
     Ui::GeoPro *ui;
-    Helper helper;
 };
 
 #endif // GEOPRO_H

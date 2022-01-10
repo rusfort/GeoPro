@@ -11,6 +11,7 @@ class GraphWidget : public QGraphicsView
 
 public:
     GraphWidget(QWidget *parent = 0);
+    //GraphWidget(QWidget *parent, QGraphicsScene *scene);
 
     void itemMoved();
 

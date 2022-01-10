@@ -2,11 +2,14 @@
 #include "ui_geopro.h"
 #include "painthelper.h"
 #include "widget.h"
+#include "grwidget.h"
 #include "geometry_main.h"
+#include "testgraph.h"
 
 #include <QGridLayout>
 #include <QLabel>
 #include <QTimer>
+#include <QtGui>
 
 
 GeoPro::GeoPro(QWidget *parent) :
@@ -14,21 +17,20 @@ GeoPro::GeoPro(QWidget *parent) :
     ui(new Ui::GeoPro)
 {
     ui->setupUi(this);
-    Widget *native = new Widget(&helper, this);
-    //QLabel *nativeLabel = new QLabel(tr("Native"));
-    //nativeLabel->setAlignment(Qt::AlignHCenter);
 
     auto central = new QWidget;
 
-    QGridLayout *layout = new QGridLayout;
-    layout->addWidget(native, 0, 0);
-    //layout->addWidget(nativeLabel, 1, 0);
-    central->setLayout(layout);
-
     setCentralWidget(central);
+    central->setWindowState(Qt::WindowFullScreen);
+
+    GraphWidget *widget = new GraphWidget(central);
+    widget->showFullScreen();
+    widget->setWindowState(Qt::WindowFullScreen);
+    //widget->show();
+
 
     QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, native, &Widget::animate);
+    ///connect(timer, &QTimer::timeout, native, &Widget::animate);
     timer->start(50);
 }
 
