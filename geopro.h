@@ -21,9 +21,11 @@ public:
 
 private slots:
     void on_actionClose_triggered();
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     Ui::GeoPro *ui;
+    //GraphWidget *widget;
 };
 
 #endif // GEOPRO_H

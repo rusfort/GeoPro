@@ -20,6 +20,7 @@ protected:
     void timerEvent(QTimerEvent *event);
     void wheelEvent(QWheelEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
+    //void resizeEvent(QResizeEvent *event) override;
 
     void scaleView(qreal scaleFactor);
 

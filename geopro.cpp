@@ -18,15 +18,11 @@ GeoPro::GeoPro(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    auto central = new QWidget;
-
+    auto central = new QWidget(this);
     setCentralWidget(central);
-    central->setWindowState(Qt::WindowFullScreen);
-
+    //central->resize(size());
     GraphWidget *widget = new GraphWidget(central);
-    widget->showFullScreen();
-    widget->setWindowState(Qt::WindowFullScreen);
-    //widget->show();
+    widget->show();
 
 
     QTimer *timer = new QTimer(this);
@@ -42,4 +38,10 @@ GeoPro::~GeoPro()
 void GeoPro::on_actionClose_triggered()
 {
     QApplication::quit();
+}
+
+void GeoPro::resizeEvent(QResizeEvent* event)
+{
+    QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    widgets[0]->setGeometry(0, 0, event->size().width(), event->size().height());
 }

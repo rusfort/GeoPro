@@ -11,15 +11,16 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(0, 0, 400, 400);
+    scene->setSceneRect(-10000, -10000, 20000, 20000);
+    //scene->setSceneRect(0, 0, parent->size().width(), parent->size().height());
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
-    //setMinimumSize(400, 400);
-    setWindowTitle(tr("Elastic Nodes"));
+    //setMinimumSize(700, 700);
+    //setWindowTitle(tr("Elastic Nodes"));
 
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
@@ -154,7 +155,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawRect(sceneRect);
 
     // Text
-    QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
+    /*QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
                     sceneRect.width() - 4, sceneRect.height() - 4);
     QString message(tr("Click and drag the nodes around, and zoom with the mouse "
                        "wheel or the '+' and '-' keys"));
@@ -166,7 +167,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setPen(Qt::lightGray);
     painter->drawText(textRect.translated(2, 2), message);
     painter->setPen(Qt::black);
-    painter->drawText(textRect, message);
+    painter->drawText(textRect, message);*/
 }
 
 void GraphWidget::scaleView(qreal scaleFactor)
@@ -177,3 +178,11 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
     scale(scaleFactor, scaleFactor);
 }
+
+/*void GraphWidget::resizeEvent(QResizeEvent* event)
+{
+    QGraphicsScene *scene = new QGraphicsScene(this);
+    scene->setItemIndexMethod(QGraphicsScene::NoIndex);
+    scene->setSceneRect(0, 0, event->size().width(), event->size().height());
+    setScene(scene);
+}*/
