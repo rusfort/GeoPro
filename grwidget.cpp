@@ -3,6 +3,7 @@
 #include <QtGui>
 
 #include "testgraph.h"
+#include "geometry_main.h"
 
 #include <math.h>
 
@@ -22,7 +23,13 @@ GraphWidget::GraphWidget(QWidget *parent)
     //setMinimumSize(700, 700);
     //setWindowTitle(tr("Elastic Nodes"));
 
-    Node *node1 = new Node(this);
+    Point *p1 = new Point(this, 100, 100);
+
+    scene->addItem(p1);
+
+    p1->setPos(p1->x, p1->y);
+
+    /*Node *node1 = new Node(this);
     Node *node2 = new Node(this);
     Node *node3 = new Node(this);
     Node *node4 = new Node(this);
@@ -61,7 +68,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     node6->setPos(50, 0);
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
-    node9->setPos(50, 50);
+    node9->setPos(50, 50);*/
 }
 
 void GraphWidget::itemMoved()
@@ -74,16 +81,16 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Up:
-        centerNode->moveBy(0, -20);
+        //centerNode->moveBy(0, -20);
         break;
     case Qt::Key_Down:
-        centerNode->moveBy(0, 20);
+        //centerNode->moveBy(0, 20);
         break;
     case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
+        //centerNode->moveBy(-20, 0);
         break;
     case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
+        //centerNode->moveBy(20, 0);
         break;
     case Qt::Key_Plus:
         scaleView(qreal(1.2));
@@ -92,11 +99,12 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         scaleView(1 / qreal(1.2));
         break;
     case Qt::Key_Space:
+        break;
     case Qt::Key_Enter:
-        foreach (QGraphicsItem *item, scene()->items()) {
+        /*foreach (QGraphicsItem *item, scene()->items()) {
             if (qgraphicsitem_cast<Node *>(item))
                 item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-        }
+        }*/
         break;
     default:
         QGraphicsView::keyPressEvent(event);
@@ -136,23 +144,24 @@ void GraphWidget::wheelEvent(QWheelEvent *event)
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
+    Q_UNUSED(painter);
 
     // Shadow
-    QRectF sceneRect = this->sceneRect();
+    /*QRectF sceneRect = this->sceneRect();
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
     QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
     if (rightShadow.intersects(rect) || rightShadow.contains(rect))
         painter->fillRect(rightShadow, Qt::darkGray);
     if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-        painter->fillRect(bottomShadow, Qt::darkGray);
+        painter->fillRect(bottomShadow, Qt::darkGray);*/
 
     // Fill
-    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
+    /*QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
     gradient.setColorAt(0, Qt::white);
     gradient.setColorAt(1, Qt::lightGray);
     //painter->fillRect(rect.intersect(sceneRect), gradient);
     painter->setBrush(Qt::NoBrush);
-    painter->drawRect(sceneRect);
+    painter->drawRect(sceneRect);*/
 
     // Text
     /*QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,

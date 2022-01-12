@@ -1,6 +1,12 @@
 #ifndef GEOMETRY_MAIN_H
 #define GEOMETRY_MAIN_H
 
+#include <QGraphicsItem>
+#include <QList>
+
+class GraphWidget;
+class QGraphicsSceneMouseEvent;
+
 enum class DrStyle{
     None,
     Light,
@@ -36,22 +42,41 @@ public:
     }
 };
 
-class Point : public GOBJ, public STYLE{
+class Point : public QGraphicsItem, public GOBJ, public STYLE{
+public:
+    Point(GraphWidget *graphWidget, double x0, double y0, DrStyle st0 = DrStyle::None);
+    ~Point();
+
+    bool advance();
+
+    QRectF boundingRect() const;
+    QPainterPath shape() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+private:
+    GraphWidget *graph;
+    QPointF newPos;
 public:
     double x;
     double y;
-public:
-    Point(double x0, double y0, DrStyle st0 = DrStyle::None);
-    ~Point();
+    int color;
 };
 
-class Line : public GOBJ, public STYLE{
+class Line : public QGraphicsItem, public GOBJ, public STYLE{
+public:
+    Line(GraphWidget *graphWidget, double x01, double y01, double x02, double y02, DrStyle st0 = DrStyle::None);
+    ~Line();
+private:
+    GraphWidget *graph;
 public:
     Point p1;
     Point p2;
-public:
-    Line(double x01, double y01, double x02, double y02, DrStyle st0 = DrStyle::None);
-    ~Line();
 };
 
 #endif // GEOMETRY_MAIN_H
