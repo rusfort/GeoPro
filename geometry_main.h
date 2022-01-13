@@ -13,6 +13,12 @@ enum class DrStyle{
     Bold
 };
 
+enum class GObj_Type{
+    NONE,
+    POINT,
+    LINE
+};
+
 class GOBJ{
 private:
     bool visible = true;
@@ -44,7 +50,7 @@ public:
 
 class Point : public QGraphicsItem, public GOBJ, public STYLE{
 public:
-    Point(GraphWidget *graphWidget, double x0, double y0, DrStyle st0 = DrStyle::None);
+    Point(GraphWidget *graphWidget, double x0, double y0, bool keptbymouse = false, DrStyle st0 = DrStyle::None);
     ~Point();
 
     bool advance();
@@ -56,6 +62,7 @@ public:
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+    //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
@@ -66,6 +73,7 @@ public:
     double x;
     double y;
     int color;
+    bool kbm; //if the point is just created
 };
 
 class Line : public QGraphicsItem, public GOBJ, public STYLE{

@@ -2,6 +2,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
+#include <iostream>
 
 #include "geometry_main.h"
 #include "grwidget.h"
@@ -11,8 +12,8 @@ STYLE::~STYLE(){}
 
 ///POINT METHODS
 
-Point::Point(GraphWidget *graphWidget, double x0, double y0, DrStyle st0):
-    STYLE(st0), graph(graphWidget), x(x0), y(y0), color(Qt::blue) {
+Point::Point(GraphWidget *graphWidget, double x0, double y0, bool keptbymouse, DrStyle st0):
+    STYLE(st0), graph(graphWidget), x(x0), y(y0), color(Qt::blue), kbm(keptbymouse) {
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -33,23 +34,19 @@ bool Point::advance()
 QRectF Point::boundingRect() const
 {
     qreal adjust = 2;
-    return QRectF(-10 - adjust, -10 - adjust,
-                  23 + adjust, 23 + adjust);
+    return QRectF(-5 - adjust, -5 - adjust,
+                  11 + adjust, 11 + adjust);
 }
 
 QPainterPath Point::shape() const
 {
     QPainterPath path;
-    path.addEllipse(-10, -10, 20, 20);
+    path.addEllipse(-5, -5, 10, 10);
     return path;
 }
 
 void Point::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
-    painter->setPen(Qt::NoPen);
-    //painter->setBrush(Qt::darkGray);
-    //painter->drawEllipse(-3, -3, 10, 10);
-
     QRadialGradient gradient(-1, -1, 5);
     if (option->state & QStyle::State_Sunken) {
         gradient.setCenter(1, 1);
@@ -58,10 +55,12 @@ void Point::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         gradient.setColorAt(0, QColor(Qt::white));
     } else {
         gradient.setColorAt(0, Qt::darkBlue);
-        gradient.setColorAt(1, Qt::blue);
+        gradient.setColorAt(1, QColor(color));
     }
     painter->setBrush(gradient);
-    painter->setPen(QPen(Qt::blue, 0));
+    auto pen = QPen(QBrush(color), 2);
+    pen.setCosmetic(true); //! always one size in px
+    painter->setPen(pen);
     painter->drawEllipse(-5, -5, 10, 10);
 }
 
@@ -78,6 +77,15 @@ QVariant Point::itemChange(GraphicsItemChange change, const QVariant &value)
     return QGraphicsItem::itemChange(change, value);
 }
 
+/*void Point::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (!kbm) return;
+    Q_UNUSED(event);
+    //
+    update();
+    //scene()->mouseGrabberItem() == this
+}*/
+
 void Point::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
@@ -86,6 +94,9 @@ void Point::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Point::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (kbm) kbm = false;
+    std::cout << pos().x() << " | " << pos().y() << std::endl;
+    std::cout << event->buttonDownScreenPos(Qt::MouseButton::LeftButton).x() << " | " << event->buttonDownScreenPos(Qt::MouseButton::LeftButton).y() << std::endl;
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }

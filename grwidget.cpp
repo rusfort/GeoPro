@@ -1,6 +1,9 @@
 #include "grwidget.h"
 
+#include <iostream>
 #include <QtGui>
+#include <QWidget>
+#include <QCoreApplication>
 
 #include "testgraph.h"
 #include "geometry_main.h"
@@ -12,63 +15,13 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-10000, -10000, 20000, 20000);
+    scene->setSceneRect(-5000, -5000, 10000, 10000);
     //scene->setSceneRect(0, 0, parent->size().width(), parent->size().height());
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
-    scale(qreal(0.8), qreal(0.8));
-    //setMinimumSize(700, 700);
-    //setWindowTitle(tr("Elastic Nodes"));
-
-    Point *p1 = new Point(this, 100, 100);
-
-    scene->addItem(p1);
-
-    p1->setPos(p1->x, p1->y);
-
-    /*Node *node1 = new Node(this);
-    Node *node2 = new Node(this);
-    Node *node3 = new Node(this);
-    Node *node4 = new Node(this);
-    centerNode = new Node(this);
-    Node *node6 = new Node(this);
-    Node *node7 = new Node(this);
-    Node *node8 = new Node(this);
-    Node *node9 = new Node(this);
-    scene->addItem(node1);
-    scene->addItem(node2);
-    scene->addItem(node3);
-    scene->addItem(node4);
-    scene->addItem(centerNode);
-    scene->addItem(node6);
-    scene->addItem(node7);
-    scene->addItem(node8);
-    scene->addItem(node9);
-    scene->addItem(new Edge(node1, node2));
-    scene->addItem(new Edge(node2, node3));
-    scene->addItem(new Edge(node2, centerNode));
-    scene->addItem(new Edge(node3, node6));
-    scene->addItem(new Edge(node4, node1));
-    scene->addItem(new Edge(node4, centerNode));
-    scene->addItem(new Edge(centerNode, node6));
-    scene->addItem(new Edge(centerNode, node8));
-    scene->addItem(new Edge(node6, node9));
-    scene->addItem(new Edge(node7, node4));
-    scene->addItem(new Edge(node8, node7));
-    scene->addItem(new Edge(node9, node8));
-
-    node1->setPos(-50, -50);
-    node2->setPos(0, -50);
-    node3->setPos(50, -50);
-    node4->setPos(-50, 0);
-    centerNode->setPos(0, 0);
-    node6->setPos(50, 0);
-    node7->setPos(-50, 50);
-    node8->setPos(0, 50);
-    node9->setPos(50, 50);*/
 }
 
 void GraphWidget::itemMoved()
@@ -138,7 +91,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
-    scaleView(pow((double)2, -event->delta() / 240.0));
+    scaleView(pow((double)2, event->delta() / 240.0));
 }
 
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
@@ -179,10 +132,76 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(textRect, message);*/
 }
 
+/*void GraphWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    QList<QGraphicsScene *> scenes = findChildren<QGraphicsScene *>();
+    foreach (QGraphicsItem *item, scenes[0]->items()) {
+        if (qgraphicsitem_cast<Point *>(item)){
+            auto p = qgraphicsitem_cast<Point *>(item);
+            if (p->kbm){
+                auto POS = mapFromGlobal(event->localPos().toPoint());
+                p->setPos(POS.x(), POS.y());
+                //p->mouseMoveEvent(reinterpret_cast<QGraphicsSceneMouseEvent *>(event));
+                //p->update();
+                break;
+            }
+        }
+    }
+    //update();
+}*/
+
+/*void GraphWidget::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+    std::cout << "ddd\n" << std::endl;
+    //QList<QGraphicsScene *> scenes = findChildren<QGraphicsScene *>();
+    //QCoreApplication::notify(scenes[0], event);
+    foreach (QGraphicsItem *item, scenes[0]->items()) {
+        if (qgraphicsitem_cast<Point *>(item)){
+            auto p = qgraphicsitem_cast<Point *>(item);
+            if (p->kbm){
+                auto POS = mapFromGlobal(event->localPos().toPoint());
+                p->setPos(POS.x(), POS.y());
+                //p->mouseMoveEvent(reinterpret_cast<QGraphicsSceneMouseEvent *>(event));
+                //p->update();
+                break;
+            }
+        }
+
+    }
+
+    //QGraphicsSceneMouseEvent mouseEvent(QEvent::GraphicsSceneMousePress);
+    if (itemAt(mouseEvent) == NULL)
+    {
+        //
+    } else {
+    QList<QGraphicsScene *> scenes = findChildren<QGraphicsScene *>();
+    scenes[0]->mousePressEvent(mouseEvent);
+    }
+}*/
+
+/*void GraphWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+
+    QList<QGraphicsScene *> scenes = findChildren<QGraphicsScene *>();
+    foreach (QGraphicsItem *item, scenes[0]->items()) {
+        if (qgraphicsitem_cast<Point *>(item)){
+            auto p = qgraphicsitem_cast<Point *>(item);
+            if (p->kbm){
+                p->kbm = false;
+                //break;
+            }
+        }
+        item->update();
+    }
+    //update();
+}*/
+
 void GraphWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
+    if (factor < 0.1 || factor > 10)
         return;
 
     scale(scaleFactor, scaleFactor);

@@ -2,6 +2,7 @@
 #define GRWIDGET_H
 
 #include <QGraphicsView>
+#include "geometry_main.h"
 
 class Node;
 
@@ -20,13 +21,17 @@ protected:
     void timerEvent(QTimerEvent *event);
     void wheelEvent(QWheelEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
-    //void resizeEvent(QResizeEvent *event) override;
+    //void mouseMoveEvent(QMouseEvent *event);
+    //void mousePressEvent(QMouseEvent *event);
+    //void mouseReleaseEvent(QMouseEvent *event);
 
     void scaleView(qreal scaleFactor);
 
 private:
     int timerId;
     Node *centerNode;
+public:
+    GObj_Type trytoadd = GObj_Type::NONE;
 };
 
 #endif // GRWIDGET_H

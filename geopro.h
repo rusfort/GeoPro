@@ -22,6 +22,10 @@ public:
 private slots:
     void on_actionClose_triggered();
     void resizeEvent(QResizeEvent *event) override;
+    //void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void on_actionPoint_triggered();
 
 private:
     Ui::GeoPro *ui;
