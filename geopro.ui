@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>GeoPro</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Изображения/Снимок экрана от 2022-01-13 23-40-10.png</normaloff>../Изображения/Снимок экрана от 2022-01-13 23-40-10.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
@@ -206,7 +210,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Print...</string>
+    <string>&amp;Print...</string>
    </property>
    <property name="visible">
     <bool>true</bool>

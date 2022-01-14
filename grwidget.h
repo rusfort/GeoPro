@@ -32,6 +32,8 @@ private:
     Node *centerNode;
 public:
     GObj_Type trytoadd = GObj_Type::NONE;
+    int numitemstoadd = 0;
+    Point *lastPoint = 0;
 };
 
 #endif // GRWIDGET_H

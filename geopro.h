@@ -27,6 +27,10 @@ private slots:
 
     void on_actionPoint_triggered();
 
+    void on_actionLine_triggered();
+
+    void on_actionSegment_triggered();
+
 private:
     Ui::GeoPro *ui;
     //GraphWidget *widget;
