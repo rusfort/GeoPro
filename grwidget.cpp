@@ -15,7 +15,9 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-5000, -5000, 10000, 10000);
+    SIZE_X = 10000;
+    SIZE_Y = 10000;
+    scene->setSceneRect(-SIZE_X/2, -SIZE_Y/2, SIZE_X, SIZE_Y);
     //scene->setSceneRect(0, 0, parent->size().width(), parent->size().height());
     setScene(scene);
     setCacheMode(CacheBackground);

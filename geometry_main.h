@@ -105,13 +105,15 @@ public:
 
     bool advance();
     void adjust();
+    qreal line_eq(qreal x, bool &is_vertical); //line equation aka y = kx + b
+    qreal anti_line_eq(qreal y); //anti line equation aka x = ky + b
 
     QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
-    //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -122,6 +124,9 @@ public:
     Point* p2_;
     QPointF sourcePoint;
     QPointF destPoint;
+    QPointF DSP; //draw source point
+    QPointF DDP; //draw dest point
+    QPointF memPos; //position of the Line
     int color;
 };
 
@@ -138,7 +143,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
-    //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -149,6 +154,7 @@ public:
     Point* p2_;
     QPointF sourcePoint;
     QPointF destPoint;
+    QPointF memPos; //position of the Segment
     int color;
 };
 

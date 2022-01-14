@@ -15,6 +15,12 @@ public:
     //GraphWidget(QWidget *parent, QGraphicsScene *scene);
 
     void itemMoved();
+    inline qreal sX() const{
+        return SIZE_X;
+    }
+    inline qreal sY() const{
+        return SIZE_Y;
+    }
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -29,7 +35,8 @@ protected:
 
 private:
     int timerId;
-    Node *centerNode;
+    qreal SIZE_X;
+    qreal SIZE_Y;
 public:
     GObj_Type trytoadd = GObj_Type::NONE;
     int numitemstoadd = 0;
