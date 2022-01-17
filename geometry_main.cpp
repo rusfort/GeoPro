@@ -81,15 +81,6 @@ QVariant Point::itemChange(GraphicsItemChange change, const QVariant &value)
     return QGraphicsItem::itemChange(change, value);
 }
 
-/*void Point::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    if (!kbm) return;
-    Q_UNUSED(event);
-    //
-    update();
-    //scene()->mouseGrabberItem() == this
-}*/
-
 void Point::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
@@ -131,8 +122,14 @@ Line::~Line(){}
 
 QRectF Line::boundingRect() const
 {
-    return QRectF(DSP.x(), DSP.y(), DDP.x() - DSP.x(), DDP.y() - DSP.y())
-        .normalized();
+    /*qreal extra = 500;
+
+    return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
+                                      destPoint.y() - sourcePoint.y()))
+        .normalized()
+        .adjusted(-extra, -extra, extra, extra);*/
+    return QRectF(std::min(DSP.x(), DDP.x()), std::min(DSP.y(), DDP.y()),
+                  std::abs(DSP.x() - DDP.x()), std::abs(DSP.y() - DDP.y()));
 }
 
 QPainterPath Line::shape() const
@@ -174,13 +171,10 @@ QPainterPath Line::shape() const
 void Line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
     Q_UNUSED(option);
-    QLineF testline(sourcePoint, destPoint);
-    if (qFuzzyCompare(testline.length(), qreal(0.)))
-        return;
-    auto pen = QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    auto pen = QPen(QBrush(Qt::black), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     pen.setCosmetic(true); //! always one size in px
     painter->setPen(pen);
-    painter->drawLine(QLineF(DSP, DDP));
+    painter->drawLine(DSP, DDP);
 }
 
 QVariant Line::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -205,35 +199,51 @@ QVariant Line::itemChange(GraphicsItemChange change, const QVariant &value)
 void Line::adjust()
 {
     QLineF line(mapFromItem(p1_, 0, 0), mapFromItem(p2_, 0, 0));
-    qreal length = line.length();
+    /*qreal lbound = -graph->sX()/2;
+    qreal rbound = graph->sX()/2;
+    qreal ubound = -graph->sY()/2;
+    qreal bbound = graph->sY()/2;*/
+
+    auto BR = boundingRect();
+    qreal lbound = BR.left();
+    qreal rbound = BR.right();
+    qreal ubound = BR.top();
+    qreal bbound = BR.bottom();
 
     bool vertical = false;
     line_eq(0, vertical);
     if (vertical){
-        DSP = QPointF (sourcePoint.x(), -graph->sY()/2);
-        DDP = QPointF (sourcePoint.x(), graph->sY()/2);
+        DSP = QPointF (sourcePoint.x(), ubound);
+        DDP = QPointF (sourcePoint.x(), bbound);
     } else {
-        qreal Y1 = line_eq(-graph->sX()/2, vertical);
-        qreal Y2 = line_eq(graph->sX()/2, vertical);
-        qreal X1 = -graph->sX()/2;
-        qreal X2 = graph->sX()/2;
-        if (Y1 > graph->sY()/2) {X1 = anti_line_eq(graph->sY()/2); Y1 = graph->sY()/2;}
-        if (Y1 < -graph->sY()/2) {X1 = anti_line_eq(-graph->sY()/2); Y1 = -graph->sY()/2;}
-        if (Y2 > graph->sY()/2) {X2 = anti_line_eq(graph->sY()/2); Y2 = graph->sY()/2;}
-        if (Y2 < -graph->sY()/2) {X2 = anti_line_eq(-graph->sY()/2); Y2 = -graph->sY()/2;}
+        qreal Y1 = line_eq(lbound, vertical);
+        qreal Y2 = line_eq(rbound, vertical);
+        qreal X1 = lbound;
+        qreal X2 = rbound;
+        if (Y1 > bbound) {X1 = anti_line_eq(bbound); Y1 = bbound;}
+        if (Y1 < ubound) {X1 = anti_line_eq(ubound); Y1 = ubound;}
+        if (Y2 > bbound) {X2 = anti_line_eq(bbound); Y2 = bbound;}
+        if (Y2 < ubound) {X2 = anti_line_eq(ubound); Y2 = ubound;}
         DSP = QPointF (X1, Y1);
         DDP = QPointF (X2, Y2);
     }
 
     prepareGeometryChange();
-
-    if (length > qreal(20.)) {
-        sourcePoint = line.p1();
-        destPoint = line.p2();
-    } else {
-        sourcePoint = destPoint = line.p1();
-    }
+    sourcePoint = line.p1();
+    destPoint = line.p2();
     update();
+}
+
+void Line::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
+{
+    update();
+    QGraphicsItem::dragMoveEvent(event);
+}
+
+void Line::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    update();
+    QGraphicsItem::mouseMoveEvent(event);
 }
 
 void Line::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -280,9 +290,10 @@ Segment::~Segment(){}
 
 QRectF Segment::boundingRect() const
 {
+    qreal extra = 10;
     return QRectF(sourcePoint.x(), sourcePoint.y(),
                   destPoint.x() - sourcePoint.x(), destPoint.y() - sourcePoint.y())
-        .normalized();
+        .normalized().adjusted(-extra, -extra, extra, extra);
 }
 
 QPainterPath Segment::shape() const
@@ -341,7 +352,7 @@ void Segment::adjust()
 
     prepareGeometryChange();
 
-    if (length > qreal(20.)) {
+    if (length > qreal(10.)) {
         sourcePoint = line.p1();
         destPoint = line.p2();
     } else {

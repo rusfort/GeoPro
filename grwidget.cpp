@@ -15,13 +15,15 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    SIZE_X = 10000;
-    SIZE_Y = 10000;
+    SIZE_X = 2000;
+    SIZE_Y = 2000;
     scene->setSceneRect(-SIZE_X/2, -SIZE_Y/2, SIZE_X, SIZE_Y);
     //scene->setSceneRect(0, 0, parent->size().width(), parent->size().height());
     setScene(scene);
+    scale(2, 2);
     setCacheMode(CacheBackground);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
+    //setViewportUpdateMode(BoundingRectViewportUpdate);
+    setViewportUpdateMode(MinimalViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
 }
@@ -203,7 +205,7 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 void GraphWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.1 || factor > 10)
+    if (factor < 0.4 || factor > 20)
         return;
 
     scale(scaleFactor, scaleFactor);
