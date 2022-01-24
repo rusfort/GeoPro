@@ -27,14 +27,12 @@ SOURCES += \
         main.cpp \
         geopro.cpp \
     widget.cpp \
-    geometry_main.cpp \
-    grwidget.cpp
+    geometry_main.cpp
 
 HEADERS += \
         geopro.h \
     widget.h \
-    geometry_main.h \
-    grwidget.h
+    geometry_main.h
 
 FORMS += \
         geopro.ui

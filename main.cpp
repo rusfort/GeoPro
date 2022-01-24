@@ -1,6 +1,5 @@
 #include "geopro.h"
 #include "geometry_main.h"
-#include "grwidget.h"
 #include "widget.h"
 #include <QApplication>
 #include <QSurfaceFormat>

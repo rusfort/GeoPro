@@ -1,33 +1,30 @@
-//#include <QGraphicsScene>
-//#include <QGraphicsSceneMouseEvent>
-//#include <QPainter>
-//#include <QStyleOption>
 #include <iostream>
 #include <limits>
 #include <QPainter>
 #include "widget.h"
 #include "geometry_main.h"
-//#include "grwidget.h"
 
 STYLE::STYLE(DrStyle st0): style(st0){}
 STYLE::~STYLE(){}
 
-GOBJ::GOBJ(GeoBoard* board, QColor color) :
-    mColor(color), mBoard(board), mIsSelected(false)
+GOBJ::GOBJ(GeoBoard* board, GObj_Type t, QColor color) :
+    type(t), mColor(color), mBoard(board), mIsSelected(false)
 {
     connect(this, SIGNAL(selectionChanged()), mBoard, SLOT(update()));
 }
 
-///POINT METHODS
+
+///POINT METHODS==================================================================
+
 
 Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) :
-    GOBJ(board, color), QPointF(x, y), mRadius(radius)
+    GOBJ(board, GObj_Type::POINT, color), QPointF(x, y), mRadius(radius)
 {
     connect(this, SIGNAL(posChanged()), mBoard, SLOT(update()));
 }
 
 Point::Point(const Point& copyFrom) :
-    GOBJ(copyFrom.board(), copyFrom.color()), QPointF(copyFrom.x(), copyFrom.y()), mRadius(copyFrom.rad())
+    GOBJ(copyFrom.board(), GObj_Type::POINT, copyFrom.color()), QPointF(copyFrom.x(), copyFrom.y()), mRadius(copyFrom.rad())
 {
 
 }
@@ -54,6 +51,43 @@ bool Point::isCatched(QPointF p)
     return dx * dx + dy * dy - mRadius * mRadius < 0;
 }
 
+
+///LINE METHODS==========================================================================================================
+
+
+Line::Line(GeoBoard* board, Point* p1, Point* p2) :
+    GOBJ(board, GObj_Type::LINE, p1->color()), mP1(p1), mP2(p2)
+{
+
+}
+
+void Line::draw()
+{
+    double k = mBoard->width() > mBoard->height() ? mBoard->width() : mBoard->height();
+    QPointF dr = *mP1 - *mP2;
+    QPointF p1 = *mP1 + k * dr;
+    QPointF p2 = *mP1 - k * dr;
+
+    QPainter p;
+    p.begin(mBoard);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setPen(mColor);
+    p.drawLine(p1, p2);
+}
+
+
+bool Line::isCatched(QPointF p)
+{
+    Q_UNUSED(p);
+    return false;
+}
+
+
+void Line::move(QPointF newPos)
+{
+    Q_UNUSED(newPos);
+    return;
+}
 
 ///OLD VERSION:
 /**

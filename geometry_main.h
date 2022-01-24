@@ -30,7 +30,7 @@ enum class GObj_Type{
 class GOBJ : public QObject{
     Q_OBJECT
 public:
-    GOBJ(GeoBoard* board, QColor color = Qt::black);
+    GOBJ(GeoBoard* board, GObj_Type t = GObj_Type::NONE, QColor color = Qt::black);
     virtual ~GOBJ() { }
 private:
     bool visible = true;
@@ -65,6 +65,7 @@ public:
 signals:
     void selectionChanged();
 protected:
+    GObj_Type type;
     QColor mColor;
     GeoBoard* mBoard;
     bool mIsSelected;
@@ -106,6 +107,21 @@ signals:
 private:
     double mRadius;
 };
+
+class Line : public GOBJ
+{
+    Q_OBJECT
+public:
+    Line(GeoBoard* board, Point* p1, Point* p2);
+    void draw() override;
+    bool isCatched(QPointF p) override;
+    void move(QPointF newPos) override;
+signals:
+    void posChanged();
+private:
+    Point *mP1, *mP2;
+};
+
 
 
 
