@@ -1,9 +1,16 @@
 #ifndef GEOMETRY_MAIN_H
 #define GEOMETRY_MAIN_H
 
-#include <QGraphicsItem>
+#include <QObject>
+#include <QWidget>
+#include <QPointF>
+#include <QColor>
+#include <vector>
+#include <QPaintEvent>
+#include <QMouseEvent>
 #include <QList>
 
+class GeoBoard;
 class GraphWidget;
 class QGraphicsSceneMouseEvent;
 
@@ -23,11 +30,15 @@ enum class GObj_Type{
     SEGMENT
 };
 
-class GOBJ{
-private:
-    bool visible = true;
+class GOBJ : public QObject{
+    Q_OBJECT
 public:
-    inline bool is_visible() const{
+    GOBJ(GeoBoard* board, QColor color = Qt::black);
+    virtual ~GOBJ() { }
+private:
+    //bool visible = true;
+public:
+    /*inline bool is_visible() const{
         return visible;
     }
     inline void hide(){
@@ -35,7 +46,31 @@ public:
     }
     inline void make_visible(){
         visible = true;
+    }*/
+    QColor color() const{
+        return mColor;
     }
+    void setColor(QColor color){
+        mColor = color;
+    }
+    bool isSelected() const{
+        return mIsSelected;
+    }
+    void setSelected(bool mode = true){
+        if(mIsSelected != mode){
+            mIsSelected = mode;
+            emit selectionChanged();
+        }
+    }
+    virtual void draw() = 0;
+    virtual bool isCatched(QPointF p) = 0;
+    virtual void move(QPointF dr) = 0;
+signals:
+    void selectionChanged();
+protected:
+    QColor mColor;
+    GeoBoard* mBoard;
+    bool mIsSelected;
 };
 
 class STYLE{
@@ -52,6 +87,12 @@ public:
     }
 };
 
+
+
+
+
+///OLD VERSION:
+/**
 class Point : public QGraphicsItem, public GOBJ, public STYLE{
 public:
     Point(GraphWidget *graphWidget, double x0, double y0, bool keptbymouse = false, DrStyle st0 = DrStyle::None);
@@ -158,6 +199,6 @@ public:
     QPointF destPoint;
     QPointF memPos; //position of the Segment
     int color;
-};
+};*/
 
 #endif // GEOMETRY_MAIN_H

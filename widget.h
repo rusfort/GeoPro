@@ -9,6 +9,8 @@
 #include <QPaintEvent>
 #include <QMouseEvent>
 
+#include "geometry_main.h"
+
 #define EPS 0.0001
 
 class GeoObject;
@@ -28,6 +30,10 @@ public:
 private:
     QColor mColor;
     std::vector<GeoObject*> mObjects;
+public:
+    GObj_Type trytoadd = GObj_Type::NONE;
+    int numitemstoadd = 0;
+    ///Point *lastPoint = 0;
 };
 
 class GeoObject : public QObject

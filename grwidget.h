@@ -24,7 +24,7 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
-    void timerEvent(QTimerEvent *event);
+    //void timerEvent(QTimerEvent *event);
     void wheelEvent(QWheelEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
     //void mouseMoveEvent(QMouseEvent *event);
@@ -40,7 +40,7 @@ private:
 public:
     GObj_Type trytoadd = GObj_Type::NONE;
     int numitemstoadd = 0;
-    Point *lastPoint = 0;
+    ///Point *lastPoint = 0;
 };
 
 #endif // GRWIDGET_H

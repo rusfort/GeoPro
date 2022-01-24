@@ -1,16 +1,28 @@
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
+//#include <QGraphicsScene>
+//#include <QGraphicsSceneMouseEvent>
+//#include <QPainter>
+//#include <QStyleOption>
 #include <iostream>
 #include <limits>
-
+#include <QPainter>
+#include "widget.h"
 #include "geometry_main.h"
-#include "grwidget.h"
+//#include "grwidget.h"
 
 STYLE::STYLE(DrStyle st0): style(st0){}
 STYLE::~STYLE(){}
 
+GOBJ::GOBJ(GeoBoard* board, QColor color) :
+    mColor(color), mBoard(board), mIsSelected(false)
+{
+    connect(this, SIGNAL(selectionChanged()), mBoard, SLOT(update()));
+}
+
+
+
+
+///OLD VERSION:
+/**
 ///POINT METHODS
 
 Point::Point(GraphWidget *graphWidget, double x0, double y0, bool keptbymouse, DrStyle st0):
@@ -122,12 +134,12 @@ Line::~Line(){}
 
 QRectF Line::boundingRect() const
 {
-    /*qreal extra = 500;
+    //qreal extra = 500;
 
-    return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
-                                      destPoint.y() - sourcePoint.y()))
-        .normalized()
-        .adjusted(-extra, -extra, extra, extra);*/
+    //return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
+    //                                  destPoint.y() - sourcePoint.y()))
+    //    .normalized()
+    //    .adjusted(-extra, -extra, extra, extra);
     return QRectF(std::min(DSP.x(), DDP.x()), std::min(DSP.y(), DDP.y()),
                   std::abs(DSP.x() - DDP.x()), std::abs(DSP.y() - DDP.y()));
 }
@@ -199,10 +211,10 @@ QVariant Line::itemChange(GraphicsItemChange change, const QVariant &value)
 void Line::adjust()
 {
     QLineF line(mapFromItem(p1_, 0, 0), mapFromItem(p2_, 0, 0));
-    /*qreal lbound = -graph->sX()/2;
-    qreal rbound = graph->sX()/2;
-    qreal ubound = -graph->sY()/2;
-    qreal bbound = graph->sY()/2;*/
+    //qreal lbound = -graph->sX()/2;
+    //qreal rbound = graph->sX()/2;
+    //qreal ubound = -graph->sY()/2;
+    //qreal bbound = graph->sY()/2;
 
     auto BR = boundingRect();
     qreal lbound = BR.left();
@@ -390,4 +402,4 @@ void Segment::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     //if (kbm) kbm = false;
     update();
     QGraphicsItem::mouseReleaseEvent(event);
-}
+}*/

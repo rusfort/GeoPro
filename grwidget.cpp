@@ -5,7 +5,6 @@
 #include <QWidget>
 #include <QCoreApplication>
 
-#include "testgraph.h"
 #include "geometry_main.h"
 
 #include <math.h>
@@ -68,7 +67,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void GraphWidget::timerEvent(QTimerEvent *event)
+/*void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
 
@@ -91,7 +90,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
         killTimer(timerId);
         timerId = 0;
     }
-}
+}*/
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {

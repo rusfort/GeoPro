@@ -26,19 +26,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         geopro.cpp \
-    painthelper.cpp \
     widget.cpp \
     geometry_main.cpp \
-    grwidget.cpp \
-    testgraph.cpp
+    grwidget.cpp
 
 HEADERS += \
         geopro.h \
-    painthelper.h \
     widget.h \
     geometry_main.h \
-    grwidget.h \
-    testgraph.h
+    grwidget.h
 
 FORMS += \
         geopro.ui

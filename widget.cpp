@@ -56,8 +56,8 @@ void GeoPoint::draw()
     p.setRenderHint(QPainter::Antialiasing);
     if(mIsSelected)
     {
-        QPen pen(Qt::red);
-        pen.setWidth(5);
+        QPen pen(Qt::blue);
+        pen.setWidth(2);
         p.setPen(pen);
     }
     p.setBrush(QBrush(mColor));

@@ -1,10 +1,8 @@
 #include "geopro.h"
 #include "ui_geopro.h"
-#include "painthelper.h"
 #include "widget.h"
 #include "grwidget.h"
 #include "geometry_main.h"
-#include "testgraph.h"
 
 #include <iostream>
 #include <QGridLayout>
@@ -26,8 +24,8 @@ GeoPro::GeoPro(QWidget *parent) :
 
     GeoBoard *b = new GeoBoard(this);
     setCentralWidget(b);
-    GeoPoint *p1 = new GeoPoint(b, b->width() / 2.0, b->height() / 2.0, 10);
-    GeoPoint *p2 = new GeoPoint(b, b->width() / 3.0, b->height() / 3.0, 10);
+    GeoPoint *p1 = new GeoPoint(b, b->width() / 2.0, b->height() / 2.0, 5);
+    GeoPoint *p2 = new GeoPoint(b, b->width() / 3.0, b->height() / 3.0, 5);
     GeoLine *l = new GeoLine(b, p1, p2);
     b->addObject(p1);
     b->addObject(p2);
@@ -72,15 +70,17 @@ void GeoPro::resizeEvent(QResizeEvent* event)
 void GeoPro::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    /*QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    //QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    //if(widgets[0]->trytoadd == GObj_Type::NONE) return;
+    QList<GeoBoard *> widgets = findChildren<GeoBoard *>();
     if(widgets[0]->trytoadd == GObj_Type::NONE) return;
 
-    QList<QGraphicsScene *> scenes = widgets[0]->findChildren<QGraphicsScene *>();
+    //QList<QGraphicsScene *> scenes = widgets[0]->findChildren<QGraphicsScene *>();
 
     switch (widgets[0]->trytoadd) {
     case GObj_Type::POINT:
     {
-        Point *p = new Point(widgets[0], 0, 0, true);
+        /*Point *p = new Point(widgets[0], 0, 0, true);
         scenes[0]->addItem(p);
         auto Pos1 = event->windowPos().toPoint();
         qreal factor = widgets[0]->transform().mapRect(QRectF(0, 0, 1, 1)).width();
@@ -88,12 +88,12 @@ void GeoPro::mousePressEvent(QMouseEvent *event)
         QPoint Pos3 = widgets[0]->mapFromScene(QPointF(0, 0));
         QPointF POS = (Pos1 - Pos3- WPOS)/factor ;
         p->setPos(POS);
-        widgets[0]->numitemstoadd--;
+        widgets[0]->numitemstoadd--;*/
     }
         break;
     case GObj_Type::LINE:
     {
-        Point *p = new Point(widgets[0], 0, 0, true);
+        /*Point *p = new Point(widgets[0], 0, 0, true);
         scenes[0]->addItem(p);
 
         auto Pos1 = event->windowPos().toPoint();
@@ -111,12 +111,12 @@ void GeoPro::mousePressEvent(QMouseEvent *event)
             widgets[0]->lastPoint->addline(line);
             p->addline(line);
         }
-        widgets[0]->numitemstoadd--;
+        widgets[0]->numitemstoadd--;*/
     }
         break;
     case GObj_Type::SEGMENT:
     {
-        Point *p = new Point(widgets[0], 0, 0, true);
+        /*Point *p = new Point(widgets[0], 0, 0, true);
         scenes[0]->addItem(p);
 
         auto Pos1 = event->windowPos().toPoint();
@@ -134,13 +134,13 @@ void GeoPro::mousePressEvent(QMouseEvent *event)
             widgets[0]->lastPoint->addseg(seg);
             p->addseg(seg);
         }
-        widgets[0]->numitemstoadd--;
+        widgets[0]->numitemstoadd--;*/
     }
         break;
     default:
         break;
     }
-    if (widgets[0]->numitemstoadd == 0) widgets[0]->trytoadd = GObj_Type::NONE;*/
+    //if (widgets[0]->numitemstoadd == 0) widgets[0]->trytoadd = GObj_Type::NONE;
 }
 
 void GeoPro::on_actionPoint_triggered()

@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QtGui>
-#include "painthelper.h"
 #include "grwidget.h"
 
 namespace Ui {
