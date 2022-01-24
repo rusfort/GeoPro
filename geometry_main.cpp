@@ -18,7 +18,41 @@ GOBJ::GOBJ(GeoBoard* board, QColor color) :
     connect(this, SIGNAL(selectionChanged()), mBoard, SLOT(update()));
 }
 
+///POINT METHODS
 
+Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) :
+    GOBJ(board, color), QPointF(x, y), mRadius(radius)
+{
+    connect(this, SIGNAL(posChanged()), mBoard, SLOT(update()));
+}
+
+Point::Point(const Point& copyFrom) :
+    GOBJ(copyFrom.board(), copyFrom.color()), QPointF(copyFrom.x(), copyFrom.y()), mRadius(copyFrom.rad())
+{
+
+}
+
+void Point::draw()
+{
+    QPainter p;
+    p.begin(this->board());
+    p.setRenderHint(QPainter::Antialiasing);
+    if(mIsSelected)
+    {
+        QPen pen(Qt::blue);
+        pen.setWidth(2);
+        p.setPen(pen);
+    }
+    p.setBrush(QBrush(mColor));
+    p.drawEllipse(*this, mRadius, mRadius);
+}
+
+bool Point::isCatched(QPointF p)
+{
+    double dx = rx() - p.x();
+    double dy = ry() - p.y();
+    return dx * dx + dy * dy - mRadius * mRadius < 0;
+}
 
 
 ///OLD VERSION:

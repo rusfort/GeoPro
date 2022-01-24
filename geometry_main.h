@@ -11,9 +11,6 @@
 #include <QList>
 
 class GeoBoard;
-class GraphWidget;
-class QGraphicsSceneMouseEvent;
-
 class Line;
 class Segment;
 
@@ -36,9 +33,9 @@ public:
     GOBJ(GeoBoard* board, QColor color = Qt::black);
     virtual ~GOBJ() { }
 private:
-    //bool visible = true;
+    bool visible = true;
 public:
-    /*inline bool is_visible() const{
+    inline bool is_visible() const{
         return visible;
     }
     inline void hide(){
@@ -46,7 +43,7 @@ public:
     }
     inline void make_visible(){
         visible = true;
-    }*/
+    }
     QColor color() const{
         return mColor;
     }
@@ -73,7 +70,7 @@ protected:
     bool mIsSelected;
 };
 
-class STYLE{
+class STYLE{ //temporarily non-used
 protected:
     DrStyle style;
 public:
@@ -87,7 +84,28 @@ public:
     }
 };
 
-
+class Point : public GOBJ, public QPointF
+{
+    Q_OBJECT
+public:
+    Point(GeoBoard* board, double x = 0.0, double y = 0.0, double radius = 1.0,  QColor color = Qt::black);
+    Point(const Point& copyFrom);
+    GeoBoard* board() const { return mBoard; }
+    void setBoard(GeoBoard* board) { mBoard = board; }
+    double rad() const { return mRadius; }
+    void setRad(double rad) { mRadius = rad; }
+    void draw() override;
+    bool isCatched(QPointF p) override;
+    void move(QPointF newPos) override{
+        rx() = newPos.x();
+        ry() = newPos.y();
+        emit posChanged();
+    }
+signals:
+    void posChanged();
+private:
+    double mRadius;
+};
 
 
 

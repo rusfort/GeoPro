@@ -1,5 +1,6 @@
 #include "widget.h"
 #include <QPainter>
+#include <iostream>
 
 //GeoBoard::GeoBoard(QWidget *parent): QWidget(parent) {}
 
@@ -17,6 +18,33 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
 {
     for(auto obj : mObjects)
         obj->setSelected(obj->isCatched(e->pos()));
+    if(trytoadd == GObj_Type::NONE) return;
+
+    switch (trytoadd) {
+    case GObj_Type::POINT:
+    {
+        auto Pos1 = e->pos();
+        Point *p1 = new Point(this, Pos1.x(), Pos1.y(), 5);
+        std::cout << "LOL\n" << std::endl;
+        addObject(p1);
+        numitemstoadd--;
+        update();
+    }
+        break;
+    case GObj_Type::LINE:
+    {
+        //
+    }
+        break;
+    case GObj_Type::SEGMENT:
+    {
+        //
+    }
+        break;
+    default:
+        break;
+    }
+    if (numitemstoadd == 0) trytoadd = GObj_Type::NONE;
 }
 
 void GeoBoard::mouseMoveEvent(QMouseEvent* e)

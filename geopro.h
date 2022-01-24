@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QtGui>
-#include "grwidget.h"
+#include "widget.h"
 
 namespace Ui {
 class GeoPro;
@@ -20,9 +20,6 @@ public:
 
 private slots:
     void on_actionClose_triggered();
-    void resizeEvent(QResizeEvent *event) override;
-    //void mouseMoveEvent(QMouseEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
 
     void on_actionPoint_triggered();
 
@@ -32,6 +29,8 @@ private slots:
 
 private:
     Ui::GeoPro *ui;
+public:
+    GeoBoard *b;
     //GraphWidget *widget;
 };
 
