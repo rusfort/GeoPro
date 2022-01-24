@@ -44,6 +44,9 @@ public:
     inline void make_visible(){
         visible = true;
     }
+    inline GObj_Type type_is() const{
+        return type;
+    }
     QColor color() const{
         return mColor;
     }
@@ -65,7 +68,7 @@ public:
 signals:
     void selectionChanged();
 protected:
-    GObj_Type type;
+    const GObj_Type type;
     QColor mColor;
     GeoBoard* mBoard;
     bool mIsSelected;
