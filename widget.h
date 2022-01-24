@@ -17,7 +17,8 @@ class GeoBoard : public QWidget
 {
     Q_OBJECT
 public:
-    GeoBoard(int width = 600, int height = 400, QColor color = Qt::white) : QWidget(), mColor(color) { this->resize(width, height); }
+    //GeoBoard(QWidget *parent = 0);
+    GeoBoard(QWidget *parent = 0, int width = 600, int height = 400, QColor color = Qt::white) : QWidget(parent), mColor(color) { this->resize(width, height); }
     QColor color() const { return mColor; }
     void setColor(QColor color) { mColor = color; }
     void addObject(GeoObject* obj) { mObjects.push_back(obj); }

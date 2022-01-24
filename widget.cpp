@@ -1,6 +1,8 @@
 #include "widget.h"
 #include <QPainter>
 
+//GeoBoard::GeoBoard(QWidget *parent): QWidget(parent) {}
+
 void GeoBoard::paintEvent(QPaintEvent*)
 {
     QPainter p;

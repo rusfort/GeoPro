@@ -21,17 +21,21 @@ GeoPro::GeoPro(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(tr("GeoPro 0.0.1 [alpha]"));
 
-    GraphWidget *widget = new GraphWidget(this);
-    setCentralWidget(widget);
+    //GraphWidget *widget = new GraphWidget(this);
+    //setCentralWidget(widget);
 
-    std::cout << pos().x() << " - " << pos().y() << std::endl;
+    GeoBoard *b = new GeoBoard(this);
+    setCentralWidget(b);
+    GeoPoint *p1 = new GeoPoint(b, b->width() / 2.0, b->height() / 2.0, 10);
+    GeoPoint *p2 = new GeoPoint(b, b->width() / 3.0, b->height() / 3.0, 10);
+    GeoLine *l = new GeoLine(b, p1, p2);
+    b->addObject(p1);
+    b->addObject(p2);
+    b->addObject(l);
 
-    //widget->show();
-
-
-    QTimer *timer = new QTimer(this);
+    ///QTimer *timer = new QTimer(this);
     ///connect(timer, &QTimer::timeout, native, &Widget::animate);
-    timer->start(50);
+    ///timer->start(50);
 }
 
 GeoPro::~GeoPro()
@@ -46,8 +50,8 @@ void GeoPro::on_actionClose_triggered()
 
 void GeoPro::resizeEvent(QResizeEvent* event)
 {
-    QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
-    widgets[0]->setGeometry(0, 0, event->size().width(), event->size().height());
+    ///QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    ///widgets[0]->setGeometry(0, 0, event->size().width(), event->size().height());
 }
 
 /*void GeoPro::mouseMoveEvent(QMouseEvent *event)
@@ -68,7 +72,7 @@ void GeoPro::resizeEvent(QResizeEvent* event)
 void GeoPro::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    /*QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
     if(widgets[0]->trytoadd == GObj_Type::NONE) return;
 
     QList<QGraphicsScene *> scenes = widgets[0]->findChildren<QGraphicsScene *>();
@@ -136,15 +140,15 @@ void GeoPro::mousePressEvent(QMouseEvent *event)
     default:
         break;
     }
-    if (widgets[0]->numitemstoadd == 0) widgets[0]->trytoadd = GObj_Type::NONE;
+    if (widgets[0]->numitemstoadd == 0) widgets[0]->trytoadd = GObj_Type::NONE;*/
 }
 
 void GeoPro::on_actionPoint_triggered()
 {
-    QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    /*QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
     if(widgets[0]->numitemstoadd > 0) return;
     widgets[0]->trytoadd = GObj_Type::POINT;
-    widgets[0]->numitemstoadd = 1;
+    widgets[0]->numitemstoadd = 1;*/
     /*QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
     QList<QGraphicsScene *> scenes = widgets[0]->findChildren<QGraphicsScene *>();
 
@@ -155,16 +159,16 @@ void GeoPro::on_actionPoint_triggered()
 
 void GeoPro::on_actionLine_triggered()
 {
-    QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    /*QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
     if(widgets[0]->numitemstoadd > 0) return;
     widgets[0]->trytoadd = GObj_Type::LINE;
-    widgets[0]->numitemstoadd = 2;
+    widgets[0]->numitemstoadd = 2;*/
 }
 
 void GeoPro::on_actionSegment_triggered()
 {
-    QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
+    /*QList<GraphWidget *> widgets = findChildren<GraphWidget *>();
     if(widgets[0]->numitemstoadd > 0) return;
     widgets[0]->trytoadd = GObj_Type::SEGMENT;
-    widgets[0]->numitemstoadd = 2;
+    widgets[0]->numitemstoadd = 2;*/
 }
