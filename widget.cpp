@@ -81,3 +81,11 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
             obj->move(e->pos());
     }
 }
+
+QPointF GeoBoard::getScreenView (const QPointF& math_point){
+    return math_point + shift; ///TODO: add scale
+}
+
+QPointF GeoBoard::getMathPoint (const QPointF& screen_point){
+    return screen_point - shift; ///TODO: add scale
+}

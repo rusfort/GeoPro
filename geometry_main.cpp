@@ -21,6 +21,10 @@ Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) 
     GOBJ(board, GObj_Type::POINT, color), QPointF(x, y), mRadius(radius)
 {
     connect(this, SIGNAL(posChanged()), mBoard, SLOT(update()));
+    scr_x = x;
+    scr_y = y;
+    X = scr_x; ///TODO
+    Y = scr_y; ///TODO
 }
 
 Point::Point(const Point& copyFrom) :
@@ -71,6 +75,12 @@ void Line::draw()
     QPainter p;
     p.begin(mBoard);
     p.setRenderHint(QPainter::Antialiasing);
+    if (mIsSelected){
+        QPen pen(Qt::blue);
+        pen.setWidth(3);
+        p.setPen(pen);
+        p.drawLine(p1, p2);
+    }
     p.setPen(mColor);
     p.drawLine(p1, p2);
 }
@@ -85,7 +95,7 @@ bool Line::isCatched(QPointF p)
 
 void Line::move(QPointF newPos)
 {
-    Q_UNUSED(newPos);
+    //mP1->move(newPos);
     return;
 }
 

@@ -109,6 +109,8 @@ signals:
     void posChanged();
 private:
     double mRadius;
+    qreal X, Y;
+    qreal scr_x, scr_y;
 };
 
 class Line : public GOBJ
@@ -123,6 +125,8 @@ signals:
     void posChanged();
 private:
     Point *mP1, *mP2;
+    qreal x0, y0, k;      //x0, y0 - some point on a line, k - incline
+    qreal scr_x0, scr_y0; //the same, but actual on the screen
 };
 
 

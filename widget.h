@@ -24,6 +24,8 @@ public:
     QColor color() const { return mColor; }
     void setColor(QColor color) { mColor = color; }
     void addObject(GOBJ* obj) { mObjects.push_back(obj); }
+    QPointF getScreenView (const QPointF& math_point);
+    QPointF getMathPoint (const QPointF& screen_point);
     void paintEvent(QPaintEvent*) override;
     void mousePressEvent(QMouseEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;
@@ -34,6 +36,8 @@ public:
     GObj_Type trytoadd = GObj_Type::NONE;
     int numitemstoadd = 0;
     Point *lastPoint = 0;
+    qreal scale = 1;   //for screen move & scale view
+    QPointF shift;     //for screen move & scale view
 };
 
 #endif // WIDGET_H
