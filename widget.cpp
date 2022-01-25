@@ -18,7 +18,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     auto Pos = e->pos();
     bool one_selected = false;
     for(auto obj : mObjects){
-        if (obj->isCatched(Pos) && !one_selected){
+        if (obj->isCaught(Pos) && !one_selected){
             obj->setSelected(true);
             if (obj->isSelected()) selected_and_caught = obj;
             one_selected = true;

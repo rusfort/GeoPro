@@ -11,8 +11,6 @@
 
 #include "geometry_main.h"
 
-#define EPS 0.0001
-
 class GOBJ;
 
 class GeoBoard : public QWidget
