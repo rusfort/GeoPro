@@ -13,7 +13,6 @@
 
 #define EPS 0.0001
 
-class GeoObject;
 class GOBJ;
 
 class GeoBoard : public QWidget
@@ -29,14 +28,17 @@ public:
     void paintEvent(QPaintEvent*) override;
     void mousePressEvent(QMouseEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
 private:
     QColor mColor;
     std::vector<GOBJ*> mObjects;
+    bool board_grabbed = false;
 public:
     GObj_Type trytoadd = GObj_Type::NONE;
     int numitemstoadd = 0;
     Point *lastPoint = 0;
     qreal scale = 1;   //for screen move & scale view
+    QPointF mouseG;    //for screen move & scale view
     QPointF shift;     //for screen move & scale view
 };
 

@@ -25,7 +25,11 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         } else obj->setSelected(false);
     }
 
-    if(trytoadd == GObj_Type::NONE) return;
+    if(trytoadd == GObj_Type::NONE && selected_and_caught == 0){
+        board_grabbed = true;
+        mouseG = Pos;
+        return;
+    }
 
     switch (trytoadd) {
     case GObj_Type::POINT:
@@ -77,9 +81,24 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
 {
     for(auto obj : mObjects)
     {
-        if(obj->isSelected())
+        if(obj->isSelected()){
             obj->move(e->pos());
+        }
     }
+    if (board_grabbed){
+        shift = e->pos() - mouseG;
+        mouseG = e->pos();
+        for(auto obj : mObjects)
+        {
+            obj->changeView();
+        }
+        update();
+    }
+}
+
+void GeoBoard::mouseReleaseEvent(QMouseEvent* e){
+    Q_UNUSED(e);
+    if (board_grabbed) board_grabbed = false;
 }
 
 QPointF GeoBoard::getScreenView (const QPointF& math_point){

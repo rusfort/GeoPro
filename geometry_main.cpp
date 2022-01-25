@@ -23,15 +23,15 @@ Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) 
     connect(this, SIGNAL(posChanged()), mBoard, SLOT(update()));
     scr_x = x;
     scr_y = y;
-    X = scr_x; ///TODO
-    Y = scr_y; ///TODO
+    X = board->getMathPoint(QPointF(x, y)).x();
+    Y = board->getMathPoint(QPointF(x, y)).y();
 }
 
-Point::Point(const Point& copyFrom) :
+/*Point::Point(const Point& copyFrom) :
     GOBJ(copyFrom.board(), GObj_Type::POINT, copyFrom.color()), QPointF(copyFrom.x(), copyFrom.y()), mRadius(copyFrom.rad())
 {
 
-}
+}*/
 
 void Point::draw()
 {
@@ -46,6 +46,23 @@ void Point::draw()
     }
     p.setBrush(QBrush(mColor));
     p.drawEllipse(*this, mRadius, mRadius);
+}
+
+void Point::move(QPointF newPos){
+    rx() = newPos.x();
+    ry() = newPos.y();
+    scr_x = newPos.x();
+    scr_y = newPos.y();
+    X = board()->getMathPoint(newPos).x();
+    Y = board()->getMathPoint(newPos).y();
+    emit posChanged();
+}
+
+void Point::changeView(){
+    scr_x += board()->shift.rx();
+    scr_y += board()->shift.ry();
+    rx() = scr_x;
+    ry() = scr_y;
 }
 
 bool Point::isCatched(QPointF p)
@@ -83,6 +100,10 @@ void Line::draw()
     }
     p.setPen(mColor);
     p.drawLine(p1, p2);
+}
+
+void Line::changeView(){
+    ///TODO
 }
 
 

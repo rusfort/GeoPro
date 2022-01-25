@@ -65,6 +65,7 @@ public:
     virtual void draw() = 0;
     virtual bool isCatched(QPointF p) = 0;
     virtual void move(QPointF dr) = 0;
+    virtual void changeView() = 0;
 signals:
     void selectionChanged();
 protected:
@@ -93,18 +94,15 @@ class Point : public GOBJ, public QPointF
     Q_OBJECT
 public:
     Point(GeoBoard* board, double x = 0.0, double y = 0.0, double radius = 1.0,  QColor color = Qt::black);
-    Point(const Point& copyFrom);
+    //Point(const Point& copyFrom);
     GeoBoard* board() const { return mBoard; }
     void setBoard(GeoBoard* board) { mBoard = board; }
     double rad() const { return mRadius; }
     void setRad(double rad) { mRadius = rad; }
     void draw() override;
     bool isCatched(QPointF p) override;
-    void move(QPointF newPos) override{
-        rx() = newPos.x();
-        ry() = newPos.y();
-        emit posChanged();
-    }
+    void move(QPointF newPos) override;
+    void changeView() override;
 signals:
     void posChanged();
 private:
@@ -121,6 +119,7 @@ public:
     void draw() override;
     bool isCatched(QPointF p) override;
     void move(QPointF newPos) override;
+    void changeView() override;
 signals:
     void posChanged();
 private:
