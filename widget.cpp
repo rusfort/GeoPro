@@ -31,15 +31,28 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     GOBJ* selected_and_caught = 0;
     auto Pos = e->pos();
     bool one_selected = false;
+    bool misscliked = true;
+    num_obj_selected = 0;
     for(auto obj : mObjects){
-        if (obj->isCaught(Pos) && !one_selected){
-            obj->setSelected(true);
-            if (obj->isSelected()) selected_and_caught = obj;
-            one_selected = true;
-        } else obj->setSelected(false);
+        if (obj->isCaught(Pos)){
+            if (!one_selected){
+                obj->setSelected(true);
+                if (obj->isSelected()) selected_and_caught = obj;
+                one_selected = true;
+            } else {
+                obj->setSelected(false);
+            }
+            misscliked = false;
+        }
+        if (obj->isSelected()) num_obj_selected++;
+    }
+    if (misscliked){
+        for(auto obj : mObjects)
+           obj->setSelected(false);
+        num_obj_selected = 0;
     }
 
-    if(trytoadd == GObj_Type::NONE && selected_and_caught == 0){
+    if((trytoadd == GObj_Type::NONE && selected_and_caught == 0) || num_obj_selected > 1){
         board_grabbed = true;
         mouseG = Pos;
         return;
@@ -48,8 +61,12 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     switch (trytoadd) {
     case GObj_Type::POINT:
     {
-        Point *p = new Point(this, Pos.x(), Pos.y(), 5);
-        addObject(p);
+        Point *p;
+        if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT) p = static_cast<Point*>(selected_and_caught);
+        else {
+            p = new Point(this, Pos.x(), Pos.y(), 5);
+            addObject(p);
+        }
         numitemstoadd--;
         update();
     }
@@ -95,7 +112,7 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
 {
     for(auto obj : mObjects)
     {
-        if(obj->isSelected()){
+        if(obj->isSelected() && num_obj_selected == 1){
             obj->move(e->pos());
             board_grabbed = false;
         }

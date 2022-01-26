@@ -46,6 +46,7 @@
     </property>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
+    <addaction name="actionDelete_selected_objects"/>
     <addaction name="actionClear_all"/>
    </widget>
    <widget class="QMenu" name="menuNew_object">
@@ -77,7 +78,7 @@
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="separator"/>
    <addaction name="actionPoint"/>
@@ -214,6 +215,14 @@
    </property>
    <property name="visible">
     <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionDelete_selected_objects">
+   <property name="text">
+    <string>Delete selected objects</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
    </property>
   </action>
  </widget>

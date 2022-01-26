@@ -27,6 +27,8 @@ private slots:
 
     void on_actionSegment_triggered();
 
+    void on_actionDelete_selected_objects_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

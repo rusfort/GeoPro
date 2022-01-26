@@ -39,6 +39,7 @@ public:
     qreal scale = 1;   //for screen move & scale view
     QPointF mouseG;    //for screen move & scale view
     QPointF shift;     //for screen move & scale view
+    int num_obj_selected = 0;
 };
 
 #endif // WIDGET_H

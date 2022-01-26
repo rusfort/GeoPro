@@ -56,3 +56,8 @@ void GeoPro::on_actionSegment_triggered()
     b->trytoadd = GObj_Type::SEGMENT;
     b->numitemstoadd = 2;
 }
+
+void GeoPro::on_actionDelete_selected_objects_triggered()
+{
+
+}
