@@ -9,9 +9,11 @@
 #include <QPaintEvent>
 #include <QMouseEvent>
 
-#include "geometry_main.h"
+//#include "geometry_main.h"
+#include "service.h"
 
 class GOBJ;
+class Point;
 
 class GeoBoard : public QWidget
 {
@@ -20,9 +22,18 @@ public:
     GeoBoard(QWidget *parent = 0, int width = 600, int height = 400, QColor color = Qt::white) : QWidget(parent), mColor(color) { this->resize(width, height); }
     QColor color() const { return mColor; }
     void setColor(QColor color) { mColor = color; }
+    void selectAll();
+    void unselectAll();
     void addObject(GOBJ* obj) { mObjects.push_back(obj); }
+    void delObject(GOBJ* obj){
+        auto to_del = std::find(mObjects.begin(), mObjects.end(), obj);
+        mObjects.erase(to_del);
+    }
     QPointF getScreenView (const QPointF& math_point);
     QPointF getMathPoint (const QPointF& screen_point);
+    std::vector<GOBJ*>& getAllObj(){
+        return mObjects;
+    }
     void paintEvent(QPaintEvent*) override;
     void mousePressEvent(QMouseEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;

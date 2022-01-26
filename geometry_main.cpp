@@ -113,6 +113,7 @@ void Line::changeView(){
 
 
 bool Line::isCaught(QPointF p){
+    //TODO: BUGS!!!
     recalculate();
     double d = 0;
     if (!is_vertical && std::abs(k) < sqrt(std::numeric_limits<qreal>::max())) d = std::abs(-k * p.rx() + p.ry() + k * scr_x0 - scr_y0)/(1 + k * k);

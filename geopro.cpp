@@ -16,7 +16,7 @@ GeoPro::GeoPro(QWidget *parent) :
     ui(new Ui::GeoPro)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("GeoPro 0.0.1 [alpha]"));
+    setWindowTitle(tr("GeoPro 0.0.1 [alpha] by Nikolay Kozakov"));
 
     b = new GeoBoard(this);
     setCentralWidget(b);
@@ -39,6 +39,7 @@ void GeoPro::on_actionClose_triggered()
 void GeoPro::on_actionPoint_triggered()
 {
     if(b->numitemstoadd > 0) return;
+    b->unselectAll();
     b->trytoadd = GObj_Type::POINT;
     b->numitemstoadd = 1;
 }
@@ -46,6 +47,7 @@ void GeoPro::on_actionPoint_triggered()
 void GeoPro::on_actionLine_triggered()
 {
     if(b->numitemstoadd > 0) return;
+    b->unselectAll();
     b->trytoadd = GObj_Type::LINE;
     b->numitemstoadd = 2;
 }
@@ -53,11 +55,26 @@ void GeoPro::on_actionLine_triggered()
 void GeoPro::on_actionSegment_triggered()
 {
     if(b->numitemstoadd > 0) return;
+    b->unselectAll();
     b->trytoadd = GObj_Type::SEGMENT;
     b->numitemstoadd = 2;
 }
 
 void GeoPro::on_actionDelete_selected_objects_triggered()
 {
+    while (b->num_obj_selected > 0){
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                obj->delObj();
+                b->update();
+                break;
+            }
+        }
+    }
+}
 
+void GeoPro::on_actionClear_all_triggered()
+{
+    b->getAllObj().clear();
+    b->update();
 }

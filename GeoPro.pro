@@ -32,7 +32,8 @@ SOURCES += \
 HEADERS += \
         geopro.h \
     widget.h \
-    geometry_main.h
+    geometry_main.h \
+    service.h
 
 FORMS += \
         geopro.ui

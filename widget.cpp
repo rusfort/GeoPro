@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "geometry_main.h"
 #include "math.h"
 #include <QPainter>
 #include <iostream>
@@ -30,17 +31,24 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
 {
     GOBJ* selected_and_caught = 0;
     auto Pos = e->pos();
-    bool one_selected = false;
+    bool one_caught = false;
     bool misscliked = true;
     num_obj_selected = 0;
     for(auto obj : mObjects){
-        if (obj->isCaught(Pos)){
-            if (!one_selected){
-                obj->setSelected(true);
-                if (obj->isSelected()) selected_and_caught = obj;
-                one_selected = true;
+        if (obj->isCaught(Pos) && !one_caught){
+            one_caught = true;
+            if (obj->isSelected()){
+                if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
+                else {
+                    selected_and_caught = obj;
+                    break;
+                }
             } else {
-                obj->setSelected(false);
+                obj->setSelected(true);
+                if (trytoadd != GObj_Type::NONE){
+                    selected_and_caught = obj;
+                    break;
+                }
             }
             misscliked = false;
         }
@@ -77,6 +85,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
                 lastPoint = static_cast<Point*>(selected_and_caught);
+                lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y(), 5);
                 addObject(lastPoint);
@@ -86,12 +95,17 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
                 p = static_cast<Point*>(selected_and_caught);
+                p->setSelected(true);
             } else {
                 p = new Point(this, Pos.x(), Pos.y(), 5);
                 addObject(p);
             }
             Line *l = new Line(this, lastPoint, p);
             addObject(l);
+            lastPoint->childObjects.push_back(l);
+            p->childObjects.push_back(l);
+            l->parentObjects.push_back(lastPoint);
+            l->parentObjects.push_back(p);
         }
         numitemstoadd--;
         update();
@@ -112,7 +126,8 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
 {
     for(auto obj : mObjects)
     {
-        if(obj->isSelected() && num_obj_selected == 1){
+        if(num_obj_selected > 1) break;
+        if(obj->isSelected()){
             obj->move(e->pos());
             board_grabbed = false;
         }
@@ -139,4 +154,14 @@ QPointF GeoBoard::getScreenView (const QPointF& math_point){
 
 QPointF GeoBoard::getMathPoint (const QPointF& screen_point){
     return (screen_point - shift) / scale;
+}
+
+void GeoBoard::selectAll() {
+    for(auto obj : mObjects)
+        obj->setSelected(true);
+}
+
+void GeoBoard::unselectAll() {
+    for(auto obj : mObjects)
+        obj->setSelected(false);
 }

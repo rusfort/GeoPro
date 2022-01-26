@@ -10,24 +10,14 @@
 #include <QMouseEvent>
 #include <QList>
 
+#include "widget.h"
+#include "service.h"
+
 #define EPS 0.0001
 
-class GeoBoard;
+//class GeoBoard;
 class Line;
 class Segment;
-
-enum class DrStyle{
-    None,
-    Light,
-    Bold
-};
-
-enum class GObj_Type{
-    NONE,
-    POINT,
-    LINE,
-    SEGMENT
-};
 
 class GOBJ : public QObject{
     Q_OBJECT
@@ -64,6 +54,17 @@ public:
             emit selectionChanged();
         }
     }
+    void delObj(){
+        for (auto& obj : childObjects){ //deleting all children
+            obj->delObj();
+        }
+        for (auto& obj : parentObjects){ //deleting all mentions about this object
+            auto res = std::find(obj->childObjects.begin(), obj->childObjects.end(), this);
+            if (res != obj->childObjects.end()) obj->childObjects.erase(res);
+        }
+        if (mIsSelected) mBoard->num_obj_selected--;
+        mBoard->delObject(this);
+    }
     virtual void draw() = 0;
     virtual bool isCaught(QPointF p) = 0;
     virtual void move(QPointF dr) = 0;
@@ -76,6 +77,9 @@ protected:
     QColor mColor;
     GeoBoard* mBoard;
     bool mIsSelected;
+public:
+    std::vector<GOBJ*> childObjects;
+    std::vector<GOBJ*> parentObjects;
 };
 
 class STYLE{ //temporarily non-used
