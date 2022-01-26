@@ -113,7 +113,34 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         break;
     case GObj_Type::SEGMENT:
     {
-        //
+        if (numitemstoadd > 1){
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                lastPoint = static_cast<Point*>(selected_and_caught);
+                lastPoint->setSelected(true);
+            } else {
+                lastPoint = new Point(this, Pos.x(), Pos.y(), 5);
+                addObject(lastPoint);
+            }
+        } else {
+            Point *p = 0;
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                p = static_cast<Point*>(selected_and_caught);
+                p->setSelected(true);
+            } else {
+                p = new Point(this, Pos.x(), Pos.y(), 5);
+                addObject(p);
+            }
+            Segment *s = new Segment(this, lastPoint, p);
+            addObject(s);
+            lastPoint->childObjects.push_back(s);
+            p->childObjects.push_back(s);
+            s->parentObjects.push_back(lastPoint);
+            s->parentObjects.push_back(p);
+        }
+        numitemstoadd--;
+        update();
     }
         break;
     default:
@@ -164,4 +191,10 @@ void GeoBoard::selectAll() {
 void GeoBoard::unselectAll() {
     for(auto obj : mObjects)
         obj->setSelected(false);
+}
+
+void GeoBoard::delObject(GOBJ* obj){
+    auto to_del = std::find(mObjects.begin(), mObjects.end(), obj);
+    mObjects.erase(to_del);
+    delete obj;
 }

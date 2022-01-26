@@ -66,10 +66,10 @@ void GeoPro::on_actionDelete_selected_objects_triggered()
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
                 obj->delObj();
-                b->update();
                 break;
             }
         }
+        b->update();
     }
 }
 

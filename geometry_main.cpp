@@ -128,3 +128,57 @@ void Line::move(QPointF newPos){
     return;
 }
 
+
+///SEGMENT METHODS==========================================================================================================
+
+
+Segment::Segment(GeoBoard* board, Point* p1, Point* p2) :
+    GOBJ(board, GObj_Type::SEGMENT, true, p1->color()), mP1(p1), mP2(p2)
+{
+    recalculate();
+}
+
+void Segment::recalculate(){
+    scr_x1 = mP1->scr_x;
+    scr_y1 = mP1->scr_y;
+    scr_x2 = mP2->scr_x;
+    scr_y2 = mP2->scr_y;
+    if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
+        is_vertical = true;
+    }
+    x1 = mP1->X;
+    y1 = mP1->Y;
+    x2 = mP2->X;
+    y2 = mP2->Y;
+    length = sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+}
+
+void Segment::draw(){
+    QPainter p;
+    p.begin(mBoard);
+    p.setRenderHint(QPainter::Antialiasing);
+    if (mIsSelected){
+        QPen pen(Qt::blue);
+        pen.setWidth(3);
+        p.setPen(pen);
+        p.drawLine(*mP1, *mP2);
+    }
+    p.setPen(mColor);
+    p.drawLine(*mP1, *mP2);
+}
+
+void Segment::changeView(){
+}
+
+
+bool Segment::isCaught(QPointF p){
+    recalculate();
+    if (QLineF(*mP1, p).length() + QLineF(*mP2, p).length() < QLineF(*mP1, *mP2).length() + 2) return true;
+    return false;
+}
+
+
+void Segment::move(QPointF newPos){
+    Q_UNUSED(newPos);
+    return;
+}

@@ -55,13 +55,14 @@ public:
         }
     }
     void delObj(){
-        for (auto& obj : childObjects){ //deleting all children
-            obj->delObj();
-        }
         for (auto& obj : parentObjects){ //deleting all mentions about this object
             auto res = std::find(obj->childObjects.begin(), obj->childObjects.end(), this);
             if (res != obj->childObjects.end()) obj->childObjects.erase(res);
         }
+        for (auto& obj : childObjects){ //deleting all children
+            obj->delObj();
+        }
+
         if (mIsSelected) mBoard->num_obj_selected--;
         mBoard->delObject(this);
     }
@@ -101,6 +102,7 @@ class Point : public GOBJ, public QPointF
     Q_OBJECT
 public:
     Point(GeoBoard* board, double x = 0.0, double y = 0.0, double radius = 1.0,  QColor color = Qt::black);
+    virtual ~Point() {}
     GeoBoard* board() const { return mBoard; }
     void setBoard(GeoBoard* board) { mBoard = board; }
     double rad() const { return mRadius; }
@@ -123,6 +125,7 @@ class Line : public GOBJ
     Q_OBJECT
 public:
     Line(GeoBoard* board, Point* p1, Point* p2);
+    virtual ~Line() {}
     void draw() override;
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
@@ -135,6 +138,28 @@ private:
     bool is_vertical;
     qreal x0, y0, k;      //x0, y0 - some point on a line, k - incline
     qreal scr_x0, scr_y0; //the same, but actual on the screen
+};
+
+class Segment : public GOBJ
+{
+    Q_OBJECT
+public:
+    Segment(GeoBoard* board, Point* p1, Point* p2);
+    virtual ~Segment() {}
+    void draw() override;
+    bool isCaught(QPointF p) override;
+    void move(QPointF newPos) override;
+    void changeView() override;
+    void recalculate();
+    qreal getlength() {return length;}
+signals:
+    void posChanged();
+private:
+    Point *mP1, *mP2;
+    bool is_vertical;
+    qreal x1, y1, x2, y2; //xi, yi - ends
+    qreal scr_x1, scr_y1, scr_x2, scr_y2; //the same, but actual on the screen
+    qreal length;
 };
 
 #endif // GEOMETRY_MAIN_H

@@ -25,10 +25,7 @@ public:
     void selectAll();
     void unselectAll();
     void addObject(GOBJ* obj) { mObjects.push_back(obj); }
-    void delObject(GOBJ* obj){
-        auto to_del = std::find(mObjects.begin(), mObjects.end(), obj);
-        mObjects.erase(to_del);
-    }
+    void delObject(GOBJ* obj);
     QPointF getScreenView (const QPointF& math_point);
     QPointF getMathPoint (const QPointF& screen_point);
     std::vector<GOBJ*>& getAllObj(){
