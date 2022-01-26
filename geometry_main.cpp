@@ -53,8 +53,8 @@ void Point::move(QPointF newPos){
 }
 
 void Point::changeView(){
-    scr_x += board()->shift.rx();
-    scr_y += board()->shift.ry();
+    scr_x = board()->getScreenView(QPointF(X, Y)).rx();
+    scr_y = board()->getScreenView(QPointF(X, Y)).ry();
     rx() = scr_x;
     ry() = scr_y;
 }

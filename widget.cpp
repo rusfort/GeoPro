@@ -1,4 +1,5 @@
 #include "widget.h"
+#include "math.h"
 #include <QPainter>
 #include <iostream>
 
@@ -10,6 +11,19 @@ void GeoBoard::paintEvent(QPaintEvent*)
     p.fillRect(0, 0, this->width(), this->height(), mColor);
     for(auto* obj : mObjects)
         obj->draw();
+}
+
+void GeoBoard::wheelEvent(QWheelEvent* e){
+    auto pos = e->pos();
+    auto zoom = pow(1.001, e->delta());
+    if (scale * zoom > 5.0 || scale * zoom < 0.1) zoom = 1.0;
+    shift = pos * (1 - zoom) + shift * zoom;
+    scale *= zoom;
+    for(auto obj : mObjects)
+    {
+        obj->changeView();
+    }
+    update();
 }
 
 void GeoBoard::mousePressEvent(QMouseEvent* e)
@@ -83,10 +97,11 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
     {
         if(obj->isSelected()){
             obj->move(e->pos());
+            board_grabbed = false;
         }
     }
     if (board_grabbed){
-        shift = e->pos() - mouseG;
+        shift += e->pos() - mouseG;
         mouseG = e->pos();
         for(auto obj : mObjects)
         {
@@ -102,9 +117,9 @@ void GeoBoard::mouseReleaseEvent(QMouseEvent* e){
 }
 
 QPointF GeoBoard::getScreenView (const QPointF& math_point){
-    return math_point + shift; ///TODO: add scale
+    return math_point * scale + shift;
 }
 
 QPointF GeoBoard::getMathPoint (const QPointF& screen_point){
-    return screen_point - shift; ///TODO: add scale
+    return (screen_point - shift) / scale;
 }
