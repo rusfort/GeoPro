@@ -126,6 +126,7 @@ public:
     void move(QPointF newPos) override;
     void changeView() override;
     void recalculate();
+    std::pair<QPointF, QPointF> get_draw_pair();
 signals:
     void posChanged();
 private:

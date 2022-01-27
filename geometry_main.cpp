@@ -96,11 +96,21 @@ void Line::recalculate(){
     y0 = mP1->Y;
 }
 
-void Line::draw(){
+std::pair<QPointF, QPointF> Line::get_draw_pair(){
     double A = mBoard->width() > mBoard->height() ? mBoard->width() : mBoard->height();
-    QPointF dr = QPointF(mP1->scr_x, mP1->scr_y) - QPointF(mP2->scr_x, mP2->scr_y);
-    QPointF p1 = QPointF(mP1->scr_x, mP1->scr_y) + A * dr;
-    QPointF p2 = QPointF(mP1->scr_x, mP1->scr_y) - A * dr;
+    QPointF res1 = QPointF(mP1->scr_x, mP1->scr_y);
+    QPointF res2 = QPointF(mP2->scr_x, mP2->scr_y);
+    auto L = QLineF(res1, res2).length();
+    if (L < EPS) L = EPS;
+    QPointF dr = res1 - res2;
+    QPointF p1 = res1 + A / L * dr;
+    QPointF p2 = res1 - A / L * dr;
+    return std::make_pair(p1, p2);
+}
+
+void Line::draw(){
+    QPointF p1 = get_draw_pair().first;
+    QPointF p2 = get_draw_pair().second;
 
     QPainter p;
     p.begin(mBoard);
@@ -120,12 +130,10 @@ void Line::changeView(){
 
 
 bool Line::isCaught(QPointF p){
-    //TODO: BUGS!!!
     recalculate();
-    double d = 0;
-    if (!is_vertical && std::abs(k) < sqrt(std::numeric_limits<qreal>::max())) d = std::abs(-k * p.rx() + p.ry() + k * scr_x0 - scr_y0)/(1 + k * k);
-    else d = std::abs(scr_x0 - p.rx());
-    if (d < 3) return true;
+    auto p1 = get_draw_pair().first;
+    auto p2 = get_draw_pair().second;
+    if (QLineF(p1, p).length() + QLineF(p2, p).length() < QLineF(p1, p2).length() + 0.05) return true;
     return false;
 }
 
