@@ -8,18 +8,29 @@
 STYLE::STYLE(DrStyle st0): style(st0){}
 STYLE::~STYLE(){}
 
-GOBJ::GOBJ(GeoBoard* board, GObj_Type t, bool is_depending, QColor color) :
-    type(t), depending(is_depending), mColor(color), mBoard(board), mIsSelected(false)
+GOBJ::GOBJ(GeoBoard* board, GOBJ *pointer_to_obj, GObj_Type t, bool is_depending, QColor color) :
+    type(t), depending(is_depending), mColor(color), mBoard(board), g_ptr(pointer_to_obj), mIsSelected(false)
 {
     connect(this, SIGNAL(selectionChanged()), mBoard, SLOT(update()));
 }
 
+void GOBJ::delObj(){
+    //for (auto* obj : parentObjects){ //deleting all mentions about this object | BUG IS HERE
+        //obj->eraseInfoAboutChild(this);
+    //}
+    for (const std::pair<GOBJ*, Child_Type>& p : childObjects){ //deleting all children
+        p.first->delObj();
+    }
+
+    if (mIsSelected) mBoard->num_obj_selected--;
+    mBoard->delObject(this);
+}
 
 ///POINT METHODS==================================================================
 
 
 Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) :
-    GOBJ(board, GObj_Type::POINT, false, color), QPointF(x, y), mRadius(radius)
+    GOBJ(board, this, GObj_Type::POINT, false, color), mRadius(radius)
 {
     connect(this, SIGNAL(posChanged()), mBoard, SLOT(update()));
     scr_x = x;
@@ -39,12 +50,10 @@ void Point::draw(){
         p.setPen(pen);
     }
     p.setBrush(QBrush(mColor));
-    p.drawEllipse(*this, mRadius, mRadius);
+    p.drawEllipse(QPointF(scr_x, scr_y), mRadius, mRadius);
 }
 
 void Point::move(QPointF newPos){
-    rx() = newPos.x();
-    ry() = newPos.y();
     scr_x = newPos.x();
     scr_y = newPos.y();
     X = board()->getMathPoint(newPos).x();
@@ -55,13 +64,11 @@ void Point::move(QPointF newPos){
 void Point::changeView(){
     scr_x = board()->getScreenView(QPointF(X, Y)).rx();
     scr_y = board()->getScreenView(QPointF(X, Y)).ry();
-    rx() = scr_x;
-    ry() = scr_y;
 }
 
 bool Point::isCaught(QPointF p){
-    double dx = rx() - p.x();
-    double dy = ry() - p.y();
+    double dx = scr_x - p.x();
+    double dy = scr_y - p.y();
     return dx * dx + dy * dy - mRadius * mRadius < 0;
 }
 
@@ -70,7 +77,7 @@ bool Point::isCaught(QPointF p){
 
 
 Line::Line(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, GObj_Type::LINE, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, this, GObj_Type::LINE, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }
@@ -91,9 +98,9 @@ void Line::recalculate(){
 
 void Line::draw(){
     double A = mBoard->width() > mBoard->height() ? mBoard->width() : mBoard->height();
-    QPointF dr = *mP1 - *mP2;
-    QPointF p1 = *mP1 + A * dr;
-    QPointF p2 = *mP1 - A * dr;
+    QPointF dr = QPointF(mP1->scr_x, mP1->scr_y) - QPointF(mP2->scr_x, mP2->scr_y);
+    QPointF p1 = QPointF(mP1->scr_x, mP1->scr_y) + A * dr;
+    QPointF p2 = QPointF(mP1->scr_x, mP1->scr_y) - A * dr;
 
     QPainter p;
     p.begin(mBoard);
@@ -133,7 +140,7 @@ void Line::move(QPointF newPos){
 
 
 Segment::Segment(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, GObj_Type::SEGMENT, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, this, GObj_Type::SEGMENT, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }
@@ -155,16 +162,19 @@ void Segment::recalculate(){
 
 void Segment::draw(){
     QPainter p;
+    auto p1 = QPointF(mP1->scr_x, mP1->scr_y);
+    auto p2 = QPointF(mP2->scr_x, mP2->scr_y);
+
     p.begin(mBoard);
     p.setRenderHint(QPainter::Antialiasing);
     if (mIsSelected){
         QPen pen(Qt::blue);
         pen.setWidth(3);
         p.setPen(pen);
-        p.drawLine(*mP1, *mP2);
+        p.drawLine(p1, p2);
     }
     p.setPen(mColor);
-    p.drawLine(*mP1, *mP2);
+    p.drawLine(p1, p2);
 }
 
 void Segment::changeView(){
@@ -173,7 +183,9 @@ void Segment::changeView(){
 
 bool Segment::isCaught(QPointF p){
     recalculate();
-    if (QLineF(*mP1, p).length() + QLineF(*mP2, p).length() < QLineF(*mP1, *mP2).length() + 2) return true;
+    auto p1 = QPointF(mP1->scr_x, mP1->scr_y);
+    auto p2 = QPointF(mP2->scr_x, mP2->scr_y);
+    if (QLineF(p1, p).length() + QLineF(p2, p).length() < QLineF(p1, p2).length() + 2) return true;
     return false;
 }
 

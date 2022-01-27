@@ -62,6 +62,7 @@ void GeoPro::on_actionSegment_triggered()
 
 void GeoPro::on_actionDelete_selected_objects_triggered()
 {
+    b->update();
     while (b->num_obj_selected > 0){
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){

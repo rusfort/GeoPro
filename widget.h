@@ -9,7 +9,6 @@
 #include <QPaintEvent>
 #include <QMouseEvent>
 
-//#include "geometry_main.h"
 #include "service.h"
 
 class GOBJ;

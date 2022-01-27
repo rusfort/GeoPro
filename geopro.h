@@ -35,7 +35,6 @@ private:
     Ui::GeoPro *ui;
 public:
     GeoBoard *b;
-    //GraphWidget *widget;
 };
 
 #endif // GEOPRO_H

@@ -5,24 +5,24 @@
 #include <QWidget>
 #include <QPointF>
 #include <QColor>
-#include <vector>
 #include <QPaintEvent>
 #include <QMouseEvent>
 #include <QList>
+#include <utility>
 
 #include "widget.h"
 #include "service.h"
 
 #define EPS 0.0001
 
-//class GeoBoard;
+class GOBJ;
 class Line;
 class Segment;
 
 class GOBJ : public QObject{
     Q_OBJECT
 public:
-    GOBJ(GeoBoard* board, GObj_Type t = GObj_Type::NONE, bool is_depending = false, QColor color = Qt::black);
+    GOBJ(GeoBoard* board, GOBJ* pointer_to_obj, GObj_Type t = GObj_Type::NONE, bool is_depending = false, QColor color = Qt::black);
     virtual ~GOBJ() { }
 private:
     bool visible = true;
@@ -54,18 +54,12 @@ public:
             emit selectionChanged();
         }
     }
-    void delObj(){
-        for (auto& obj : parentObjects){ //deleting all mentions about this object
-            auto res = std::find(obj->childObjects.begin(), obj->childObjects.end(), this);
-            if (res != obj->childObjects.end()) obj->childObjects.erase(res);
-        }
-        for (auto& obj : childObjects){ //deleting all children
-            obj->delObj();
-        }
-
-        if (mIsSelected) mBoard->num_obj_selected--;
-        mBoard->delObject(this);
-    }
+    /*void eraseInfoAboutChild(GOBJ* obj){
+        auto res = childObjects.find(obj);
+        if (res != childObjects.end()) childObjects.erase(res);
+    }*/
+    void delObj();
+    GOBJ* g() {return g_ptr;}
     virtual void draw() = 0;
     virtual bool isCaught(QPointF p) = 0;
     virtual void move(QPointF dr) = 0;
@@ -77,9 +71,10 @@ protected:
     bool depending;
     QColor mColor;
     GeoBoard* mBoard;
+    GOBJ* g_ptr = 0; //pointer to a real geometry object
     bool mIsSelected;
 public:
-    std::vector<GOBJ*> childObjects;
+    std::map<GOBJ*, Child_Type> childObjects;
     std::vector<GOBJ*> parentObjects;
 };
 
@@ -97,7 +92,7 @@ public:
     }
 };
 
-class Point : public GOBJ, public QPointF
+class Point : public GOBJ
 {
     Q_OBJECT
 public:
