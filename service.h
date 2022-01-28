@@ -14,7 +14,9 @@ enum class GObj_Type{
     NONE,
     POINT,
     LINE,
-    SEGMENT
+    SEGMENT,
+    RAY,
+    CIRCLE
 };
 
 enum class Child_Type{

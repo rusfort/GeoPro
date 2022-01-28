@@ -79,3 +79,11 @@ void GeoPro::on_actionClear_all_triggered()
     b->getAllObj().clear();
     b->update();
 }
+
+void GeoPro::on_actionRay_triggered()
+{
+    if(b->numitemstoadd > 0) return;
+    b->unselectAll();
+    b->trytoadd = GObj_Type::RAY;
+    b->numitemstoadd = 2;
+}

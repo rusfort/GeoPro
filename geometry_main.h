@@ -158,4 +158,25 @@ private:
     qreal length;
 };
 
+class Ray : public GOBJ
+{
+    Q_OBJECT
+public:
+    Ray(GeoBoard* board, Point* p1, Point* p2);
+    virtual ~Ray() {}
+    void draw() override;
+    bool isCaught(QPointF p) override;
+    void move(QPointF newPos) override;
+    void changeView() override;
+    void recalculate();
+    std::pair<QPointF, QPointF> get_draw_pair();
+signals:
+    void posChanged();
+private:
+    Point *mP1, *mP2;
+    bool is_vertical;
+    qreal x0, y0, k;      //x0, y0 - beginning of the ray, k - incline
+    qreal scr_x0, scr_y0; //the same, but actual on the screen
+};
+
 #endif // GEOMETRY_MAIN_H

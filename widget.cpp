@@ -149,6 +149,39 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         update();
     }
         break;
+    case GObj_Type::RAY:
+    {
+        if (numitemstoadd > 1){
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                lastPoint = static_cast<Point*>(selected_and_caught->g());
+                lastPoint->setSelected(true);
+            } else {
+                lastPoint = new Point(this, Pos.x(), Pos.y(), 5);
+                addObject(lastPoint);
+            }
+        } else {
+            Point *p = 0;
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                p = static_cast<Point*>(selected_and_caught->g());
+                p->setSelected(true);
+                num_obj_selected++;
+            } else {
+                p = new Point(this, Pos.x(), Pos.y(), 5);
+                addObject(p);
+            }
+            Ray *l = new Ray(this, lastPoint, p);
+            addObject(l);
+            lastPoint->childObjects.insert(std::make_pair(l, Child_Type::OnTwoPoints));
+            p->childObjects.insert(std::make_pair(l, Child_Type::OnTwoPoints));
+            l->parentObjects.push_back(lastPoint);
+            l->parentObjects.push_back(p);
+        }
+        numitemstoadd--;
+        update();
+    }
+        break;
     default:
         break;
     }

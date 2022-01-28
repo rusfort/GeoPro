@@ -102,6 +102,7 @@ std::pair<QPointF, QPointF> Line::get_draw_pair(){
     QPointF res2 = QPointF(mP2->scr_x, mP2->scr_y);
     auto L = QLineF(res1, res2).length();
     if (L < EPS) L = EPS;
+    if (L > A/2) L = A/2;
     QPointF dr = res1 - res2;
     QPointF p1 = res1 + A / L * dr;
     QPointF p2 = res1 - A / L * dr;
@@ -202,3 +203,76 @@ void Segment::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
 }
+
+
+///RAY METHODS==========================================================================================================
+
+
+Ray::Ray(GeoBoard* board, Point* p1, Point* p2) :
+    GOBJ(board, this, GObj_Type::RAY, true, p1->color()), mP1(p1), mP2(p2)
+{
+    recalculate();
+}
+
+void Ray::recalculate(){
+    scr_x0 = mP1->scr_x;
+    scr_y0 = mP1->scr_y;
+    if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
+        is_vertical = true;
+        k = 0;
+    } else {
+        is_vertical = false;
+        k = (mP1->scr_y - mP2->scr_y)/(mP1->scr_x - mP2->scr_x);
+    }
+    x0 = mP1->X;
+    y0 = mP1->Y;
+}
+
+std::pair<QPointF, QPointF> Ray::get_draw_pair(){
+    double A = mBoard->width() > mBoard->height() ? mBoard->width() : mBoard->height();
+    QPointF res1 = QPointF(mP1->scr_x, mP1->scr_y);
+    QPointF res2 = QPointF(mP2->scr_x, mP2->scr_y);
+    auto L = QLineF(res1, res2).length();
+    if (L < EPS) L = EPS;
+    if (L > A/2) L = A/2;
+    QPointF dr = res1 - res2;
+    QPointF p1 = res1;
+    QPointF p2 = res1 - A / L * dr;
+    return std::make_pair(p1, p2);
+}
+
+void Ray::draw(){
+    QPointF p1 = get_draw_pair().first;
+    QPointF p2 = get_draw_pair().second;
+
+    QPainter p;
+    p.begin(mBoard);
+    p.setRenderHint(QPainter::Antialiasing);
+    if (mIsSelected){
+        QPen pen(Qt::blue);
+        pen.setWidth(3);
+        p.setPen(pen);
+        p.drawLine(p1, p2);
+    }
+    p.setPen(mColor);
+    p.drawLine(p1, p2);
+}
+
+void Ray::changeView(){
+}
+
+
+bool Ray::isCaught(QPointF p){
+    recalculate();
+    auto p1 = get_draw_pair().first;
+    auto p2 = get_draw_pair().second;
+    if (QLineF(p1, p).length() + QLineF(p2, p).length() < QLineF(p1, p2).length() + 0.05) return true;
+    return false;
+}
+
+
+void Ray::move(QPointF newPos){
+    Q_UNUSED(newPos);
+    return;
+}
+

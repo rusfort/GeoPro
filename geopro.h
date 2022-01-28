@@ -31,6 +31,8 @@ private slots:
 
     void on_actionClear_all_triggered();
 
+    void on_actionRay_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:
