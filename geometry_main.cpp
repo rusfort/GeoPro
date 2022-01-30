@@ -8,8 +8,8 @@
 STYLE::STYLE(DrStyle st0): style(st0){}
 STYLE::~STYLE(){}
 
-GOBJ::GOBJ(GeoBoard* board, GOBJ *pointer_to_obj, GObj_Type t, bool is_depending, QColor color) :
-    type(t), depending(is_depending), mColor(color), mBoard(board), g_ptr(pointer_to_obj), mIsSelected(false)
+GOBJ::GOBJ(GeoBoard* board, GOBJ *pointer_to_obj, GObj_Type t, bool is_depending, bool do_exist, QColor color) :
+    type(t), depending(is_depending), exists(do_exist), mColor(color), mBoard(board), g_ptr(pointer_to_obj), mIsSelected(false)
 {
     connect(this, SIGNAL(selectionChanged()), mBoard, SLOT(update()));
 }
@@ -30,7 +30,7 @@ void GOBJ::delObj(){
 
 
 Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) :
-    GOBJ(board, this, GObj_Type::POINT, false, color), mRadius(radius)
+    GOBJ(board, this, GObj_Type::POINT, false, true, color), mRadius(radius)
 {
     connect(this, SIGNAL(posChanged()), mBoard, SLOT(update()));
     scr_x = x;
@@ -40,6 +40,7 @@ Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) 
 }
 
 void Point::draw(){
+    if (!exists) return;
     QPainter p;
     p.begin(this->board());
     p.setRenderHint(QPainter::Antialiasing);
@@ -77,7 +78,7 @@ bool Point::isCaught(QPointF p){
 
 
 Line::Line(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, this, GObj_Type::LINE, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, this, GObj_Type::LINE, true, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }
@@ -110,6 +111,7 @@ std::pair<QPointF, QPointF> Line::get_draw_pair(){
 }
 
 void Line::draw(){
+    if (!exists) return;
     QPointF p1 = get_draw_pair().first;
     QPointF p2 = get_draw_pair().second;
 
@@ -149,7 +151,7 @@ void Line::move(QPointF newPos){
 
 
 Segment::Segment(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, this, GObj_Type::SEGMENT, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, this, GObj_Type::SEGMENT, true, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }
@@ -170,6 +172,7 @@ void Segment::recalculate(){
 }
 
 void Segment::draw(){
+    if (!exists) return;
     QPainter p;
     auto p1 = QPointF(mP1->scr_x, mP1->scr_y);
     auto p2 = QPointF(mP2->scr_x, mP2->scr_y);
@@ -209,7 +212,7 @@ void Segment::move(QPointF newPos){
 
 
 Ray::Ray(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, this, GObj_Type::RAY, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, this, GObj_Type::RAY, true, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }
@@ -242,6 +245,7 @@ std::pair<QPointF, QPointF> Ray::get_draw_pair(){
 }
 
 void Ray::draw(){
+    if (!exists) return;
     QPointF p1 = get_draw_pair().first;
     QPointF p2 = get_draw_pair().second;
 

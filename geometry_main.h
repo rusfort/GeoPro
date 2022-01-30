@@ -22,7 +22,7 @@ class Segment;
 class GOBJ : public QObject{
     Q_OBJECT
 public:
-    GOBJ(GeoBoard* board, GOBJ* pointer_to_obj, GObj_Type t = GObj_Type::NONE, bool is_depending = false, QColor color = Qt::black);
+    GOBJ(GeoBoard* board, GOBJ* pointer_to_obj, GObj_Type t = GObj_Type::NONE, bool is_depending = false, bool do_exist = true, QColor color = Qt::black);
     virtual ~GOBJ() { }
 private:
     bool visible = true;
@@ -69,6 +69,7 @@ signals:
 protected:
     const GObj_Type type;
     bool depending;
+    bool exists;   //e.g. intersection can be none
     QColor mColor;
     GeoBoard* mBoard;
     GOBJ* g_ptr = 0; //pointer to a real geometry object
