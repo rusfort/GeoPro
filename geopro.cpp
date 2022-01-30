@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QtGui>
 #include <QGraphicsView>
+#include <QMessageBox>
 
 
 GeoPro::GeoPro(QWidget *parent) :
@@ -86,4 +87,23 @@ void GeoPro::on_actionRay_triggered()
     b->unselectAll();
     b->trytoadd = GObj_Type::RAY;
     b->numitemstoadd = 2;
+}
+
+void GeoPro::on_actionIntersection_triggered()
+{
+    if(b->numitemstoadd > 0) return;
+    b->unselectAll();
+    if(b->num_obj_selected > 2 || (b->num_obj_selected < 2 && b->num_obj_selected > 0)){
+        QMessageBox::critical(b, "ERROR", "Can intersect only 2 objects!");
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "WARNING", "Select 2 objects to intersect!");
+        return;
+    }
+    if(b->num_obj_selected == 2){
+        b->trytoadd = GObj_Type::INTERSECTION;
+        b->numitemstoadd = 1;
+        return;
+    }
 }

@@ -16,7 +16,8 @@ enum class GObj_Type{
     LINE,
     SEGMENT,
     RAY,
-    CIRCLE
+    CIRCLE,
+    INTERSECTION
 };
 
 enum class Child_Type{

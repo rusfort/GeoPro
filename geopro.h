@@ -33,6 +33,8 @@ private slots:
 
     void on_actionRay_triggered();
 
+    void on_actionIntersection_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

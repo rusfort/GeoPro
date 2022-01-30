@@ -60,9 +60,16 @@
     <addaction name="actionCircle_by_the_center_radius"/>
     <addaction name="actionCircle_by_3_points"/>
    </widget>
+   <widget class="QMenu" name="menuConstruct">
+    <property name="title">
+     <string>&amp;Construct...</string>
+    </property>
+    <addaction name="actionIntersection"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuNew_object"/>
+   <addaction name="menuConstruct"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="sizePolicy">
@@ -78,7 +85,7 @@
     <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="separator"/>
    <addaction name="actionPoint"/>
@@ -87,6 +94,9 @@
    <addaction name="actionRay"/>
    <addaction name="actionCircle_by_the_center_radius"/>
    <addaction name="actionCircle_by_3_points"/>
+   <addaction name="separator"/>
+   <addaction name="actionIntersection"/>
+   <addaction name="separator"/>
    <addaction name="actionClear_all"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -219,10 +229,15 @@
   </action>
   <action name="actionDelete_selected_objects">
    <property name="text">
-    <string>Delete selected objects</string>
+    <string>&amp;Delete selected objects</string>
    </property>
    <property name="shortcut">
     <string>Del</string>
+   </property>
+  </action>
+  <action name="actionIntersection">
+   <property name="text">
+    <string>Intersection</string>
    </property>
   </action>
  </widget>

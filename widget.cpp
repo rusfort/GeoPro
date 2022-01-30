@@ -182,6 +182,13 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         update();
     }
         break;
+    case GObj_Type::INTERSECTION:
+    {
+        ///TODO!
+        numitemstoadd--;
+        update();
+    }
+        break;
     default:
         break;
     }
