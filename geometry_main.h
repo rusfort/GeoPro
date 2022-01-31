@@ -22,7 +22,7 @@ class Segment;
 class GOBJ : public QObject{
     Q_OBJECT
 public:
-    GOBJ(GeoBoard* board, GOBJ* pointer_to_obj, GObj_Type t = GObj_Type::NONE, bool is_depending = false, bool do_exist = true, QColor color = Qt::black);
+    GOBJ(GeoBoard* board, GObj_Type t = GObj_Type::NONE, bool is_depending = false, bool do_exist = true, QColor color = Qt::black);
     virtual ~GOBJ() { }
 private:
     bool visible = true;
@@ -59,7 +59,6 @@ public:
         if (res != childObjects.end()) childObjects.erase(res);
     }*/
     void delObj();
-    GOBJ* g() {return g_ptr;}
     virtual void draw() = 0;
     virtual bool isCaught(QPointF p) = 0;
     virtual void move(QPointF dr) = 0;
@@ -70,15 +69,14 @@ signals:
 protected:
     const GObj_Type type;
     bool depending;
-    bool exists;   //e.g. intersection can be none (if the user tries to intersect two parallel lines)
     QColor mColor;
     GeoBoard* mBoard;
     bool mIsSelected;
 public:
-    GOBJ* g_ptr = 0; //pointer to a real geometry object
     std::map<GOBJ*, Child_Type> childObjects;
     std::vector<GOBJ*> parentObjects;                    //vector of all parents
     Child_Type child_type = Child_Type::Unknown;         //if this object is a child of smth
+    bool exists;   //e.g. intersection can be none (if the user tries to intersect two parallel lines)
 };
 
 class STYLE{ //temporarily non-used

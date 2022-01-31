@@ -92,9 +92,9 @@ void GeoPro::on_actionRay_triggered()
 void GeoPro::on_actionIntersection_triggered()
 {
     if(b->numitemstoadd > 0) return;
-    b->unselectAll();
     if(b->num_obj_selected > 2 || (b->num_obj_selected < 2 && b->num_obj_selected > 0)){
         QMessageBox::critical(b, "ERROR", "Can intersect only 2 objects!");
+        b->unselectAll();
         return;
     }
     if(b->num_obj_selected == 0){
@@ -103,10 +103,26 @@ void GeoPro::on_actionIntersection_triggered()
     }
     if(b->num_obj_selected == 2){
         Point* intersection = new Point(b);
+        GOBJ* Obj1 = 0;
+        GOBJ* Obj2 = 0;
         for (auto& obj : b->getAllObj()){
-            if (obj->isSelected()) intersection->parents_intersected.insert(std::pair<GObj_Type, GOBJ*>(obj->type_is(), obj->g_ptr));
+            if (obj->isSelected()){
+                intersection->parents_intersected.insert(std::pair<GObj_Type, GOBJ*>(obj->type_is(), obj));
+                if (!Obj1) Obj1 = obj;
+                else {
+                    Obj2 = obj;
+                    break;
+                }
+            }
         }
-        ///TODO!
+        intersection->exists = false;
+        b->addObject(intersection);
+        Obj1->childObjects[intersection] = Child_Type::Intersection;
+        Obj2->childObjects[intersection] = Child_Type::Intersection;
+        intersection->parentObjects.push_back(Obj1);
+        intersection->parentObjects.push_back(Obj2);
+
+        b->unselectAll();
         b->update();
         return;
     }

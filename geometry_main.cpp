@@ -8,8 +8,8 @@
 STYLE::STYLE(DrStyle st0): style(st0){}
 STYLE::~STYLE(){}
 
-GOBJ::GOBJ(GeoBoard* board, GOBJ *pointer_to_obj, GObj_Type t, bool is_depending, bool do_exist, QColor color) :
-    type(t), depending(is_depending), exists(do_exist), mColor(color), mBoard(board), mIsSelected(false), g_ptr(pointer_to_obj)
+GOBJ::GOBJ(GeoBoard* board, GObj_Type t, bool is_depending, bool do_exist, QColor color) :
+    type(t), depending(is_depending), mColor(color), mBoard(board), mIsSelected(false), exists(do_exist)
 {
     connect(this, SIGNAL(selectionChanged()), mBoard, SLOT(update()));
 }
@@ -30,7 +30,7 @@ void GOBJ::delObj(){
 
 
 Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) :
-    GOBJ(board, this, GObj_Type::POINT, false, true, color), mRadius(radius)
+    GOBJ(board, GObj_Type::POINT, false, true, color), mRadius(radius)
 {
     connect(this, SIGNAL(posChanged()), mBoard, SLOT(update()));
     scr_x = x;
@@ -96,7 +96,7 @@ bool Point::isCaught(QPointF p){
 
 
 Line::Line(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, this, GObj_Type::LINE, true, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, GObj_Type::LINE, true, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }
@@ -169,7 +169,7 @@ void Line::move(QPointF newPos){
 
 
 Segment::Segment(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, this, GObj_Type::SEGMENT, true, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, GObj_Type::SEGMENT, true, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }
@@ -230,7 +230,7 @@ void Segment::move(QPointF newPos){
 
 
 Ray::Ray(GeoBoard* board, Point* p1, Point* p2) :
-    GOBJ(board, this, GObj_Type::RAY, true, true, p1->color()), mP1(p1), mP2(p2)
+    GOBJ(board, GObj_Type::RAY, true, true, p1->color()), mP1(p1), mP2(p2)
 {
     recalculate();
 }

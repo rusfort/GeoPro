@@ -71,7 +71,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     {
         Point *p;
         if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT){
-            p = static_cast<Point*>(selected_and_caught->g());
+            p = static_cast<Point*>(selected_and_caught);
             p->setSelected(true);
             num_obj_selected++;
         }
@@ -88,7 +88,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         if (numitemstoadd > 1){
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
-                lastPoint = static_cast<Point*>(selected_and_caught->g());
+                lastPoint = static_cast<Point*>(selected_and_caught);
                 lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y());
@@ -98,7 +98,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             Point *p = 0;
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
-                p = static_cast<Point*>(selected_and_caught->g());
+                p = static_cast<Point*>(selected_and_caught);
                 p->setSelected(true);
                 num_obj_selected++;
             } else {
@@ -107,8 +107,8 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             }
             Line *l = new Line(this, lastPoint, p);
             addObject(l);
-            lastPoint->childObjects.insert(std::make_pair(l, Child_Type::OnTwoPoints));
-            p->childObjects.insert(std::make_pair(l, Child_Type::OnTwoPoints));
+            lastPoint->childObjects[l] = Child_Type::OnTwoPoints;
+            p->childObjects[l] = Child_Type::OnTwoPoints;
             l->parentObjects.push_back(lastPoint);
             l->parentObjects.push_back(p);
         }
@@ -121,7 +121,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         if (numitemstoadd > 1){
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
-                lastPoint = static_cast<Point*>(selected_and_caught->g());
+                lastPoint = static_cast<Point*>(selected_and_caught);
                 lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y());
@@ -131,7 +131,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             Point *p = 0;
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
-                p = static_cast<Point*>(selected_and_caught->g());
+                p = static_cast<Point*>(selected_and_caught);
                 p->setSelected(true);
                 num_obj_selected++;
             } else {
@@ -140,8 +140,8 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             }
             Segment *s = new Segment(this, lastPoint, p);
             addObject(s);
-            lastPoint->childObjects.insert(std::make_pair(s, Child_Type::OnTwoPoints));
-            p->childObjects.insert(std::make_pair(s, Child_Type::OnTwoPoints));
+            lastPoint->childObjects[s] = Child_Type::OnTwoPoints;
+            p->childObjects[s] = Child_Type::OnTwoPoints;
             s->parentObjects.push_back(lastPoint);
             s->parentObjects.push_back(p);
         }
@@ -154,7 +154,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         if (numitemstoadd > 1){
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
-                lastPoint = static_cast<Point*>(selected_and_caught->g());
+                lastPoint = static_cast<Point*>(selected_and_caught);
                 lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y());
@@ -164,7 +164,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             Point *p = 0;
             if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
             {
-                p = static_cast<Point*>(selected_and_caught->g());
+                p = static_cast<Point*>(selected_and_caught);
                 p->setSelected(true);
                 num_obj_selected++;
             } else {
@@ -173,8 +173,8 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             }
             Ray *l = new Ray(this, lastPoint, p);
             addObject(l);
-            lastPoint->childObjects.insert(std::make_pair(l, Child_Type::OnTwoPoints));
-            p->childObjects.insert(std::make_pair(l, Child_Type::OnTwoPoints));
+            lastPoint->childObjects[l] = Child_Type::OnTwoPoints;
+            p->childObjects[l] = Child_Type::OnTwoPoints;
             l->parentObjects.push_back(lastPoint);
             l->parentObjects.push_back(p);
         }
@@ -236,6 +236,6 @@ void GeoBoard::delObject(GOBJ* obj){
     auto to_del = std::find(mObjects.begin(), mObjects.end(), obj);
     if (to_del != mObjects.end()){
         mObjects.erase(to_del);
-        delete obj->g();
+        delete obj;
     }
 }
