@@ -76,7 +76,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             num_obj_selected++;
         }
         else {
-            p = new Point(this, Pos.x(), Pos.y(), 5);
+            p = new Point(this, Pos.x(), Pos.y());
             addObject(p);
         }
         numitemstoadd--;
@@ -91,7 +91,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 lastPoint = static_cast<Point*>(selected_and_caught->g());
                 lastPoint->setSelected(true);
             } else {
-                lastPoint = new Point(this, Pos.x(), Pos.y(), 5);
+                lastPoint = new Point(this, Pos.x(), Pos.y());
                 addObject(lastPoint);
             }
         } else {
@@ -102,7 +102,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 p->setSelected(true);
                 num_obj_selected++;
             } else {
-                p = new Point(this, Pos.x(), Pos.y(), 5);
+                p = new Point(this, Pos.x(), Pos.y());
                 addObject(p);
             }
             Line *l = new Line(this, lastPoint, p);
@@ -124,7 +124,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 lastPoint = static_cast<Point*>(selected_and_caught->g());
                 lastPoint->setSelected(true);
             } else {
-                lastPoint = new Point(this, Pos.x(), Pos.y(), 5);
+                lastPoint = new Point(this, Pos.x(), Pos.y());
                 addObject(lastPoint);
             }
         } else {
@@ -135,7 +135,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 p->setSelected(true);
                 num_obj_selected++;
             } else {
-                p = new Point(this, Pos.x(), Pos.y(), 5);
+                p = new Point(this, Pos.x(), Pos.y());
                 addObject(p);
             }
             Segment *s = new Segment(this, lastPoint, p);
@@ -157,7 +157,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 lastPoint = static_cast<Point*>(selected_and_caught->g());
                 lastPoint->setSelected(true);
             } else {
-                lastPoint = new Point(this, Pos.x(), Pos.y(), 5);
+                lastPoint = new Point(this, Pos.x(), Pos.y());
                 addObject(lastPoint);
             }
         } else {
@@ -168,7 +168,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 p->setSelected(true);
                 num_obj_selected++;
             } else {
-                p = new Point(this, Pos.x(), Pos.y(), 5);
+                p = new Point(this, Pos.x(), Pos.y());
                 addObject(p);
             }
             Ray *l = new Ray(this, lastPoint, p);
@@ -178,13 +178,6 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             l->parentObjects.push_back(lastPoint);
             l->parentObjects.push_back(p);
         }
-        numitemstoadd--;
-        update();
-    }
-        break;
-    case GObj_Type::INTERSECTION:
-    {
-        ///TODO!
         numitemstoadd--;
         update();
     }

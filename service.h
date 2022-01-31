@@ -16,15 +16,29 @@ enum class GObj_Type{
     LINE,
     SEGMENT,
     RAY,
-    CIRCLE,
-    INTERSECTION
+    CIRCLE
 };
 
 enum class Child_Type{
     Unknown,
     OnTwoPoints,
     OnThreePoints,
-    Middle
+    Middle,
+    Intersection
+};
+
+enum class Intersection_Type{
+    None,
+    Line_Line,
+    Line_Ray,
+    Line_Segment,
+    Line_Circle,
+    Ray_Ray,
+    Ray_Segment,
+    Ray_Circle,
+    Segment_Segment,
+    Segment_Circle,
+    Circle_Circle
 };
 
 #endif // SERVICE_H

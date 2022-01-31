@@ -64,19 +64,21 @@ public:
     virtual bool isCaught(QPointF p) = 0;
     virtual void move(QPointF dr) = 0;
     virtual void changeView() = 0;
+    virtual void recalculate() = 0;
 signals:
     void selectionChanged();
 protected:
     const GObj_Type type;
     bool depending;
-    bool exists;   //e.g. intersection can be none
+    bool exists;   //e.g. intersection can be none (if the user tries to intersect two parallel lines)
     QColor mColor;
     GeoBoard* mBoard;
-    GOBJ* g_ptr = 0; //pointer to a real geometry object
     bool mIsSelected;
 public:
+    GOBJ* g_ptr = 0; //pointer to a real geometry object
     std::map<GOBJ*, Child_Type> childObjects;
-    std::vector<GOBJ*> parentObjects;
+    std::vector<GOBJ*> parentObjects;                    //vector of all parents
+    Child_Type child_type = Child_Type::Unknown;         //if this object is a child of smth
 };
 
 class STYLE{ //temporarily non-used
@@ -97,7 +99,7 @@ class Point : public GOBJ
 {
     Q_OBJECT
 public:
-    Point(GeoBoard* board, double x = 0.0, double y = 0.0, double radius = 1.0,  QColor color = Qt::black);
+    Point(GeoBoard* board, double x = 0.0, double y = 0.0, double radius = 5.0,  QColor color = Qt::black);
     virtual ~Point() {}
     GeoBoard* board() const { return mBoard; }
     void setBoard(GeoBoard* board) { mBoard = board; }
@@ -107,13 +109,16 @@ public:
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
     void changeView() override;
+    void recalculate() override;
 signals:
     void posChanged();
 private:
     double mRadius;
 public:
-    qreal X, Y;
-    qreal scr_x, scr_y;
+    qreal X, Y;          //mathematical (native) coords
+    qreal scr_x, scr_y;  //screen coords
+    Intersection_Type inters_type = Intersection_Type::None;
+    std::multimap<GObj_Type, GOBJ*> parents_intersected; //2 objects ordered by their type (to easily get the Intersection_Type)
 };
 
 class Line : public GOBJ
@@ -126,7 +131,7 @@ public:
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
     void changeView() override;
-    void recalculate();
+    void recalculate() override;
     std::pair<QPointF, QPointF> get_draw_pair();
 signals:
     void posChanged();
@@ -147,7 +152,7 @@ public:
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
     void changeView() override;
-    void recalculate();
+    void recalculate() override;
     qreal getlength() {return length;}
 signals:
     void posChanged();
@@ -169,7 +174,7 @@ public:
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
     void changeView() override;
-    void recalculate();
+    void recalculate() override;
     std::pair<QPointF, QPointF> get_draw_pair();
 signals:
     void posChanged();

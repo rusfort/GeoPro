@@ -9,7 +9,7 @@ STYLE::STYLE(DrStyle st0): style(st0){}
 STYLE::~STYLE(){}
 
 GOBJ::GOBJ(GeoBoard* board, GOBJ *pointer_to_obj, GObj_Type t, bool is_depending, bool do_exist, QColor color) :
-    type(t), depending(is_depending), exists(do_exist), mColor(color), mBoard(board), g_ptr(pointer_to_obj), mIsSelected(false)
+    type(t), depending(is_depending), exists(do_exist), mColor(color), mBoard(board), mIsSelected(false), g_ptr(pointer_to_obj)
 {
     connect(this, SIGNAL(selectionChanged()), mBoard, SLOT(update()));
 }
@@ -37,10 +37,28 @@ Point::Point(GeoBoard* board, double x, double y, double radius,  QColor color) 
     scr_y = y;
     X = board->getMathPoint(QPointF(x, y)).x();
     Y = board->getMathPoint(QPointF(x, y)).y();
+    recalculate();
+}
+
+void Point::recalculate(){
+    switch(child_type){
+    case Child_Type::Unknown:
+    {
+        return;
+    }
+    case Child_Type::Intersection:
+    {
+        //TODO
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 void Point::draw(){
     if (!exists) return;
+    recalculate();
     QPainter p;
     p.begin(this->board());
     p.setRenderHint(QPainter::Antialiasing);

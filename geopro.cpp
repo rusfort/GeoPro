@@ -102,8 +102,12 @@ void GeoPro::on_actionIntersection_triggered()
         return;
     }
     if(b->num_obj_selected == 2){
-        b->trytoadd = GObj_Type::INTERSECTION;
-        b->numitemstoadd = 1;
+        Point* intersection = new Point(b);
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()) intersection->parents_intersected.insert(std::pair<GObj_Type, GOBJ*>(obj->type_is(), obj->g_ptr));
+        }
+        ///TODO!
+        b->update();
         return;
     }
 }
