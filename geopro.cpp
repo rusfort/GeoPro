@@ -107,7 +107,7 @@ void GeoPro::on_actionIntersection_triggered()
         GOBJ* Obj2 = 0;
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
-                intersection->parents_intersected.insert(std::pair<GObj_Type, GOBJ*>(obj->type_is(), obj));
+                intersection->parents_intersected.insert(std::make_pair(obj->type_is(), obj));
                 if (!Obj1) Obj1 = obj;
                 else {
                     Obj2 = obj;
@@ -115,13 +115,18 @@ void GeoPro::on_actionIntersection_triggered()
                 }
             }
         }
+        if (Obj1 == 0 || Obj2 == 0){
+            delete intersection;
+            QMessageBox::critical(b, "FATAL LOGIC ERROR", "Null object intersection!");
+            QApplication::quit();
+            return;
+        }
         intersection->exists = false;
         b->addObject(intersection);
         Obj1->childObjects[intersection] = Child_Type::Intersection;
         Obj2->childObjects[intersection] = Child_Type::Intersection;
         intersection->parentObjects.push_back(Obj1);
         intersection->parentObjects.push_back(Obj2);
-
         b->unselectAll();
         b->update();
         return;

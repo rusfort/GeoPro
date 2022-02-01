@@ -54,10 +54,10 @@ public:
             emit selectionChanged();
         }
     }
-    /*void eraseInfoAboutChild(GOBJ* obj){
+    void eraseInfoAboutChild(GOBJ* obj){
         auto res = childObjects.find(obj);
         if (res != childObjects.end()) childObjects.erase(res);
-    }*/
+    }
     void delObj();
     virtual void draw() = 0;
     virtual bool isCaught(QPointF p) = 0;

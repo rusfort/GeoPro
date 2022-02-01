@@ -15,11 +15,14 @@ GOBJ::GOBJ(GeoBoard* board, GObj_Type t, bool is_depending, bool do_exist, QColo
 }
 
 void GOBJ::delObj(){
-    //for (auto* obj : parentObjects){ //deleting all mentions about this object | BUG IS HERE
-        //obj->eraseInfoAboutChild(this);
-    //}
-    for (const std::pair<GOBJ*, Child_Type>& p : childObjects){ //deleting all children
-        p.first->delObj();
+    while(childObjects.size() > 0){
+        for (auto& p : childObjects){ //deleting all children
+            p.first->delObj();
+            break;
+        }
+    }
+    for (auto& obj : parentObjects){ //deleting all mentions about this object
+        obj->eraseInfoAboutChild(this);
     }
 
     if (mIsSelected) mBoard->num_obj_selected--;
