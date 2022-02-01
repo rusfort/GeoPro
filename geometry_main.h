@@ -210,4 +210,7 @@ private:
     qreal scr_x0, scr_y0, scr_r; //the same, but actual on the screen
 };
 
+
+std::pair<qreal, qreal> getCircleCenter(const Point* p1, const Point* p2, const Point* p3);
+
 #endif // GEOMETRY_MAIN_H

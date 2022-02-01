@@ -144,3 +144,63 @@ void GeoPro::on_actionIntersection_triggered()
         return;
     }
 }
+
+void GeoPro::on_actionCircle_by_the_center_radius_triggered()
+{
+    //TODO
+}
+
+void GeoPro::on_actionCircle_by_3_points_triggered()
+{
+    if(b->numitemstoadd > 0) return;
+    if(b->num_obj_selected > 3 || (b->num_obj_selected < 3 && b->num_obj_selected > 0)){
+        QMessageBox::critical(b, "CIRCLE ERROR", "Need 3 points!");
+        b->unselectAll();
+        b->update();
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "CIRCLE WARNING", "Select 3 points!");
+        return;
+    }
+    if(b->num_obj_selected == 3){
+        GOBJ* p1 = 0;
+        GOBJ* p2 = 0;
+        GOBJ* p3 = 0;
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                if (!p1) p1 = obj;
+                else {
+                    if (!p2) p2 = obj;
+                    else{
+                        p3 = obj;
+                        break;
+                    }
+                }
+            }
+        }
+        if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT || p3->type_is() != GObj_Type::POINT){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "CIRCLE ERROR", "Cannot build a circle! Need 3 points.");
+            return;
+        }
+        auto coords = getCircleCenter(static_cast<Point*>(p1), static_cast<Point*>(p2), static_cast<Point*>(p3));
+        Point* cen = new Point(b, coords.first, coords.second);
+        Circle* C = new Circle(b, cen, 1);
+        C->exists = false;
+        C->depending = true;
+        C->child_type = Child_Type::OnThreePoints;
+        b->addObject(C);
+        p1->childObjects[C] = Child_Type::OnThreePoints;
+        p2->childObjects[C] = Child_Type::OnThreePoints;
+        p3->childObjects[C] = Child_Type::OnThreePoints;
+        C->parentObjects.push_back(p1);
+        C->parentObjects.push_back(p2);
+        C->parentObjects.push_back(p2);
+        C->recalculate();
+        b->unselectAll();
+        b->update();
+        return;
+    }
+}

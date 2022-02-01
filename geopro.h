@@ -35,6 +35,10 @@ private slots:
 
     void on_actionIntersection_triggered();
 
+    void on_actionCircle_by_the_center_radius_triggered();
+
+    void on_actionCircle_by_3_points_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

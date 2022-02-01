@@ -406,24 +406,20 @@ Circle::Circle(GeoBoard* board, Point* c, qreal radius) :
 }
 
 void Circle::recalculate(){
-    /*scr_x0 = mP1->scr_x;
-    scr_y0 = mP1->scr_y;
-    if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
-        is_vertical = true;
-        _k = 0;
-    } else {
-        is_vertical = false;
-        _k = (mP1->scr_y - mP2->scr_y)/(mP1->scr_x - mP2->scr_x);
+    if (child_type == Child_Type::OnTwoPoints){
+        //TODO
+    } else { //OnThreePoints
+        //TODO
     }
-    _x0 = mP1->X;
-    _y0 = mP1->Y;*/
+    scr_x0 = center->scr_x;
+    scr_y0 = center->scr_y;
+    scr_r = _r * mBoard->scale;
+    _x0 = center->X;
+    _y0 = center->Y;
 }
 
 void Circle::draw(){
     if (!exists) return;
-    /*QPointF p1 = get_draw_pair().first;
-    QPointF p2 = get_draw_pair().second;
-
     QPainter p;
     p.begin(mBoard);
     p.setRenderHint(QPainter::Antialiasing);
@@ -431,10 +427,10 @@ void Circle::draw(){
         QPen pen(Qt::blue);
         pen.setWidth(3);
         p.setPen(pen);
-        p.drawLine(p1, p2);
+        p.drawEllipse(QPointF(scr_x0, scr_y0), scr_r, scr_r);
     }
     p.setPen(mColor);
-    p.drawLine(p1, p2);*/
+    p.drawEllipse(QPointF(scr_x0, scr_y0), scr_r, scr_r);
 }
 
 void Circle::changeView(){
@@ -443,9 +439,7 @@ void Circle::changeView(){
 
 bool Circle::isCaught(QPointF p){
     recalculate();
-    //auto p1 = get_draw_pair().first;
-    //auto p2 = get_draw_pair().second;
-    //if (QLineF(p1, p).length() + QLineF(p2, p).length() < QLineF(p1, p2).length() + 0.05) return true;
+    if (QLineF(QPointF(scr_x0, scr_y0), p).length()< scr_r + 0.05) return true;
     return false;
 }
 
@@ -453,5 +447,17 @@ bool Circle::isCaught(QPointF p){
 void Circle::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
+}
+
+
+
+///OTHER FUNCTIONS==========================================================================================================
+
+
+std::pair<qreal, qreal> getCircleCenter(const Point* p1, const Point* p2, const Point* p3){
+    qreal x = 0;
+    qreal y = 0;
+    //TODO
+    return std::make_pair(x, y);
 }
 
