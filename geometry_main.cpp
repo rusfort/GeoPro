@@ -439,7 +439,8 @@ void Circle::changeView(){
 
 bool Circle::isCaught(QPointF p){
     recalculate();
-    if (QLineF(QPointF(scr_x0, scr_y0), p).length()< scr_r + 0.05) return true;
+    auto L = QLineF(QPointF(scr_x0, scr_y0), p).length();
+    if (L< scr_r + 1 && L > scr_r - 1) return true;
     return false;
 }
 
@@ -454,10 +455,11 @@ void Circle::move(QPointF newPos){
 ///OTHER FUNCTIONS==========================================================================================================
 
 
-std::pair<qreal, qreal> getCircleCenter(const Point* p1, const Point* p2, const Point* p3){
+std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3){
     qreal x = 0;
     qreal y = 0;
+    qreal r = 20;
     //TODO
-    return std::make_pair(x, y);
+    return std::make_pair(QPointF(x, y), r);
 }
 

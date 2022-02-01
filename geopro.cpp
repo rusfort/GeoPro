@@ -185,19 +185,26 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
             QMessageBox::critical(b, "CIRCLE ERROR", "Cannot build a circle! Need 3 points.");
             return;
         }
-        auto coords = getCircleCenter(static_cast<Point*>(p1), static_cast<Point*>(p2), static_cast<Point*>(p3));
-        Point* cen = new Point(b, coords.first, coords.second);
-        Circle* C = new Circle(b, cen, 1);
-        C->exists = false;
+        auto params = getCircleCenterAndRadius(static_cast<Point*>(p1), static_cast<Point*>(p2), static_cast<Point*>(p3));
+        Point* cen = new Point(b, params.first.x(), params.first.y());
+        Circle* C = new Circle(b, cen, params.second);
+        if (C->r() < EPS) C->exists = false;
+        else C->exists = true;
         C->depending = true;
-        C->child_type = Child_Type::OnThreePoints;
+        cen->depending = true;
+        C->child_type = Child_Type::Middle;
+        cen->child_type = Child_Type::OnThreePoints;
         b->addObject(C);
-        p1->childObjects[C] = Child_Type::OnThreePoints;
-        p2->childObjects[C] = Child_Type::OnThreePoints;
-        p3->childObjects[C] = Child_Type::OnThreePoints;
-        C->parentObjects.push_back(p1);
-        C->parentObjects.push_back(p2);
-        C->parentObjects.push_back(p2);
+        b->addObject(cen);
+        //FIXME: deletion bugs below:
+        p1->childObjects[cen] = Child_Type::OnThreePoints;
+        p2->childObjects[cen] = Child_Type::OnThreePoints;
+        p3->childObjects[cen] = Child_Type::OnThreePoints;
+        cen->parentObjects.push_back(p1);
+        cen->parentObjects.push_back(p2);
+        cen->parentObjects.push_back(p2);
+        cen->childObjects[C] = Child_Type::Middle;
+        C->parentObjects.push_back(cen);
         C->recalculate();
         b->unselectAll();
         b->update();

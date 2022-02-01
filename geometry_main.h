@@ -211,6 +211,6 @@ private:
 };
 
 
-std::pair<qreal, qreal> getCircleCenter(const Point* p1, const Point* p2, const Point* p3);
+std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3);
 
 #endif // GEOMETRY_MAIN_H
