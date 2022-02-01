@@ -336,13 +336,13 @@ void Ray::recalculate(){
     scr_y0 = mP1->scr_y;
     if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
         is_vertical = true;
-        k = 0;
+        _k = 0;
     } else {
         is_vertical = false;
-        k = (mP1->scr_y - mP2->scr_y)/(mP1->scr_x - mP2->scr_x);
+        _k = (mP1->scr_y - mP2->scr_y)/(mP1->scr_x - mP2->scr_x);
     }
-    x0 = mP1->X;
-    y0 = mP1->Y;
+    _x0 = mP1->X;
+    _y0 = mP1->Y;
 }
 
 std::pair<QPointF, QPointF> Ray::get_draw_pair(){
@@ -390,6 +390,67 @@ bool Ray::isCaught(QPointF p){
 
 
 void Ray::move(QPointF newPos){
+    Q_UNUSED(newPos);
+    return;
+}
+
+
+
+///CIRCLE METHODS==========================================================================================================
+
+
+Circle::Circle(GeoBoard* board, Point* c, qreal radius) :
+    GOBJ(board, GObj_Type::CIRCLE, true, true, c->color()), center(c), _r(radius)
+{
+    recalculate();
+}
+
+void Circle::recalculate(){
+    /*scr_x0 = mP1->scr_x;
+    scr_y0 = mP1->scr_y;
+    if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
+        is_vertical = true;
+        _k = 0;
+    } else {
+        is_vertical = false;
+        _k = (mP1->scr_y - mP2->scr_y)/(mP1->scr_x - mP2->scr_x);
+    }
+    _x0 = mP1->X;
+    _y0 = mP1->Y;*/
+}
+
+void Circle::draw(){
+    if (!exists) return;
+    /*QPointF p1 = get_draw_pair().first;
+    QPointF p2 = get_draw_pair().second;
+
+    QPainter p;
+    p.begin(mBoard);
+    p.setRenderHint(QPainter::Antialiasing);
+    if (mIsSelected){
+        QPen pen(Qt::blue);
+        pen.setWidth(3);
+        p.setPen(pen);
+        p.drawLine(p1, p2);
+    }
+    p.setPen(mColor);
+    p.drawLine(p1, p2);*/
+}
+
+void Circle::changeView(){
+}
+
+
+bool Circle::isCaught(QPointF p){
+    recalculate();
+    //auto p1 = get_draw_pair().first;
+    //auto p2 = get_draw_pair().second;
+    //if (QLineF(p1, p).length() + QLineF(p2, p).length() < QLineF(p1, p2).length() + 0.05) return true;
+    return false;
+}
+
+
+void Circle::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
 }
