@@ -68,11 +68,11 @@ signals:
     void selectionChanged();
 protected:
     const GObj_Type type;
-    bool depending;
     QColor mColor;
     GeoBoard* mBoard;
     bool mIsSelected;
 public:
+    bool depending;
     std::map<GOBJ*, Child_Type> childObjects;
     std::vector<GOBJ*> parentObjects;                    //vector of all parents
     Child_Type child_type = Child_Type::Unknown;         //if this object is a child of smth
@@ -103,6 +103,7 @@ public:
     void setBoard(GeoBoard* board) { mBoard = board; }
     double rad() const { return mRadius; }
     void setRad(double rad) { mRadius = rad; }
+    void setIntersectionType();
     void draw() override;
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
@@ -131,12 +132,15 @@ public:
     void changeView() override;
     void recalculate() override;
     std::pair<QPointF, QPointF> get_draw_pair();
+    qreal k() {return _k;}
+    qreal x0() {return _x0;}
+    qreal y0() {return _y0;}
 signals:
     void posChanged();
 private:
     Point *mP1, *mP2;
     bool is_vertical;
-    qreal x0, y0, k;      //x0, y0 - some point on a line, k - incline
+    qreal _x0, _y0, _k;   //_x0, _y0 - some point on a line, _k - incline
     qreal scr_x0, scr_y0; //the same, but actual on the screen
 };
 

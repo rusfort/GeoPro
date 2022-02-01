@@ -93,12 +93,13 @@ void GeoPro::on_actionIntersection_triggered()
 {
     if(b->numitemstoadd > 0) return;
     if(b->num_obj_selected > 2 || (b->num_obj_selected < 2 && b->num_obj_selected > 0)){
-        QMessageBox::critical(b, "ERROR", "Can intersect only 2 objects!");
+        QMessageBox::critical(b, "INTERSECTION ERROR", "Can intersect only 2 objects!");
         b->unselectAll();
+        b->update();
         return;
     }
     if(b->num_obj_selected == 0){
-        QMessageBox::warning(b, "WARNING", "Select 2 objects to intersect!");
+        QMessageBox::warning(b, "INTERSECTION WARNING", "Select 2 objects to intersect!");
         return;
     }
     if(b->num_obj_selected == 2){
@@ -121,12 +122,23 @@ void GeoPro::on_actionIntersection_triggered()
             QApplication::quit();
             return;
         }
+        if (Obj1->type_is() == GObj_Type::POINT || Obj2->type_is() == GObj_Type::POINT){
+            delete intersection;
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "INTERSECTION ERROR", "Cannot intersect with a point!");
+            return;
+        }
         intersection->exists = false;
+        intersection->depending = true;
+        intersection->child_type = Child_Type::Intersection;
         b->addObject(intersection);
         Obj1->childObjects[intersection] = Child_Type::Intersection;
         Obj2->childObjects[intersection] = Child_Type::Intersection;
         intersection->parentObjects.push_back(Obj1);
         intersection->parentObjects.push_back(Obj2);
+        intersection->setIntersectionType();
+        intersection->recalculate();
         b->unselectAll();
         b->update();
         return;

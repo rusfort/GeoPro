@@ -193,6 +193,7 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
     for(auto obj : mObjects)
     {
         if(num_obj_selected > 1) break;
+        if(obj->depending) obj->recalculate();
         if(obj->isSelected()){
             obj->move(e->pos());
             board_grabbed = false;
@@ -230,6 +231,7 @@ void GeoBoard::selectAll() {
 void GeoBoard::unselectAll() {
     for(auto obj : mObjects)
         obj->setSelected(false);
+    num_obj_selected = 0;
 }
 
 void GeoBoard::delObject(GOBJ* obj){
