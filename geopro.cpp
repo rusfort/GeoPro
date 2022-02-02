@@ -147,7 +147,10 @@ void GeoPro::on_actionIntersection_triggered()
 
 void GeoPro::on_actionCircle_by_the_center_radius_triggered()
 {
-    //TODO
+    if(b->numitemstoadd > 0) return;
+    b->unselectAll();
+    b->trytoadd = GObj_Type::CIRCLE;
+    b->numitemstoadd = 2;
 }
 
 void GeoPro::on_actionCircle_by_3_points_triggered()
@@ -196,13 +199,12 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
         cen->child_type = Child_Type::OnThreePoints;
         b->addObject(C);
         b->addObject(cen);
-        //FIXME: deletion bugs below:
         p1->childObjects[cen] = Child_Type::OnThreePoints;
         p2->childObjects[cen] = Child_Type::OnThreePoints;
         p3->childObjects[cen] = Child_Type::OnThreePoints;
         cen->parentObjects.push_back(p1);
         cen->parentObjects.push_back(p2);
-        cen->parentObjects.push_back(p2);
+        cen->parentObjects.push_back(p3);
         cen->childObjects[C] = Child_Type::Middle;
         C->parentObjects.push_back(cen);
         C->recalculate();

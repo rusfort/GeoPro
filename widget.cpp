@@ -182,6 +182,44 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         update();
     }
         break;
+    case GObj_Type::CIRCLE:
+    {
+        if (numitemstoadd > 1){
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                lastPoint = static_cast<Point*>(selected_and_caught);
+                lastPoint->setSelected(true);
+            } else {
+                lastPoint = new Point(this, Pos.x(), Pos.y());
+                addObject(lastPoint);
+            }
+        } else {
+            Point *p = 0;
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                p = static_cast<Point*>(selected_and_caught);
+                p->setSelected(true);
+                num_obj_selected++;
+            } else {
+                p = new Point(this, Pos.x(), Pos.y());
+                addObject(p);
+            }
+            Circle* C = new Circle(this, lastPoint, sqrt((lastPoint->scr_x - p->scr_x) * (lastPoint->scr_x - p->scr_x) +
+                                                      (lastPoint->scr_y - p->scr_y) * (lastPoint->scr_y - p->scr_y)) / scale);
+            if (C->r() * scale < EPS) C->exists = false;
+            else C->exists = true;
+            C->depending = true;
+            C->child_type = Child_Type::OnTwoPoints;
+            addObject(C);
+            lastPoint->childObjects[C] = Child_Type::OnTwoPoints;
+            p->childObjects[C] = Child_Type::OnTwoPoints;
+            C->parentObjects.push_back(lastPoint);
+            C->parentObjects.push_back(p);
+        }
+        numitemstoadd--;
+        update();
+    }
+        break;
     default:
         break;
     }
