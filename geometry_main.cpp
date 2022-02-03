@@ -109,7 +109,13 @@ void Point::recalculate(){
             if (std::abs(l1->k() - l2->k()) < EPS) exists = false;
             else{
                 exists = true;
-                X = (l2->y0() - l1->y0() + l1->k() * l1->x0() - l2->k() * l2->x0()) / (l1->k() - l2->k());
+                if (l1->isVertical()){
+                    X = l1->x0();
+                } else if (l2->isVertical()){
+                    X = l2->x0();
+                } else {
+                    X = (l2->y0() - l1->y0() + l1->k() * l1->x0() - l2->k() * l2->x0()) / (l1->k() - l2->k());
+                }
                 Y = l1->y0() + l1->k() * (X - l1->x0());
                 scr_x = board()->getScreenView(QPointF(X, Y)).x();
                 scr_y = board()->getScreenView(QPointF(X, Y)).y();
@@ -117,7 +123,25 @@ void Point::recalculate(){
         }
             break;
         case Intersection_Type::Line_Ray:{
-            //TODO
+            auto l = static_cast<Line*>(it1->second);
+            auto r = static_cast<Ray*>(it2->second);
+            if (std::abs(l->k() - r->k()) < EPS /*|| ray goes from the line!*/) exists = false;
+            else{
+                if (l->isVertical()){
+                    X = l->x0();
+                } else if (r->isVertical()){
+                    X = r->x0();
+                } else {
+                    X = (r->y0() - l->y0() + l->k() * l->x0() - r->k() * r->x0()) / (l->k() - r->k());
+                }
+                Y = l->y0() + l->k() * (X - l->x0());
+                scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                if (distance(this, r->getFirstPoint()) < distance(this, r->getSecondPoint()) &&
+                        distance(this, r->getFirstPoint()) + distance(this, r->getSecondPoint()) >
+                        distance(r->getFirstPoint(), r->getSecondPoint())) exists = false;
+                else exists = true;
+            }
         }
             break;
         case Intersection_Type::Line_Segment:{
@@ -129,7 +153,28 @@ void Point::recalculate(){
         }
             break;
         case Intersection_Type::Ray_Ray:{
-            //TODO
+            auto r1 = static_cast<Ray*>(it1->second);
+            auto r2 = static_cast<Ray*>(it2->second);
+            if (std::abs(r1->k() - r2->k()) < EPS) exists = false;
+            else{
+                if (r1->isVertical()){
+                    X = r1->x0();
+                } else if (r2->isVertical()){
+                    X = r2->x0();
+                } else {
+                    X = (r2->y0() - r1->y0() + r1->k() * r1->x0() - r2->k() * r2->x0()) / (r1->k() - r2->k());
+                }
+                Y = r1->y0() + r1->k() * (X - r1->x0());
+                scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                exists = true;
+                if (distance(this, r1->getFirstPoint()) < distance(this, r1->getSecondPoint()) &&
+                        distance(this, r1->getFirstPoint()) + distance(this, r1->getSecondPoint()) >
+                        distance(r1->getFirstPoint(), r1->getSecondPoint())) exists = false;
+                if (distance(this, r2->getFirstPoint()) < distance(this, r2->getSecondPoint()) &&
+                        distance(this, r2->getFirstPoint()) + distance(this, r2->getSecondPoint()) >
+                        distance(r2->getFirstPoint(), r2->getSecondPoint())) exists = false;
+            }
         }
             break;
         case Intersection_Type::Ray_Segment:{
@@ -291,11 +336,11 @@ void Segment::recalculate(){
     if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
         is_vertical = true;
     }
-    x1 = mP1->X;
-    y1 = mP1->Y;
-    x2 = mP2->X;
-    y2 = mP2->Y;
-    length = sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+    _x1 = mP1->X;
+    _y1 = mP1->Y;
+    _x2 = mP2->X;
+    _y2 = mP2->Y;
+    length = sqrt((_x1 - _x2)*(_x1 - _x2) + (_y1 - _y2)*(_y1 - _y2));
 }
 
 void Segment::draw(){
@@ -510,5 +555,9 @@ std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point*
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const std::vector<Point*>& bPoints){
     assert(bPoints.size() == 3);
     return getCircleCenterAndRadius(bPoints[0], bPoints[1], bPoints[2]);
+}
+
+qreal distance(const Point* p1, const Point* p2){
+    return QLineF(QPointF(p1->X, p1->Y), QPointF(p2->X, p2->Y)).length();
 }
 

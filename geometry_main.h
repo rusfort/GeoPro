@@ -133,9 +133,10 @@ public:
     void changeView() override;
     void recalculate() override;
     std::pair<QPointF, QPointF> get_draw_pair();
-    qreal k() {return _k;}
-    qreal x0() {return _x0;}
-    qreal y0() {return _y0;}
+    qreal k() const {return _k;}
+    qreal x0() const {return _x0;}
+    qreal y0() const {return _y0;}
+    bool isVertical() const {return is_vertical;}
 signals:
     void posChanged();
 private:
@@ -157,12 +158,18 @@ public:
     void changeView() override;
     void recalculate() override;
     qreal getlength() {return length;}
+    qreal x1() const {return _x1;}
+    qreal y1() const {return _y1;}
+    qreal x2() const {return _x2;}
+    qreal y2() const {return _y2;}
+    const Point* getFirstPoint() const {return mP1;}
+    const Point* getSecondPoint() const {return mP2;}
 signals:
     void posChanged();
 private:
     Point *mP1, *mP2;
     bool is_vertical;
-    qreal x1, y1, x2, y2; //xi, yi - ends
+    qreal _x1, _y1, _x2, _y2;                 //xi, yi - ends
     qreal scr_x1, scr_y1, scr_x2, scr_y2; //the same, but actual on the screen
     qreal length;
 };
@@ -179,12 +186,18 @@ public:
     void changeView() override;
     void recalculate() override;
     std::pair<QPointF, QPointF> get_draw_pair();
+    qreal k() const {return _k;}
+    qreal x0() const {return _x0;}
+    qreal y0() const {return _y0;}
+    bool isVertical() const {return is_vertical;}
+    const Point* getFirstPoint() const {return mP1;}
+    const Point* getSecondPoint() const {return mP2;}
 signals:
     void posChanged();
 private:
     Point *mP1, *mP2;
     bool is_vertical;
-    qreal _x0, _y0, _k;      //x0, y0 - beginning of the ray, k - incline
+    qreal _x0, _y0, _k;   //x0, y0 - beginning of the ray, k - incline
     qreal scr_x0, scr_y0; //the same, but actual on the screen
 };
 
@@ -200,9 +213,9 @@ public:
     void changeView() override;
     void recalculate() override;
     std::pair<QPointF, QPointF> get_draw_pair();
-    qreal r() {return _r;}
-    qreal x0() {return _x0;}
-    qreal y0() {return _y0;}
+    qreal r() const {return _r;}
+    qreal x0() const {return _x0;}
+    qreal y0() const {return _y0;}
 signals:
     void posChanged();
 private:
@@ -216,5 +229,6 @@ public:
 
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3);
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const std::vector<Point *> &bPoints);
+qreal distance(const Point* p1, const Point* p2);
 
 #endif // GEOMETRY_MAIN_H
