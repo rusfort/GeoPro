@@ -25,7 +25,8 @@ enum class Child_Type{
     OnTwoPoints,
     OnThreePoints,
     Middle,
-    Intersection
+    Intersection,
+    Intersection2 //for circles
 };
 
 enum class Intersection_Type{

@@ -99,6 +99,10 @@ void Point::recalculate(){
     }
     case Child_Type::Intersection:
     {
+        /*Future refactor ideas:
+         * 1) Use functions like "bool is_on_Segment(Point* p)"
+         * 2) Segment and Ray may have smth like baseLine as an object (so we can easily intersect all of those)
+         */
         auto it1 = parents_intersected.begin();
         auto it2 = it1;
         ++it2;
@@ -336,8 +340,8 @@ std::pair<QPointF, QPointF> Line::get_draw_pair(){
     if (L < EPS) L = EPS;
     if (L > A/2) L = A/2;
     QPointF dr = res1 - res2;
-    QPointF p1 = res1 + A / L * dr;
-    QPointF p2 = res1 - A / L * dr;
+    QPointF p1 = res1 + A / L * dr; //BUG: line ends somewhere if the screen is moved
+    QPointF p2 = res1 - A / L * dr; //FIXME!
     return std::make_pair(p1, p2);
 }
 

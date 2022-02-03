@@ -104,6 +104,8 @@ void GeoPro::on_actionIntersection_triggered()
     }
     if(b->num_obj_selected == 2){
         Point* intersection = new Point(b);
+        Point* intersection2 = new Point(b);
+        bool inter_circle = false; //if the second intersection is needed
         GOBJ* Obj1 = 0;
         GOBJ* Obj2 = 0;
         for (auto& obj : b->getAllObj()){
@@ -129,6 +131,7 @@ void GeoPro::on_actionIntersection_triggered()
             QMessageBox::critical(b, "INTERSECTION ERROR", "Cannot intersect with a point!");
             return;
         }
+        if (Obj1->type_is() == GObj_Type::CIRCLE || Obj2->type_is() == GObj_Type::CIRCLE) inter_circle = true;
         intersection->exists = false;
         intersection->depending = true;
         intersection->child_type = Child_Type::Intersection;
@@ -139,6 +142,23 @@ void GeoPro::on_actionIntersection_triggered()
         intersection->parentObjects.push_back(Obj2);
         intersection->setIntersectionType();
         intersection->recalculate();
+        if (inter_circle){
+            auto it2 = intersection->parents_intersected.begin();
+            auto it1 = it2;
+            ++it2;
+            intersection2->parents_intersected.insert(*it1);
+            intersection2->parents_intersected.insert(*it2);
+            intersection2->exists = false;
+            intersection2->depending = true;
+            intersection2->child_type = Child_Type::Intersection2;
+            b->addObject(intersection2);
+            Obj1->childObjects[intersection2] = Child_Type::Intersection2;
+            Obj2->childObjects[intersection2] = Child_Type::Intersection2;
+            intersection2->parentObjects.push_back(Obj1);
+            intersection2->parentObjects.push_back(Obj2);
+            intersection2->setIntersectionType();
+            intersection2->recalculate();
+        }
         b->unselectAll();
         b->update();
         return;
