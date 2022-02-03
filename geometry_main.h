@@ -59,6 +59,7 @@ public:
         if (res != childObjects.end()) childObjects.erase(res);
     }
     void delObj();
+    void checkExistance();
     virtual void draw() = 0;
     virtual bool isCaught(QPointF p) = 0;
     virtual void move(QPointF dr) = 0;

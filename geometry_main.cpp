@@ -29,6 +29,16 @@ void GOBJ::delObj(){
     mBoard->delObject(this);
 }
 
+void GOBJ::checkExistance(){
+    for (auto& obj : parentObjects){
+        if(obj->exists != true){
+            exists = false;
+            return;
+        }
+    }
+    exists = true; //try to resurrect the object
+}
+
 ///POINT METHODS==================================================================
 
 
@@ -81,6 +91,7 @@ void Point::setIntersectionType(){
 }
 
 void Point::recalculate(){
+    checkExistance();
     switch(child_type){
     case Child_Type::Unknown:
     {
@@ -95,7 +106,7 @@ void Point::recalculate(){
         case Intersection_Type::Line_Line:{
             auto l1 = static_cast<Line*>(it1->second);
             auto l2 = static_cast<Line*>(it2->second);
-            if (std::abs(l1->k() - l2->k()) < EPS) exists = false; //ADD FUNC "change existance" for all children!
+            if (std::abs(l1->k() - l2->k()) < EPS) exists = false;
             else{
                 exists = true;
                 X = (l2->y0() - l1->y0() + l1->k() * l1->x0() - l2->k() * l2->x0()) / (l1->k() - l2->k());
@@ -198,6 +209,7 @@ Line::Line(GeoBoard* board, Point* p1, Point* p2) :
 }
 
 void Line::recalculate(){
+    checkExistance();
     scr_x0 = mP1->scr_x;
     scr_y0 = mP1->scr_y;
     if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
@@ -271,6 +283,7 @@ Segment::Segment(GeoBoard* board, Point* p1, Point* p2) :
 }
 
 void Segment::recalculate(){
+    checkExistance();
     scr_x1 = mP1->scr_x;
     scr_y1 = mP1->scr_y;
     scr_x2 = mP2->scr_x;
@@ -332,6 +345,7 @@ Ray::Ray(GeoBoard* board, Point* p1, Point* p2) :
 }
 
 void Ray::recalculate(){
+    checkExistance();
     scr_x0 = mP1->scr_x;
     scr_y0 = mP1->scr_y;
     if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
@@ -402,10 +416,10 @@ void Ray::move(QPointF newPos){
 Circle::Circle(GeoBoard* board, Point* c, qreal radius) :
     GOBJ(board, GObj_Type::CIRCLE, true, true, c->color()), center(c), _r(radius)
 {
-    //recalculate();
 }
 
 void Circle::recalculate(){
+    checkExistance();
     if (child_type == Child_Type::OnTwoPoints){
         scr_r = sqrt((basePoints[0]->scr_x - basePoints[1]->scr_x) * (basePoints[0]->scr_x - basePoints[1]->scr_x) +
                      (basePoints[0]->scr_y - basePoints[1]->scr_y) * (basePoints[0]->scr_y - basePoints[1]->scr_y));
