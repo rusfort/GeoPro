@@ -207,6 +207,9 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
         cen->parentObjects.push_back(p3);
         cen->childObjects[C] = Child_Type::Middle;
         C->parentObjects.push_back(cen);
+        C->basePoints.push_back(static_cast<Point*>(p1));
+        C->basePoints.push_back(static_cast<Point*>(p2));
+        C->basePoints.push_back(static_cast<Point*>(p3));
         C->recalculate();
         b->unselectAll();
         b->update();

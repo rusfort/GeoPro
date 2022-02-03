@@ -208,9 +208,12 @@ private:
     Point *center;
     qreal _x0, _y0, _r;   //_x0, _y0 - center point math coords, _r - radius
     qreal scr_x0, scr_y0, scr_r; //the same, but actual on the screen
+public:
+    std::vector<Point*> basePoints;
 };
 
 
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3);
+std::pair<QPointF, qreal> getCircleCenterAndRadius(const std::vector<Point *> &bPoints);
 
 #endif // GEOMETRY_MAIN_H

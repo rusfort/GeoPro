@@ -215,6 +215,9 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             p->childObjects[C] = Child_Type::OnTwoPoints;
             C->parentObjects.push_back(lastPoint);
             C->parentObjects.push_back(p);
+            C->basePoints.push_back(lastPoint);
+            C->basePoints.push_back(p);
+            C->recalculate();
         }
         numitemstoadd--;
         update();

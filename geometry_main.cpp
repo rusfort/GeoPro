@@ -402,18 +402,31 @@ void Ray::move(QPointF newPos){
 Circle::Circle(GeoBoard* board, Point* c, qreal radius) :
     GOBJ(board, GObj_Type::CIRCLE, true, true, c->color()), center(c), _r(radius)
 {
-    recalculate();
+    //recalculate();
 }
 
 void Circle::recalculate(){
     if (child_type == Child_Type::OnTwoPoints){
-        //TODO
+        scr_r = sqrt((basePoints[0]->scr_x - basePoints[1]->scr_x) * (basePoints[0]->scr_x - basePoints[1]->scr_x) +
+                     (basePoints[0]->scr_y - basePoints[1]->scr_y) * (basePoints[0]->scr_y - basePoints[1]->scr_y));
+        _r = scr_r / mBoard->scale;
     } else { //OnThreePoints
-        //TODO
+        auto params = getCircleCenterAndRadius(basePoints);
+        _r = params.second;
+        scr_r = _r * mBoard->scale;
+        if(scr_r < EPS){
+            exists = false;
+            return;
+        } else {
+            exists = true;
+        }
+        center->X = params.first.x();
+        center->Y = params.first.y();
+        center->scr_x = mBoard->getScreenView(QPointF(center->X, center->Y)).x();
+        center->scr_y = mBoard->getScreenView(QPointF(center->X, center->Y)).y();
     }
     scr_x0 = center->scr_x;
     scr_y0 = center->scr_y;
-    scr_r = _r * mBoard->scale;
     _x0 = center->X;
     _y0 = center->Y;
 }
@@ -434,6 +447,7 @@ void Circle::draw(){
 }
 
 void Circle::changeView(){
+    recalculate();
 }
 
 
@@ -459,7 +473,28 @@ std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point*
     qreal x = 0;
     qreal y = 0;
     qreal r = 20;
-    //TODO
+    qreal a1 = 2*(p1->X - p2->X);
+    qreal b1 = 2*(p1->Y - p2->Y);
+    qreal a2 = 2*(p1->X - p3->X);
+    qreal b2 = 2*(p1->Y - p3->Y);
+    qreal c1 = (p1->X * p1->X - p2->X * p2->X) + (p1->Y * p1->Y - p2->Y * p2->Y);
+    qreal c2 = (p1->X * p1->X - p3->X * p3->X) + (p1->Y * p1->Y - p3->Y * p3->Y);
+    qreal d = b2 * a1 - b1 * a2;
+
+    if (std::abs(d) < EPS || (std::abs(a1) < EPS && std::abs(a2) < EPS))
+        return std::make_pair(QPointF(0, 0), 0.0); //Three points on the same line
+
+    y = (c2 * a1 - c1 * a2) / d;
+    if (std::abs(a2) < EPS) x = (c1 - b1 * y) / a1;
+    else x = (c2 - b2 * y) / a2;
+
+    r = sqrt((p1->X - x) * (p1->X - x) + (p1->Y - y) * (p1->Y - y));
+
     return std::make_pair(QPointF(x, y), r);
+}
+
+std::pair<QPointF, qreal> getCircleCenterAndRadius(const std::vector<Point*>& bPoints){
+    assert(bPoints.size() == 3);
+    return getCircleCenterAndRadius(bPoints[0], bPoints[1], bPoints[2]);
 }
 
