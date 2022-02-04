@@ -98,6 +98,7 @@ void Point::recalculate(){
         return;
     }
     case Child_Type::Intersection:
+    case Child_Type::Intersection2:
     {
         /*Future refactor ideas:
          * 1) Use functions like "bool is_on_Segment(Point* p)"
@@ -171,7 +172,29 @@ void Point::recalculate(){
         }
             break;
         case Intersection_Type::Line_Circle:{
-            //TODO
+            auto l = static_cast<Line*>(it1->second);
+            auto c = static_cast<Circle*>(it2->second);
+            auto sol = get_inter_solution(l, c);
+            if (sol.num_points == 0){
+                exists = false;
+                break;
+            }
+            if (child_type == Child_Type::Intersection){
+                X = sol.x1;
+                Y = sol.y1;
+                scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                exists = true;
+            } else {
+                if (sol.num_points == 1) exists = false;
+                else {
+                    X = sol.x2;
+                    Y = sol.y2;
+                    scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                    scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                    exists = true;
+                }
+            }
         }
             break;
         case Intersection_Type::Ray_Ray:{
@@ -625,3 +648,62 @@ qreal distance(const Point* p1, const Point* p2){
     return QLineF(QPointF(p1->X, p1->Y), QPointF(p2->X, p2->Y)).length();
 }
 
+qreal sign_distance(const Point* p, const Line* l){
+    return (l->k() * p->X - p->Y + (l->y0() - l->k() * l->x0())) / sqrt (1.0 + l->k() * l->k());
+}
+
+qreal distance(const Point* p, const Line* l){
+    return std::abs(sign_distance(p, l));
+}
+
+QPointF getBaseOfPerpendicular(const Point* p, const Line* l){
+    qreal d = sign_distance(p, l);
+    qreal px = p->X - l->k() * d / sqrt (1.0 + l->k() * l->k());
+    qreal py = l->y0() + l->k() * (px - l->x0());
+    return QPointF(px, py);
+}
+
+intersect_sol get_inter_solution (const Line* l, const Circle* C){
+    intersect_sol SOL;
+
+    if (l->isVertical()){
+        if (std::abs(l->x0() - C->x0()) > C->r()){
+            SOL.num_points = 0;
+            return SOL;
+        }
+        if (std::abs(l->x0() - C->x0()) > C->r() - EPS){
+            SOL.num_points = 1;
+            SOL.x1 = l->x0();
+            SOL.y1 = C->y0();
+            return SOL;
+        }
+        SOL.num_points = 2;
+        SOL.x1 = l->x0();
+        SOL.y1 = C->y0() - sqrt(C->r()*C->r() - (l->x0() - C->x0())*(l->x0() - C->x0()));
+        SOL.x2 = l->x0();
+        SOL.y2 = C->y0() + sqrt(C->r()*C->r() - (l->x0() - C->x0())*(l->x0() - C->x0()));
+        return SOL;
+    }
+
+    qreal dist = distance(C->getcenter(), l);
+    auto p = getBaseOfPerpendicular(C->getcenter(), l);
+
+    if (dist > C->r()){
+        SOL.num_points = 0;
+        return SOL;
+    }
+    if (dist > C->r() - EPS){
+        SOL.num_points = 1;
+        SOL.x1 = p.x();
+        SOL.y1 = p.y();
+        return SOL;
+    }
+    SOL.num_points = 2;
+    qreal z = sqrt(C->r()*C->r() - dist * dist);
+    qreal dx = z / sqrt (1.0 + l->k() * l->k());
+    SOL.x1 = p.x() + dx;
+    SOL.y1 = p.y() + dx * l->k();
+    SOL.x2 = p.x() - dx;
+    SOL.y2 = p.y() - dx * l->k();
+    return SOL;
+}

@@ -216,6 +216,7 @@ public:
     qreal r() const {return _r;}
     qreal x0() const {return _x0;}
     qreal y0() const {return _y0;}
+    const Point* getcenter() const {return center;}
 signals:
     void posChanged();
 private:
@@ -226,9 +227,24 @@ public:
     std::vector<Point*> basePoints;
 };
 
+//-------------------------------------------------------------------------
+
+struct intersect_sol //solution of line+circle intersection
+{
+    int num_points = 0;
+    qreal x1;
+    qreal y1;
+    qreal x2;
+    qreal y2;
+};
+
 
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3);
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const std::vector<Point *> &bPoints);
+qreal sign_distance(const Point* p, const Line* l);
 qreal distance(const Point* p1, const Point* p2);
+qreal distance(const Point* p, const Line* l);
+QPointF getBaseOfPerpendicular(const Point* p, const Line* l);
+intersect_sol get_inter_solution (const Line* l, const Circle* C);
 
 #endif // GEOMETRY_MAIN_H
