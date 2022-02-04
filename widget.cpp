@@ -34,25 +34,51 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     bool one_caught = false;
     bool misscliked = true;
     num_obj_selected = 0;
+
+    //high priority for points
     for(auto obj : mObjects){
-        if (obj->isCaught(Pos) && !one_caught){
+        if (obj->isCaught(Pos) && !one_caught && obj->type_is() == GObj_Type::POINT){
             one_caught = true;
             if (obj->isSelected()){
                 if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
                 else {
                     selected_and_caught = obj;
-                    if (obj->type_is() == GObj_Type::POINT) break; //high priority for points
+                    break;
                 }
             } else {
                 obj->setSelected(true);
                 if (trytoadd != GObj_Type::NONE){
                     selected_and_caught = obj;
-                    if (obj->type_is() == GObj_Type::POINT) break; //high priority for points
+                    break;
                 }
             }
             misscliked = false;
         }
         if (obj->isSelected()) num_obj_selected++;
+    }
+    //WARNING: CODE DUPLICATING! FIX: mObject has to be a multimap sorted by the obj type
+    if(!one_caught){
+        num_obj_selected = 0;
+        for(auto obj : mObjects){
+            if (obj->isCaught(Pos) && !one_caught){
+                one_caught = true;
+                if (obj->isSelected()){
+                    if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
+                    else {
+                        selected_and_caught = obj;
+                        break;
+                    }
+                } else {
+                    obj->setSelected(true);
+                    if (trytoadd != GObj_Type::NONE){
+                        selected_and_caught = obj;
+                        break;
+                    }
+                }
+                misscliked = false;
+            }
+            if (obj->isSelected()) num_obj_selected++;
+        }
     }
     if (misscliked){
         for(auto obj : mObjects)
