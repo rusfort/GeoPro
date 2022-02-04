@@ -41,13 +41,13 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
                 else {
                     selected_and_caught = obj;
-                    break;
+                    if (obj->type_is() == GObj_Type::POINT) break; //high priority for points
                 }
             } else {
                 obj->setSelected(true);
                 if (trytoadd != GObj_Type::NONE){
                     selected_and_caught = obj;
-                    break;
+                    if (obj->type_is() == GObj_Type::POINT) break; //high priority for points
                 }
             }
             misscliked = false;

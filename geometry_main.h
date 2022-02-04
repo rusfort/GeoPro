@@ -17,6 +17,7 @@
 
 class GOBJ;
 class Line;
+class Ray;
 class Segment;
 
 class GOBJ : public QObject{
@@ -126,6 +127,8 @@ class Line : public GOBJ
     Q_OBJECT
 public:
     Line(GeoBoard* board, Point* p1, Point* p2);
+    Line(GeoBoard* board, Ray* ray);
+    Line(GeoBoard* board, Segment* seg);
     virtual ~Line() {}
     void draw() override;
     bool isCaught(QPointF p) override;
@@ -162,8 +165,8 @@ public:
     qreal y1() const {return _y1;}
     qreal x2() const {return _x2;}
     qreal y2() const {return _y2;}
-    const Point* getFirstPoint() const {return mP1;}
-    const Point* getSecondPoint() const {return mP2;}
+    Point* getFirstPoint() const {return mP1;}
+    Point* getSecondPoint() const {return mP2;}
 signals:
     void posChanged();
 private:
@@ -190,8 +193,8 @@ public:
     qreal x0() const {return _x0;}
     qreal y0() const {return _y0;}
     bool isVertical() const {return is_vertical;}
-    const Point* getFirstPoint() const {return mP1;}
-    const Point* getSecondPoint() const {return mP2;}
+    Point* getFirstPoint() const {return mP1;}
+    Point* getSecondPoint() const {return mP2;}
 signals:
     void posChanged();
 private:

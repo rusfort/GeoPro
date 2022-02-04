@@ -248,7 +248,35 @@ void Point::recalculate(){
         }
             break;
         case Intersection_Type::Ray_Circle:{
-            //TODO
+            auto r = static_cast<Ray*>(it1->second);
+            auto c = static_cast<Circle*>(it2->second);
+            auto l = new Line(board(), r);
+            auto sol = get_inter_solution(l, c);
+            if (sol.num_points == 0){
+                exists = false;
+                break;
+            }
+            if (child_type == Child_Type::Intersection){
+                X = sol.x1;
+                Y = sol.y1;
+                scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                scr_y = board()->getScreenView(QPointF(X, Y)).y();
+            } else {
+                if (sol.num_points == 1){
+                    exists = false;
+                    break;
+                }
+                else {
+                    X = sol.x2;
+                    Y = sol.y2;
+                    scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                    scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                }
+            }
+            if (distance(this, r->getFirstPoint()) < distance(this, r->getSecondPoint()) &&
+                    distance(this, r->getFirstPoint()) + distance(this, r->getSecondPoint()) >
+                    distance(r->getFirstPoint(), r->getSecondPoint()) + EPS) exists = false;
+            else exists = true;
         }
             break;
         case Intersection_Type::Segment_Segment:{
@@ -277,7 +305,34 @@ void Point::recalculate(){
         }
             break;
         case Intersection_Type::Segment_Circle:{
-            //TODO
+            auto s = static_cast<Segment*>(it1->second);
+            auto c = static_cast<Circle*>(it2->second);
+            auto l = new Line(board(), s);
+            auto sol = get_inter_solution(l, c);
+            if (sol.num_points == 0){
+                exists = false;
+                break;
+            }
+            if (child_type == Child_Type::Intersection){
+                X = sol.x1;
+                Y = sol.y1;
+                scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                scr_y = board()->getScreenView(QPointF(X, Y)).y();
+            } else {
+                if (sol.num_points == 1){
+                    exists = false;
+                    break;
+                }
+                else {
+                    X = sol.x2;
+                    Y = sol.y2;
+                    scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                    scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                }
+            }
+            if (distance(this, s->getFirstPoint()) + distance(this, s->getSecondPoint()) >
+                    distance(s->getFirstPoint(), s->getSecondPoint()) + EPS) exists = false;
+            else exists = true;
         }
             break;
         case Intersection_Type::Circle_Circle:{
@@ -336,6 +391,18 @@ bool Point::isCaught(QPointF p){
 
 Line::Line(GeoBoard* board, Point* p1, Point* p2) :
     GOBJ(board, GObj_Type::LINE, true, true, p1->color()), mP1(p1), mP2(p2)
+{
+    recalculate();
+}
+
+Line::Line(GeoBoard* board, Ray* ray) :
+    GOBJ(board, GObj_Type::LINE, true, true, ray->getFirstPoint()->color()), mP1(ray->getFirstPoint()), mP2(ray->getSecondPoint())
+{
+    recalculate();
+}
+
+Line::Line(GeoBoard* board, Segment* seg) :
+    GOBJ(board, GObj_Type::LINE, true, true, seg->getFirstPoint()->color()), mP1(seg->getFirstPoint()), mP2(seg->getSecondPoint())
 {
     recalculate();
 }
