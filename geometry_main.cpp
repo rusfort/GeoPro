@@ -29,21 +29,14 @@ void GOBJ::delObj(){
     mBoard->delObject(this);
 }
 
-void GOBJ::checkExistance(){ //FIXME : EXISTANCE BUG HERE (3-POINT CIRCLE SEEMS TO EXIST IN ANY CONDITION)
-    bool all_parents_exist = true;
-    bool has_parents = false;
-    bool has_children = (childObjects.size() > 0);
+void GOBJ::checkExistance(){
     for (auto& obj : parentObjects){
-        has_parents = true;
-        obj->checkExistance();
         if(obj->exists != true){
             exists = false;
-            all_parents_exist = false;
-            //return;
+            return;
         }
     }
-    if(has_parents && !has_children && all_parents_exist
-            && type_is() != GObj_Type::POINT) exists = true; //try to resurrect the object
+    exists = true; //try to resurrect the object
 }
 
 ///POINT METHODS==================================================================
@@ -680,6 +673,7 @@ Circle::Circle(GeoBoard* board, Point* c, qreal radius) :
 
 void Circle::recalculate(){
     checkExistance();
+    if (!exists) return;
     if (child_type == Child_Type::OnTwoPoints){
         scr_r = sqrt((basePoints[0]->scr_x - basePoints[1]->scr_x) * (basePoints[0]->scr_x - basePoints[1]->scr_x) +
                      (basePoints[0]->scr_y - basePoints[1]->scr_y) * (basePoints[0]->scr_y - basePoints[1]->scr_y));
