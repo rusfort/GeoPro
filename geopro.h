@@ -39,6 +39,8 @@ private slots:
 
     void on_actionCircle_by_3_points_triggered();
 
+    void on_actionMiddle_Center_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

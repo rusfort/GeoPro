@@ -126,9 +126,10 @@ class Line : public GOBJ
 {
     Q_OBJECT
 public:
-    Line(GeoBoard* board, Point* p1, Point* p2);
-    Line(GeoBoard* board, Ray* ray);
-    Line(GeoBoard* board, Segment* seg);
+    Line(GeoBoard* board, Point* p1, Point* p2);      //classic (2 Points)
+    Line(GeoBoard* board, Ray* ray);                  //by Ray
+    Line(GeoBoard* board, Segment* seg);              //by Segment
+    Line(GeoBoard* board, qreal A, qreal B, qreal C); //by equation: Ax + By + C = 0
     virtual ~Line() {}
     void draw() override;
     bool isCaught(QPointF p) override;

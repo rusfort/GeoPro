@@ -65,6 +65,7 @@
      <string>&amp;Construct...</string>
     </property>
     <addaction name="actionIntersection"/>
+    <addaction name="actionMiddle_Center"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -96,6 +97,7 @@
    <addaction name="actionCircle_by_3_points"/>
    <addaction name="separator"/>
    <addaction name="actionIntersection"/>
+   <addaction name="actionMiddle_Center"/>
    <addaction name="separator"/>
    <addaction name="actionClear_all"/>
   </widget>
@@ -238,6 +240,11 @@
   <action name="actionIntersection">
    <property name="text">
     <string>&amp;Intersection</string>
+   </property>
+  </action>
+  <action name="actionMiddle_Center">
+   <property name="text">
+    <string>Middle / Center</string>
    </property>
   </action>
  </widget>

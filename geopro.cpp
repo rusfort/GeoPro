@@ -236,3 +236,8 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
         return;
     }
 }
+
+void GeoPro::on_actionMiddle_Center_triggered()
+{
+    //TODO
+}

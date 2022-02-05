@@ -29,14 +29,21 @@ void GOBJ::delObj(){
     mBoard->delObject(this);
 }
 
-void GOBJ::checkExistance(){
+void GOBJ::checkExistance(){ //FIXME : EXISTANCE BUG HERE (3-POINT CIRCLE SEEMS TO EXIST IN ANY CONDITION)
+    bool all_parents_exist = true;
+    bool has_parents = false;
+    bool has_children = (childObjects.size() > 0);
     for (auto& obj : parentObjects){
+        has_parents = true;
+        obj->checkExistance();
         if(obj->exists != true){
             exists = false;
-            return;
+            all_parents_exist = false;
+            //return;
         }
     }
-    exists = true; //try to resurrect the object
+    if(has_parents && !has_children && all_parents_exist
+            && type_is() != GObj_Type::POINT) exists = true; //try to resurrect the object
 }
 
 ///POINT METHODS==================================================================
@@ -335,8 +342,41 @@ void Point::recalculate(){
             else exists = true;
         }
             break;
-        case Intersection_Type::Circle_Circle:{
-            //TODO
+        case Intersection_Type::Circle_Circle:{ ///FIXME : INTERSECTION BUG HERE!
+            auto c1 = static_cast<Circle*>(it1->second);
+            auto c2 = static_cast<Circle*>(it2->second);
+            auto deltaX = c1->x0() - c2->x0(), deltaY = c1->y0() - c2->y0();
+            if (std::abs(deltaX) < EPS && std::abs(deltaY) < EPS){ //equal centers
+                exists = false;
+                break;
+            }
+            if (distance(c1->getcenter(), c2->getcenter()) < std::abs(c1->r() - c2->r())){ //one circle inside another
+                exists = false;
+                break;
+            }
+            auto l = new Line(board(), 2 * deltaX, 2 * deltaY, c1->r() * c1->r() - c2->r() * c2->r()
+                              - c1->x0() * c1->x0() + c2->x0() * c2->x0() - c1->y0() * c1->y0() + c2->y0() * c2->y0());
+            auto sol = get_inter_solution(l, c1);
+            if (sol.num_points == 0){
+                exists = false;
+                break;
+            }
+            if (child_type == Child_Type::Intersection){
+                X = sol.x1;
+                Y = sol.y1;
+                scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                exists = true;
+            } else {
+                if (sol.num_points == 1) exists = false;
+                else {
+                    X = sol.x2;
+                    Y = sol.y2;
+                    scr_x = board()->getScreenView(QPointF(X, Y)).x();
+                    scr_y = board()->getScreenView(QPointF(X, Y)).y();
+                    exists = true;
+                }
+            }
         }
             break;
         default:
@@ -405,6 +445,27 @@ Line::Line(GeoBoard* board, Segment* seg) :
     GOBJ(board, GObj_Type::LINE, true, true, seg->getFirstPoint()->color()), mP1(seg->getFirstPoint()), mP2(seg->getSecondPoint())
 {
     recalculate();
+}
+
+Line::Line(GeoBoard* board, qreal A, qreal B, qreal C) :
+    GOBJ(board, GObj_Type::LINE, true, false)
+{
+    mP1 = 0;
+    mP2 = 0;
+    if (std::abs(B) < EPS){
+        assert(std::abs(A) >= EPS);
+        is_vertical = true;
+        _k = 0;
+        _y0 = 0;
+        _x0 = -C/A;
+    } else {
+        is_vertical = false;
+        _k = -A/B;
+        _x0 = 0;
+        _y0 = C/B;
+    }
+    scr_x0 = mBoard->getScreenView(QPointF(_x0, _y0)).rx();
+    scr_y0 = mBoard->getScreenView(QPointF(_x0, _y0)).ry();
 }
 
 void Line::recalculate(){
