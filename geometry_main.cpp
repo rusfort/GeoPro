@@ -377,6 +377,17 @@ void Point::recalculate(){
         }
         break;
     }
+    case Child_Type::Middle:
+    {
+        auto p1 = static_cast<Point*>(parentObjects.at(0));
+        auto p2 = static_cast<Point*>(parentObjects.at(1));
+
+        X = (p1->X + p2->X)/2;
+        Y = (p1->Y + p2->Y)/2;
+        scr_x = (p1->scr_x + p2->scr_x)/2;
+        scr_y = (p1->scr_y + p2->scr_y)/2;
+        break;
+    }
     default:
         break;
     }

@@ -239,5 +239,52 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
 
 void GeoPro::on_actionMiddle_Center_triggered()
 {
-    //TODO
+    if(b->numitemstoadd > 0) return;
+    if(b->num_obj_selected > 2 || (b->num_obj_selected < 2 && b->num_obj_selected > 0)){
+        QMessageBox::critical(b, "MIDDLE ERROR", "Can find a middle for only 2 points!");
+        b->unselectAll();
+        b->update();
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "MIDDLE WARNING", "Select 2 points!");
+        return;
+    }
+    if(b->num_obj_selected == 2){
+        Point* middle = new Point(b);
+        GOBJ* p1 = 0;
+        GOBJ* p2 = 0;
+
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                if (!p1) p1 = obj;
+                else {
+                    if (!p2){
+                        p2 = obj;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "MIDDLE ERROR", "Cannot build a middle! Need 2 points.");
+            return;
+        }
+
+        middle->exists = true;
+        middle->depending = true;
+        middle->child_type = Child_Type::Middle;
+        b->addObject(middle);
+        p1->childObjects[middle] = Child_Type::Middle;
+        p2->childObjects[middle] = Child_Type::Middle;
+        middle->parentObjects.push_back(p1);
+        middle->parentObjects.push_back(p2);
+        middle->recalculate();
+        b->unselectAll();
+        b->update();
+        return;
+    }
 }
