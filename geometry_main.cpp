@@ -466,7 +466,7 @@ Line::Line(GeoBoard* board, qreal A, qreal B, qreal C) :
         is_vertical = false;
         _k = -A/B;
         _x0 = 0;
-        _y0 = C/B;
+        _y0 = -C/B;
     }
     scr_x0 = mBoard->getScreenView(QPointF(_x0, _y0)).rx();
     scr_y0 = mBoard->getScreenView(QPointF(_x0, _y0)).ry();
