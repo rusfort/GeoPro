@@ -288,3 +288,13 @@ void GeoPro::on_actionMiddle_Center_triggered()
         return;
     }
 }
+
+void GeoPro::on_actionAbout_triggered()
+{
+    QMessageBox::information(b, "About GeoPro", "GeoPro is a professional geometry toolkit for teachers & students made by Nick Rusfort (Nikolay Kozakov). \nYou can find more detailed information in the README file in Github: https://github.com/rusfort/GeoPro");
+}
+
+void GeoPro::on_actionContact_author_triggered()
+{
+    QMessageBox::information(b, "Contact author", "Nick Rusfort (Nikolay Kozakov) \nContacts: \ne-mail: rusfort-fax@yandex.ru \nVK: vk.com/rusfort");
+}

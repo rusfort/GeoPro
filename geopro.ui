@@ -67,10 +67,18 @@
     <addaction name="actionIntersection"/>
     <addaction name="actionMiddle_Center"/>
    </widget>
+   <widget class="QMenu" name="menuInfo">
+    <property name="title">
+     <string>&amp;Info</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionContact_author"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuNew_object"/>
    <addaction name="menuConstruct"/>
+   <addaction name="menuInfo"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="sizePolicy">
@@ -245,6 +253,16 @@
   <action name="actionMiddle_Center">
    <property name="text">
     <string>Middle / Center</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionContact_author">
+   <property name="text">
+    <string>Contact author</string>
    </property>
   </action>
  </widget>

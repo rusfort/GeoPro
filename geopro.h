@@ -41,6 +41,10 @@ private slots:
 
     void on_actionMiddle_Center_triggered();
 
+    void on_actionAbout_triggered();
+
+    void on_actionContact_author_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:
