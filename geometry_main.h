@@ -59,6 +59,8 @@ public:
         auto res = childObjects.find(obj);
         if (res != childObjects.end()) childObjects.erase(res);
     }
+    QString getLabel() const {return obj_label;}
+    void changeLabel(const QString& new_label) {obj_label = new_label;}
     void delObj();
     void checkExistance();
     virtual void draw() = 0;
@@ -73,6 +75,7 @@ protected:
     QColor mColor;
     GeoBoard* mBoard;
     bool mIsSelected;
+    QString obj_label = "";
 public:
     bool depending;
     std::map<GOBJ*, Child_Type> childObjects;

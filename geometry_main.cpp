@@ -335,7 +335,7 @@ void Point::recalculate(){
             else exists = true;
         }
             break;
-        case Intersection_Type::Circle_Circle:{ ///FIXME : INTERSECTION BUG HERE!
+        case Intersection_Type::Circle_Circle:{
             auto c1 = static_cast<Circle*>(it1->second);
             auto c2 = static_cast<Circle*>(it2->second);
             auto deltaX = c1->x0() - c2->x0(), deltaY = c1->y0() - c2->y0();
