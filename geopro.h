@@ -19,6 +19,8 @@ public:
     ~GeoPro();
 
 private slots:
+    void closeEvent (QCloseEvent *event) override;
+
     void on_actionClose_triggered();
 
     void on_actionPoint_triggered();

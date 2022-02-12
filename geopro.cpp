@@ -11,6 +11,7 @@
 #include <QGraphicsView>
 #include <QMessageBox>
 #include <QShortcut>
+#include <QCloseEvent>
 
 
 GeoPro::GeoPro(QWidget *parent) :
@@ -38,10 +39,23 @@ GeoPro::~GeoPro()
     delete ui;
 }
 
+void GeoPro::closeEvent (QCloseEvent *event)
+{
+    QMessageBox::StandardButton reply = QMessageBox::question(this, "EXIT", "Are you sure you want to exit?",
+                                                              QMessageBox::Yes | QMessageBox::No);
+    if (reply != QMessageBox::Yes) {
+        event->ignore();
+    } else {
+        event->accept();
+    }
+}
+
 void GeoPro::on_actionClose_triggered()
 {
-    //TODO: add "are you sure?"
-    QApplication::quit();
+    QMessageBox::StandardButton reply = QMessageBox::question(this, "EXIT", "Are you sure you want to exit?",
+                                                              QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+        QApplication::quit();
 }
 
 void GeoPro::on_actionPoint_triggered()
@@ -84,9 +98,12 @@ void GeoPro::on_actionDelete_selected_objects_triggered()
 
 void GeoPro::on_actionClear_all_triggered()
 {
-    //TODO: add "are you sure?"
-    b->getAllObj().clear();
-    b->update();
+    QMessageBox::StandardButton reply = QMessageBox::question(this, "DELETE ALL", "Are you sure you want to clear the board?",
+                                                              QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes){
+        b->getAllObj().clear();
+        b->update();
+    }
 }
 
 void GeoPro::on_actionRay_triggered()
