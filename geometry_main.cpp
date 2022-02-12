@@ -424,9 +424,7 @@ void Point::changeView(){
 }
 
 bool Point::isCaught(QPointF p){
-    double dx = scr_x - p.x();
-    double dy = scr_y - p.y();
-    return dx * dx + dy * dy - mRadius * mRadius < 0;
+    return QLineF(QPointF(scr_x, scr_y), p).length() < mRadius + 2;
 }
 
 
