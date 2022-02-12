@@ -10,6 +10,7 @@
 #include <QtGui>
 #include <QGraphicsView>
 #include <QMessageBox>
+#include <QShortcut>
 
 
 GeoPro::GeoPro(QWidget *parent) :
@@ -22,9 +23,14 @@ GeoPro::GeoPro(QWidget *parent) :
     b = new GeoBoard(this);
     setCentralWidget(b);
 
-    ///QTimer *timer = new QTimer(this);
-    ///connect(timer, &QTimer::timeout, native, &Widget::animate);
-    ///timer->start(50);
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Escape), this, SLOT(on_actionClose_triggered()));
+    new QShortcut(QKeySequence(Qt::Key_P), this, SLOT(on_actionPoint_triggered()));
+    new QShortcut(QKeySequence(Qt::Key_S), this, SLOT(on_actionSegment_triggered()));
+    new QShortcut(QKeySequence(Qt::Key_L), this, SLOT(on_actionLine_triggered()));
+    new QShortcut(QKeySequence(Qt::Key_R), this, SLOT(on_actionRay_triggered()));
+    new QShortcut(QKeySequence(Qt::Key_C), this, SLOT(on_actionCircle_by_the_center_radius_triggered()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_I), this, SLOT(on_actionIntersection_triggered()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), this, SLOT(on_actionMiddle_Center_triggered()));
 }
 
 GeoPro::~GeoPro()
@@ -34,6 +40,7 @@ GeoPro::~GeoPro()
 
 void GeoPro::on_actionClose_triggered()
 {
+    //TODO: add "are you sure?"
     QApplication::quit();
 }
 
@@ -77,6 +84,7 @@ void GeoPro::on_actionDelete_selected_objects_triggered()
 
 void GeoPro::on_actionClear_all_triggered()
 {
+    //TODO: add "are you sure?"
     b->getAllObj().clear();
     b->update();
 }
