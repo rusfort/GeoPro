@@ -731,7 +731,7 @@ void Circle::changeView(){
 bool Circle::isCaught(QPointF p){
     recalculate();
     auto L = QLineF(QPointF(scr_x0, scr_y0), p).length();
-    if (L< scr_r + 1 && L > scr_r - 1) return true;
+    if (L< scr_r + 5 && L > scr_r - 5) return true;
     return false;
 }
 
