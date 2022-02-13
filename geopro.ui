@@ -51,6 +51,8 @@
     <addaction name="actionRedo"/>
     <addaction name="actionDelete_selected_objects"/>
     <addaction name="actionClear_all"/>
+    <addaction name="actionHide_selected_objects"/>
+    <addaction name="actionShow_all_hidden_objects"/>
    </widget>
    <widget class="QMenu" name="menuNew_object">
     <property name="title">
@@ -93,6 +95,12 @@
    <property name="cursor">
     <cursorShape>OpenHandCursor</cursorShape>
    </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
    <attribute name="toolBarArea">
     <enum>LeftToolBarArea</enum>
    </attribute>
@@ -110,6 +118,8 @@
    <addaction name="actionIntersection"/>
    <addaction name="actionMiddle_Center"/>
    <addaction name="separator"/>
+   <addaction name="actionHide_selected_objects"/>
+   <addaction name="actionShow_all_hidden_objects"/>
    <addaction name="actionClear_all"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -302,6 +312,22 @@
   <action name="actionContact_author">
    <property name="text">
     <string>Contact author</string>
+   </property>
+  </action>
+  <action name="actionHide_selected_objects">
+   <property name="text">
+    <string>Hide selected objects</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionShow_all_hidden_objects">
+   <property name="text">
+    <string>Show all hidden objects</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+H</string>
    </property>
   </action>
  </widget>

@@ -47,6 +47,10 @@ private slots:
 
     void on_actionContact_author_triggered();
 
+    void on_actionHide_selected_objects_triggered();
+
+    void on_actionShow_all_hidden_objects_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

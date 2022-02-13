@@ -395,6 +395,7 @@ void Point::recalculate(){
 
 void Point::draw(){
     if (!exists) return;
+    if (!is_visible()) return;
     QPainter p;
     p.begin(this->board());
     p.setRenderHint(QPainter::Antialiasing);
@@ -498,6 +499,7 @@ std::pair<QPointF, QPointF> Line::get_draw_pair(){
 void Line::draw(){
     if (!exists) return;
     recalculate();
+    if (!is_visible()) return;
     QPointF p1 = get_draw_pair().first;
     QPointF p2 = get_draw_pair().second;
 
@@ -560,6 +562,7 @@ void Segment::recalculate(){
 void Segment::draw(){
     if (!exists) return;
     recalculate();
+    if (!is_visible()) return;
     QPainter p;
     auto p1 = QPointF(mP1->scr_x, mP1->scr_y);
     auto p2 = QPointF(mP2->scr_x, mP2->scr_y);
@@ -634,6 +637,7 @@ std::pair<QPointF, QPointF> Ray::get_draw_pair(){
 void Ray::draw(){
     if (!exists) return;
     recalculate();
+    if (!is_visible()) return;
     QPointF p1 = get_draw_pair().first;
     QPointF p2 = get_draw_pair().second;
 
@@ -708,6 +712,7 @@ void Circle::recalculate(){
 
 void Circle::draw(){
     if (!exists) return;
+    if (!is_visible()) return;
     QPainter p;
     p.begin(mBoard);
     p.setRenderHint(QPainter::Antialiasing);

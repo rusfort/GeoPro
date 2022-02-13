@@ -24,7 +24,7 @@ GeoPro::GeoPro(QWidget *parent) :
     b = new GeoBoard(this);
     setCentralWidget(b);
 
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Escape), this, SLOT(on_actionClose_triggered()));
+    /*new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Escape), this, SLOT(on_actionClose_triggered()));
     new QShortcut(QKeySequence(Qt::Key_P), this, SLOT(on_actionPoint_triggered()));
     new QShortcut(QKeySequence(Qt::Key_S), this, SLOT(on_actionSegment_triggered()));
     new QShortcut(QKeySequence(Qt::Key_L), this, SLOT(on_actionLine_triggered()));
@@ -32,6 +32,8 @@ GeoPro::GeoPro(QWidget *parent) :
     new QShortcut(QKeySequence(Qt::Key_C), this, SLOT(on_actionCircle_by_the_center_radius_triggered()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_I), this, SLOT(on_actionIntersection_triggered()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), this, SLOT(on_actionMiddle_Center_triggered()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_H), this, SLOT(on_actionHide_selected_objects_triggered()));
+    new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_H), this, SLOT(on_actionShow_all_hidden_objects_triggered()));*/
 }
 
 GeoPro::~GeoPro()
@@ -323,3 +325,29 @@ void GeoPro::on_actionContact_author_triggered()
 {
     QMessageBox::information(b, "Contact author", "Nick Rusfort (Nikolay Kozakov) \nContacts: \ne-mail: rusfort-fax@yandex.ru \nVK: vk.com/rusfort");
 }
+
+void GeoPro::on_actionHide_selected_objects_triggered()
+{
+    if (b->num_obj_selected > 0){
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                obj->hide();
+            }
+        }
+        b->unselectAll();
+        b->update();
+    }
+}
+
+
+void GeoPro::on_actionShow_all_hidden_objects_triggered()
+{
+    for (auto& obj : b->getAllObj()){
+        if (!obj->is_visible()){
+            obj->make_visible();
+            obj->setSelected();
+        }
+    }
+    b->update();
+}
+

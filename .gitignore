@@ -1,0 +1,10 @@
+*.o
+.qmake.stash
+GeoPro
+Makefile
+moc_geometry_main.cpp
+moc_geopro.cpp
+moc_predefs.h
+moc_widget.cpp
+qrc_res.cpp
+

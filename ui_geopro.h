@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'geopro.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.5
+** Created by: Qt User Interface Compiler version 5.12.12
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,11 +10,10 @@
 #define UI_GEOPRO_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -47,6 +46,8 @@ public:
     QAction *actionMiddle_Center;
     QAction *actionAbout;
     QAction *actionContact_author;
+    QAction *actionHide_selected_objects;
+    QAction *actionShow_all_hidden_objects;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QMenuBar *menuBar;
@@ -61,94 +62,102 @@ public:
     void setupUi(QMainWindow *GeoPro)
     {
         if (GeoPro->objectName().isEmpty())
-            GeoPro->setObjectName(QStringLiteral("GeoPro"));
+            GeoPro->setObjectName(QString::fromUtf8("GeoPro"));
         GeoPro->resize(849, 546);
+        GeoPro->setCursor(QCursor(Qt::ArrowCursor));
         QIcon icon;
         icon.addFile(QString::fromUtf8("../\320\230\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\321\217/\320\241\320\275\320\270\320\274\320\276\320\272 \321\215\320\272\321\200\320\260\320\275\320\260 \320\276\321\202 2022-01-13 23-40-10.png"), QSize(), QIcon::Normal, QIcon::Off);
         GeoPro->setWindowIcon(icon);
         actionOpen = new QAction(GeoPro);
-        actionOpen->setObjectName(QStringLiteral("actionOpen"));
+        actionOpen->setObjectName(QString::fromUtf8("actionOpen"));
         actionOpen->setEnabled(false);
         actionSave = new QAction(GeoPro);
-        actionSave->setObjectName(QStringLiteral("actionSave"));
+        actionSave->setObjectName(QString::fromUtf8("actionSave"));
         actionSave->setEnabled(false);
         actionSave_as = new QAction(GeoPro);
-        actionSave_as->setObjectName(QStringLiteral("actionSave_as"));
+        actionSave_as->setObjectName(QString::fromUtf8("actionSave_as"));
         actionSave_as->setEnabled(false);
         actionClose = new QAction(GeoPro);
-        actionClose->setObjectName(QStringLiteral("actionClose"));
+        actionClose->setObjectName(QString::fromUtf8("actionClose"));
         QIcon icon1;
-        icon1.addFile(QStringLiteral(":/resources/img/close.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon1.addFile(QString::fromUtf8(":/resources/img/close.png"), QSize(), QIcon::Normal, QIcon::Off);
         actionClose->setIcon(icon1);
         actionNew = new QAction(GeoPro);
-        actionNew->setObjectName(QStringLiteral("actionNew"));
+        actionNew->setObjectName(QString::fromUtf8("actionNew"));
         actionNew->setEnabled(false);
         actionUndo = new QAction(GeoPro);
-        actionUndo->setObjectName(QStringLiteral("actionUndo"));
+        actionUndo->setObjectName(QString::fromUtf8("actionUndo"));
         actionUndo->setEnabled(false);
         actionRedo = new QAction(GeoPro);
-        actionRedo->setObjectName(QStringLiteral("actionRedo"));
+        actionRedo->setObjectName(QString::fromUtf8("actionRedo"));
         actionRedo->setEnabled(false);
         actionPoint = new QAction(GeoPro);
-        actionPoint->setObjectName(QStringLiteral("actionPoint"));
+        actionPoint->setObjectName(QString::fromUtf8("actionPoint"));
         actionSegment = new QAction(GeoPro);
-        actionSegment->setObjectName(QStringLiteral("actionSegment"));
+        actionSegment->setObjectName(QString::fromUtf8("actionSegment"));
         actionLine = new QAction(GeoPro);
-        actionLine->setObjectName(QStringLiteral("actionLine"));
+        actionLine->setObjectName(QString::fromUtf8("actionLine"));
         actionRay = new QAction(GeoPro);
-        actionRay->setObjectName(QStringLiteral("actionRay"));
+        actionRay->setObjectName(QString::fromUtf8("actionRay"));
         actionCircle_by_the_center_radius = new QAction(GeoPro);
-        actionCircle_by_the_center_radius->setObjectName(QStringLiteral("actionCircle_by_the_center_radius"));
+        actionCircle_by_the_center_radius->setObjectName(QString::fromUtf8("actionCircle_by_the_center_radius"));
         actionCircle_by_3_points = new QAction(GeoPro);
-        actionCircle_by_3_points->setObjectName(QStringLiteral("actionCircle_by_3_points"));
+        actionCircle_by_3_points->setObjectName(QString::fromUtf8("actionCircle_by_3_points"));
         actionClear_all = new QAction(GeoPro);
-        actionClear_all->setObjectName(QStringLiteral("actionClear_all"));
+        actionClear_all->setObjectName(QString::fromUtf8("actionClear_all"));
+        actionClear_all->setShortcutContext(Qt::WindowShortcut);
         actionPrint = new QAction(GeoPro);
-        actionPrint->setObjectName(QStringLiteral("actionPrint"));
+        actionPrint->setObjectName(QString::fromUtf8("actionPrint"));
         actionPrint->setEnabled(false);
         actionPrint->setVisible(true);
         actionDelete_selected_objects = new QAction(GeoPro);
-        actionDelete_selected_objects->setObjectName(QStringLiteral("actionDelete_selected_objects"));
+        actionDelete_selected_objects->setObjectName(QString::fromUtf8("actionDelete_selected_objects"));
         actionIntersection = new QAction(GeoPro);
-        actionIntersection->setObjectName(QStringLiteral("actionIntersection"));
+        actionIntersection->setObjectName(QString::fromUtf8("actionIntersection"));
         actionMiddle_Center = new QAction(GeoPro);
-        actionMiddle_Center->setObjectName(QStringLiteral("actionMiddle_Center"));
+        actionMiddle_Center->setObjectName(QString::fromUtf8("actionMiddle_Center"));
         actionAbout = new QAction(GeoPro);
-        actionAbout->setObjectName(QStringLiteral("actionAbout"));
+        actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         actionContact_author = new QAction(GeoPro);
-        actionContact_author->setObjectName(QStringLiteral("actionContact_author"));
+        actionContact_author->setObjectName(QString::fromUtf8("actionContact_author"));
+        actionHide_selected_objects = new QAction(GeoPro);
+        actionHide_selected_objects->setObjectName(QString::fromUtf8("actionHide_selected_objects"));
+        actionShow_all_hidden_objects = new QAction(GeoPro);
+        actionShow_all_hidden_objects->setObjectName(QString::fromUtf8("actionShow_all_hidden_objects"));
         centralWidget = new QWidget(GeoPro);
-        centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         GeoPro->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(GeoPro);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setObjectName(QString::fromUtf8("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 849, 22));
         menuFile = new QMenu(menuBar);
-        menuFile->setObjectName(QStringLiteral("menuFile"));
+        menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuEdit = new QMenu(menuBar);
-        menuEdit->setObjectName(QStringLiteral("menuEdit"));
+        menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
         menuNew_object = new QMenu(menuBar);
-        menuNew_object->setObjectName(QStringLiteral("menuNew_object"));
+        menuNew_object->setObjectName(QString::fromUtf8("menuNew_object"));
         menuConstruct = new QMenu(menuBar);
-        menuConstruct->setObjectName(QStringLiteral("menuConstruct"));
+        menuConstruct->setObjectName(QString::fromUtf8("menuConstruct"));
         menuInfo = new QMenu(menuBar);
-        menuInfo->setObjectName(QStringLiteral("menuInfo"));
+        menuInfo->setObjectName(QString::fromUtf8("menuInfo"));
         GeoPro->setMenuBar(menuBar);
         mainToolBar = new QToolBar(GeoPro);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
+        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(mainToolBar->sizePolicy().hasHeightForWidth());
         mainToolBar->setSizePolicy(sizePolicy);
         mainToolBar->setCursor(QCursor(Qt::OpenHandCursor));
+        mainToolBar->setMovable(false);
+        mainToolBar->setFloatable(false);
         GeoPro->addToolBar(Qt::LeftToolBarArea, mainToolBar);
         statusBar = new QStatusBar(GeoPro);
-        statusBar->setObjectName(QStringLiteral("statusBar"));
+        statusBar->setObjectName(QString::fromUtf8("statusBar"));
         GeoPro->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
@@ -166,6 +175,8 @@ public:
         menuEdit->addAction(actionRedo);
         menuEdit->addAction(actionDelete_selected_objects);
         menuEdit->addAction(actionClear_all);
+        menuEdit->addAction(actionHide_selected_objects);
+        menuEdit->addAction(actionShow_all_hidden_objects);
         menuNew_object->addAction(actionPoint);
         menuNew_object->addAction(actionSegment);
         menuNew_object->addAction(actionLine);
@@ -187,6 +198,8 @@ public:
         mainToolBar->addAction(actionIntersection);
         mainToolBar->addAction(actionMiddle_Center);
         mainToolBar->addSeparator();
+        mainToolBar->addAction(actionHide_selected_objects);
+        mainToolBar->addAction(actionShow_all_hidden_objects);
         mainToolBar->addAction(actionClear_all);
 
         retranslateUi(GeoPro);
@@ -197,59 +210,100 @@ public:
 
     void retranslateUi(QMainWindow *GeoPro)
     {
-        GeoPro->setWindowTitle(QApplication::translate("GeoPro", "GeoPro", Q_NULLPTR));
-        actionOpen->setText(QApplication::translate("GeoPro", "&Open", Q_NULLPTR));
+        GeoPro->setWindowTitle(QApplication::translate("GeoPro", "GeoPro", nullptr));
+        actionOpen->setText(QApplication::translate("GeoPro", "&Open", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionOpen->setToolTip(QApplication::translate("GeoPro", "Open project", Q_NULLPTR));
+        actionOpen->setToolTip(QApplication::translate("GeoPro", "Open project", nullptr));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_SHORTCUT
-        actionOpen->setShortcut(QApplication::translate("GeoPro", "Ctrl+O", Q_NULLPTR));
+        actionOpen->setShortcut(QApplication::translate("GeoPro", "Ctrl+O", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionSave->setText(QApplication::translate("GeoPro", "&Save", Q_NULLPTR));
+        actionSave->setText(QApplication::translate("GeoPro", "&Save", nullptr));
 #ifndef QT_NO_SHORTCUT
-        actionSave->setShortcut(QApplication::translate("GeoPro", "Ctrl+S", Q_NULLPTR));
+        actionSave->setShortcut(QApplication::translate("GeoPro", "Ctrl+S", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionSave_as->setText(QApplication::translate("GeoPro", "Save &as...", Q_NULLPTR));
+        actionSave_as->setText(QApplication::translate("GeoPro", "Save &as...", nullptr));
 #ifndef QT_NO_SHORTCUT
-        actionSave_as->setShortcut(QApplication::translate("GeoPro", "Ctrl+Shift+S", Q_NULLPTR));
+        actionSave_as->setShortcut(QApplication::translate("GeoPro", "Ctrl+Shift+S", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionClose->setText(QApplication::translate("GeoPro", "&Close", Q_NULLPTR));
-        actionNew->setText(QApplication::translate("GeoPro", "&New", Q_NULLPTR));
+        actionClose->setText(QApplication::translate("GeoPro", "&Close", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionClose->setShortcut(QApplication::translate("GeoPro", "Ctrl+Esc", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionNew->setText(QApplication::translate("GeoPro", "&New", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionNew->setToolTip(QApplication::translate("GeoPro", "Create new project", Q_NULLPTR));
+        actionNew->setToolTip(QApplication::translate("GeoPro", "Create new project", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionUndo->setText(QApplication::translate("GeoPro", "&Undo", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionNew->setShortcut(QApplication::translate("GeoPro", "Ctrl+N", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionUndo->setText(QApplication::translate("GeoPro", "&Undo", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionUndo->setToolTip(QApplication::translate("GeoPro", "Undo last action", Q_NULLPTR));
+        actionUndo->setToolTip(QApplication::translate("GeoPro", "Undo last action", nullptr));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_SHORTCUT
-        actionUndo->setShortcut(QApplication::translate("GeoPro", "Ctrl+Z", Q_NULLPTR));
+        actionUndo->setShortcut(QApplication::translate("GeoPro", "Ctrl+Z", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionRedo->setText(QApplication::translate("GeoPro", "&Redo", Q_NULLPTR));
+        actionRedo->setText(QApplication::translate("GeoPro", "&Redo", nullptr));
 #ifndef QT_NO_SHORTCUT
-        actionRedo->setShortcut(QApplication::translate("GeoPro", "Ctrl+Shift+Z", Q_NULLPTR));
+        actionRedo->setShortcut(QApplication::translate("GeoPro", "Ctrl+Shift+Z", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionPoint->setText(QApplication::translate("GeoPro", "&Point", Q_NULLPTR));
-        actionSegment->setText(QApplication::translate("GeoPro", "&Segment", Q_NULLPTR));
-        actionLine->setText(QApplication::translate("GeoPro", "&Line", Q_NULLPTR));
-        actionRay->setText(QApplication::translate("GeoPro", "&Ray", Q_NULLPTR));
-        actionCircle_by_the_center_radius->setText(QApplication::translate("GeoPro", "&Circle by the center and point", Q_NULLPTR));
-        actionCircle_by_3_points->setText(QApplication::translate("GeoPro", "Circle &by 3 points", Q_NULLPTR));
-        actionClear_all->setText(QApplication::translate("GeoPro", "&Clear all", Q_NULLPTR));
-        actionPrint->setText(QApplication::translate("GeoPro", "&Print...", Q_NULLPTR));
-        actionDelete_selected_objects->setText(QApplication::translate("GeoPro", "&Delete selected objects", Q_NULLPTR));
+        actionPoint->setText(QApplication::translate("GeoPro", "&Point", nullptr));
 #ifndef QT_NO_SHORTCUT
-        actionDelete_selected_objects->setShortcut(QApplication::translate("GeoPro", "Del", Q_NULLPTR));
+        actionPoint->setShortcut(QApplication::translate("GeoPro", "P", nullptr));
 #endif // QT_NO_SHORTCUT
-        actionIntersection->setText(QApplication::translate("GeoPro", "&Intersection", Q_NULLPTR));
-        actionMiddle_Center->setText(QApplication::translate("GeoPro", "Middle / Center", Q_NULLPTR));
-        actionAbout->setText(QApplication::translate("GeoPro", "About", Q_NULLPTR));
-        actionContact_author->setText(QApplication::translate("GeoPro", "Contact author", Q_NULLPTR));
-        menuFile->setTitle(QApplication::translate("GeoPro", "&File", Q_NULLPTR));
-        menuEdit->setTitle(QApplication::translate("GeoPro", "&Edit", Q_NULLPTR));
-        menuNew_object->setTitle(QApplication::translate("GeoPro", "&New object...", Q_NULLPTR));
-        menuConstruct->setTitle(QApplication::translate("GeoPro", "&Construct...", Q_NULLPTR));
-        menuInfo->setTitle(QApplication::translate("GeoPro", "&Info", Q_NULLPTR));
+        actionSegment->setText(QApplication::translate("GeoPro", "&Segment", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionSegment->setShortcut(QApplication::translate("GeoPro", "S", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionLine->setText(QApplication::translate("GeoPro", "&Line", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionLine->setShortcut(QApplication::translate("GeoPro", "L", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionRay->setText(QApplication::translate("GeoPro", "&Ray", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionRay->setShortcut(QApplication::translate("GeoPro", "R", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionCircle_by_the_center_radius->setText(QApplication::translate("GeoPro", "&Circle by the center and point", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionCircle_by_the_center_radius->setShortcut(QApplication::translate("GeoPro", "C", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionCircle_by_3_points->setText(QApplication::translate("GeoPro", "Circle &by 3 points", nullptr));
+        actionClear_all->setText(QApplication::translate("GeoPro", "&Clear all", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionClear_all->setShortcut(QApplication::translate("GeoPro", "Ctrl+Del", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionPrint->setText(QApplication::translate("GeoPro", "&Print...", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionPrint->setShortcut(QApplication::translate("GeoPro", "Ctrl+P", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionDelete_selected_objects->setText(QApplication::translate("GeoPro", "&Delete selected objects", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionDelete_selected_objects->setShortcut(QApplication::translate("GeoPro", "Del", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionIntersection->setText(QApplication::translate("GeoPro", "&Intersection", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionIntersection->setShortcut(QApplication::translate("GeoPro", "Ctrl+I", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionMiddle_Center->setText(QApplication::translate("GeoPro", "Middle / Center", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionMiddle_Center->setShortcut(QApplication::translate("GeoPro", "Ctrl+M", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionAbout->setText(QApplication::translate("GeoPro", "About", nullptr));
+        actionContact_author->setText(QApplication::translate("GeoPro", "Contact author", nullptr));
+        actionHide_selected_objects->setText(QApplication::translate("GeoPro", "Hide selected objects", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionHide_selected_objects->setShortcut(QApplication::translate("GeoPro", "Ctrl+H", nullptr));
+#endif // QT_NO_SHORTCUT
+        actionShow_all_hidden_objects->setText(QApplication::translate("GeoPro", "Show all hidden objects", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionShow_all_hidden_objects->setShortcut(QApplication::translate("GeoPro", "Ctrl+Shift+H", nullptr));
+#endif // QT_NO_SHORTCUT
+        menuFile->setTitle(QApplication::translate("GeoPro", "&File", nullptr));
+        menuEdit->setTitle(QApplication::translate("GeoPro", "&Edit", nullptr));
+        menuNew_object->setTitle(QApplication::translate("GeoPro", "&New object...", nullptr));
+        menuConstruct->setTitle(QApplication::translate("GeoPro", "&Construct...", nullptr));
+        menuInfo->setTitle(QApplication::translate("GeoPro", "&Info", nullptr));
     } // retranslateUi
 
 };
