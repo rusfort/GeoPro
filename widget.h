@@ -18,7 +18,7 @@ class GeoBoard : public QWidget
 {
     Q_OBJECT
 public:
-    GeoBoard(QWidget *parent = 0, int width = 600, int height = 400, QColor color = Qt::white) : QWidget(parent), mColor(color) { this->resize(width, height); }
+    GeoBoard(QWidget *parent = 0, int width = 600, int height = 400, QColor color = Qt::white) : QWidget(parent), mColor(color){ this->resize(width, height); }
     QColor color() const { return mColor; }
     void setColor(QColor color) { mColor = color; }
     void selectAll();
@@ -47,6 +47,7 @@ public:
     QPointF mouseG;    //for screen move & scale view
     QPointF shift;     //for screen move & scale view
     int num_obj_selected = 0;
+    QPoint lastMousePos;//for point drawing (when adding)
 };
 
 #endif // WIDGET_H

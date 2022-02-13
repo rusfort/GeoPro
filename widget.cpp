@@ -10,8 +10,19 @@ void GeoBoard::paintEvent(QPaintEvent*)
     p.begin(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(0, 0, this->width(), this->height(), mColor);
-    for(auto* obj : mObjects)
-        obj->draw();
+    if (numitemstoadd > 0){
+        p.setBrush(QBrush(Qt::black));
+        p.drawEllipse(QPointF(lastMousePos.x(), lastMousePos.y()), 5, 5);
+    }
+    for(auto* obj : mObjects){
+        bool was_caught = false;
+        if (numitemstoadd > 0 && obj->isCaught(lastMousePos) && obj->type_is() == GObj_Type::POINT){
+            obj->setSelected();
+            was_caught = true;
+        }
+        obj->draw();   
+        if (was_caught) obj->setSelected(false);
+    }
 }
 
 void GeoBoard::wheelEvent(QWheelEvent* e){
@@ -252,11 +263,20 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     default:
         break;
     }
-    if (numitemstoadd == 0) trytoadd = GObj_Type::NONE;
+    if (numitemstoadd == 0){
+        trytoadd = GObj_Type::NONE;
+        setMouseTracking(false);
+    }
 }
 
 void GeoBoard::mouseMoveEvent(QMouseEvent* e)
 {
+    if (numitemstoadd > 0){
+        lastMousePos = e->pos();
+        update();
+        return;
+    }
+
     for(auto obj : mObjects)
     {
         if(num_obj_selected > 1) break;
@@ -266,6 +286,7 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
             board_grabbed = false;
         }
     }
+
     if (board_grabbed){
         shift += e->pos() - mouseG;
         mouseG = e->pos();

@@ -55,6 +55,7 @@ void GeoPro::on_actionPoint_triggered()
     b->unselectAll();
     b->trytoadd = GObj_Type::POINT;
     b->numitemstoadd = 1;
+    b->setMouseTracking(true);
 }
 
 void GeoPro::on_actionLine_triggered()
@@ -63,6 +64,7 @@ void GeoPro::on_actionLine_triggered()
     b->unselectAll();
     b->trytoadd = GObj_Type::LINE;
     b->numitemstoadd = 2;
+    b->setMouseTracking(true);
 }
 
 void GeoPro::on_actionSegment_triggered()
@@ -71,6 +73,7 @@ void GeoPro::on_actionSegment_triggered()
     b->unselectAll();
     b->trytoadd = GObj_Type::SEGMENT;
     b->numitemstoadd = 2;
+    b->setMouseTracking(true);
 }
 
 void GeoPro::on_actionDelete_selected_objects_triggered()
@@ -103,6 +106,7 @@ void GeoPro::on_actionRay_triggered()
     b->unselectAll();
     b->trytoadd = GObj_Type::RAY;
     b->numitemstoadd = 2;
+    b->setMouseTracking(true);
 }
 
 void GeoPro::on_actionIntersection_triggered()
@@ -190,6 +194,7 @@ void GeoPro::on_actionCircle_by_the_center_radius_triggered()
     b->unselectAll();
     b->trytoadd = GObj_Type::CIRCLE;
     b->numitemstoadd = 2;
+    b->setMouseTracking(true);
 }
 
 void GeoPro::on_actionCircle_by_3_points_triggered()
