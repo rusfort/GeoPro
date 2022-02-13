@@ -23,17 +23,6 @@ GeoPro::GeoPro(QWidget *parent) :
 
     b = new GeoBoard(this);
     setCentralWidget(b);
-
-    /*new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Escape), this, SLOT(on_actionClose_triggered()));
-    new QShortcut(QKeySequence(Qt::Key_P), this, SLOT(on_actionPoint_triggered()));
-    new QShortcut(QKeySequence(Qt::Key_S), this, SLOT(on_actionSegment_triggered()));
-    new QShortcut(QKeySequence(Qt::Key_L), this, SLOT(on_actionLine_triggered()));
-    new QShortcut(QKeySequence(Qt::Key_R), this, SLOT(on_actionRay_triggered()));
-    new QShortcut(QKeySequence(Qt::Key_C), this, SLOT(on_actionCircle_by_the_center_radius_triggered()));
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_I), this, SLOT(on_actionIntersection_triggered()));
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), this, SLOT(on_actionMiddle_Center_triggered()));
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_H), this, SLOT(on_actionHide_selected_objects_triggered()));
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_H), this, SLOT(on_actionShow_all_hidden_objects_triggered()));*/
 }
 
 GeoPro::~GeoPro()
@@ -147,12 +136,14 @@ void GeoPro::on_actionIntersection_triggered()
         }
         if (Obj1 == 0 || Obj2 == 0){
             delete intersection;
+            delete intersection2;
             QMessageBox::critical(b, "FATAL LOGIC ERROR", "Null object intersection!");
             QApplication::quit();
             return;
         }
         if (Obj1->type_is() == GObj_Type::POINT || Obj2->type_is() == GObj_Type::POINT){
             delete intersection;
+            delete intersection2;
             b->unselectAll();
             b->update();
             QMessageBox::critical(b, "INTERSECTION ERROR", "Cannot intersect with a point!");
@@ -186,6 +177,7 @@ void GeoPro::on_actionIntersection_triggered()
             intersection2->setIntersectionType();
             intersection2->recalculate();
         }
+        if (!inter_circle) delete intersection2;
         b->unselectAll();
         b->update();
         return;
@@ -295,6 +287,7 @@ void GeoPro::on_actionMiddle_Center_triggered()
         }
 
         if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT){
+            delete middle;
             b->unselectAll();
             b->update();
             QMessageBox::critical(b, "MIDDLE ERROR", "Cannot build a middle! Need 2 points.");
