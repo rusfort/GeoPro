@@ -144,10 +144,13 @@ public:
     qreal x0() const {return _x0;}
     qreal y0() const {return _y0;}
     bool isVertical() const {return is_vertical;}
+    void setBaseLine(GOBJ* l){baseline = l;}
+    void setBasePoint(Point* p){mP1 = p;}
 signals:
     void posChanged();
 private:
     Point *mP1, *mP2;
+    GOBJ *baseline = 0; //needed if this = parallel/perpendicular
     bool is_vertical;
     qreal _x0, _y0, _k;   //_x0, _y0 - some point on a line, _k - incline
     qreal scr_x0, scr_y0; //the same, but actual on the screen

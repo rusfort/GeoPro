@@ -448,10 +448,10 @@ Line::Line(GeoBoard* board, Segment* seg) :
 }
 
 Line::Line(GeoBoard* board, qreal A, qreal B, qreal C) :
-    GOBJ(board, GObj_Type::LINE, true, false)
+    GOBJ(board, GObj_Type::LINE, true, false, Qt::black)
 {
-    mP1 = 0;
-    mP2 = 0;
+    mP1 = new Point(board);
+    mP2 = new Point(board);
     if (std::abs(B) < EPS){
         assert(std::abs(A) >= EPS);
         is_vertical = true;
@@ -470,15 +470,47 @@ Line::Line(GeoBoard* board, qreal A, qreal B, qreal C) :
 
 void Line::recalculate(){
     checkExistance();
+    switch (child_type){
+    case Child_Type::Parallel:{
+        Line* line = 0;
+        if (baseline->type_is() != GObj_Type::LINE){ //making lines (if not a line)
+            if (baseline->type_is() == GObj_Type::RAY) line = new Line(mBoard, static_cast<Ray*>(baseline));
+            if (baseline->type_is() == GObj_Type::SEGMENT) line = new Line(mBoard, static_cast<Segment*>(baseline));
+        } else line = static_cast<Line*>(baseline);
+        line->recalculate();
+        _k = line->k();
+        is_vertical = line->isVertical();
+        if (is_vertical){
+            mP2->X = mP1->X;
+            mP2->scr_x = mP1->scr_x;
+            mP2->Y = mP1->Y + 100; //just to make vertical line
+            mP2->scr_y = mP1->scr_y + 100; //just to make vertical line
+        } else {
+            mP2->X = mP1->X + 100;
+            mP2->Y = mP1->Y + _k * (mP2->X - mP1->X);
+            mP2->scr_x = mBoard->getScreenView(QPointF(mP2->X, mP2->Y)).x();
+            mP2->scr_y = mBoard->getScreenView(QPointF(mP2->X, mP2->Y)).y();
+        }
+        if (baseline->type_is() != GObj_Type::LINE) delete line;
+        break;
+    }
+    case Child_Type::Perpendicular:{
+        //TODO
+        break;
+    }
+    default:{
+        if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
+            is_vertical = true;
+            _k = 0;
+        } else {
+            is_vertical = false;
+            _k = (mP1->scr_y - mP2->scr_y)/(mP1->scr_x - mP2->scr_x);
+        }
+        break;
+    }
+    }
     scr_x0 = mP1->scr_x;
     scr_y0 = mP1->scr_y;
-    if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
-        is_vertical = true;
-        _k = 0;
-    } else {
-        is_vertical = false;
-        _k = (mP1->scr_y - mP2->scr_y)/(mP1->scr_x - mP2->scr_x);
-    }
     _x0 = mP1->X;
     _y0 = mP1->Y;
 }

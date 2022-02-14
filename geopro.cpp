@@ -352,7 +352,77 @@ void GeoPro::on_actionShow_all_hidden_objects_triggered()
 
 void GeoPro::on_actionParallel_line_triggered()
 {
-    //TODO
+    if(b->numitemstoadd > 0) return;
+    if(b->num_obj_selected > 2 || b->num_obj_selected == 1){
+        QMessageBox::critical(b, "LINE ERROR", "Need a line/ray/segment and a point!");
+        b->unselectAll();
+        b->update();
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "LINE WARNING", "Select a line/ray/segment and a point!");
+        return;
+    }
+    if(b->num_obj_selected == 2){
+        GOBJ* p1 = 0;
+        GOBJ* p2 = 0;
+        Line* line = 0;
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                if (!p1) p1 = obj;
+                else {
+                    if (!p2){
+                        p2 = obj;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (p1->type_is() != GObj_Type::POINT){ //swap if the order is not ok
+            if (p2->type_is() != GObj_Type::POINT){
+                b->unselectAll();
+                b->update();
+                QMessageBox::critical(b, "LINE ERROR", "Cannot build a parallel line! Need a point.");
+                return;
+            } else {
+                GOBJ* tmp = p1;
+                p1 = p2;
+                p2 = tmp;
+            }
+        }
+        if (p2->type_is() != GObj_Type::LINE && p2->type_is() != GObj_Type::RAY && p2->type_is() != GObj_Type::SEGMENT){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "LINE ERROR", "Cannot build a parallel line! Need a line/ray/segment with a point.");
+            return;
+        }
+        if (p2->type_is() != GObj_Type::LINE){ //making lines (if not a line)
+            if (p2->type_is() == GObj_Type::RAY) line = new Line(b, static_cast<Ray*>(p2));
+            if (p2->type_is() == GObj_Type::SEGMENT) line = new Line(b, static_cast<Segment*>(p2));
+        } else line = static_cast<Line*>(p2);
+
+        auto point1 = static_cast<Point*>(p1);
+        auto parallel = new Line(b, line->k(), -1, (point1->Y - line->k() * point1->X));
+        parallel->setBaseLine(p2);
+        parallel->setBasePoint(point1);
+
+        parallel->exists = true;
+        parallel->depending = true;
+        parallel->child_type = Child_Type::Parallel;
+        b->addObject(parallel);
+        p1->childObjects[parallel] = Child_Type::Parallel;
+        p2->childObjects[parallel] = Child_Type::Parallel;
+        parallel->parentObjects.push_back(p1);
+        parallel->parentObjects.push_back(p2);
+        parallel->recalculate();
+
+        b->unselectAll();
+        b->update();
+
+        if (p2->type_is() != GObj_Type::LINE) delete line;
+        return;
+    }
 }
 
 
