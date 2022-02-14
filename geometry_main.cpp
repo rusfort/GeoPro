@@ -495,7 +495,28 @@ void Line::recalculate(){
         break;
     }
     case Child_Type::Perpendicular:{
-        //TODO
+        Line* line = 0;
+        if (baseline->type_is() != GObj_Type::LINE){ //making lines (if not a line)
+            if (baseline->type_is() == GObj_Type::RAY) line = new Line(mBoard, static_cast<Ray*>(baseline));
+            if (baseline->type_is() == GObj_Type::SEGMENT) line = new Line(mBoard, static_cast<Segment*>(baseline));
+        } else line = static_cast<Line*>(baseline);
+        line->recalculate();
+        if (!line->isVertical() && std::abs(line->k()) >= EPS){
+            _k = -1/line->k();
+        } else _k = 0;
+        is_vertical = (std::abs(line->k()) < EPS && !line->isVertical()) ? true : false;
+        if (is_vertical){
+            mP2->X = mP1->X;
+            mP2->scr_x = mP1->scr_x;
+            mP2->Y = mP1->Y + 100; //just to make vertical line
+            mP2->scr_y = mP1->scr_y + 100; //just to make vertical line
+        } else {
+            mP2->X = mP1->X + 100;
+            mP2->Y = mP1->Y + _k * (mP2->X - mP1->X);
+            mP2->scr_x = mBoard->getScreenView(QPointF(mP2->X, mP2->Y)).x();
+            mP2->scr_y = mBoard->getScreenView(QPointF(mP2->X, mP2->Y)).y();
+        }
+        if (baseline->type_is() != GObj_Type::LINE) delete line;
         break;
     }
     default:{
