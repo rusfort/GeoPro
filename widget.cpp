@@ -10,6 +10,7 @@ void GeoBoard::paintEvent(QPaintEvent*)
     p.begin(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(0, 0, this->width(), this->height(), mColor);
+    if(active_grid) drawGrid(&p);
     if (numitemstoadd > 0){
         p.setBrush(QBrush(Qt::black));
         p.drawEllipse(QPointF(lastMousePos.x(), lastMousePos.y()), 5, 5);
@@ -25,10 +26,36 @@ void GeoBoard::paintEvent(QPaintEvent*)
     }
 }
 
+void GeoBoard::drawGrid(QPainter* p){
+    const qreal grid_step = 50; //grid step in math units
+    qreal begin_x = 0;
+    qreal begin_y = 0;
+    int start_x = getScreenView(QPointF(0, 0)).x();
+    int start_y = getScreenView(QPointF(0, 0)).y();
+    qreal end_x = this->width();
+    qreal end_y = this->height();
+    for (int i = 0;; ++i){
+        p->setPen(Qt::lightGray);
+        int left =  start_x - i * grid_step * scale;
+        int right =  start_x + (i + 1) * grid_step * scale;
+        if (right < end_x) p->drawLine(right, 0, right, this->height());
+        if (left > begin_x) p->drawLine(left, 0, left, this->height());
+        if (right >= end_x && left <= begin_x) break;
+    }
+    for (int i = 0;; ++i){
+        p->setPen(Qt::lightGray);
+        int up =  start_y - i * grid_step * scale;
+        int down =  start_y + (i + 1) * grid_step * scale;
+        if (down < end_y) p->drawLine(0, down, this->width(), down);
+        if (up > begin_y) p->drawLine(0, up, this->width(), up);
+        if (down >= end_y && up <= begin_y) break;
+    }
+}
+
 void GeoBoard::wheelEvent(QWheelEvent* e){
     auto pos = e->pos();
     auto zoom = pow(1.001, e->delta());
-    if (scale * zoom > 5.0 || scale * zoom < 0.1) zoom = 1.0;
+    if (scale * zoom > 5.0 || scale * zoom < 0.2) zoom = 1.0;
     shift = pos * (1 - zoom) + shift * zoom;
     scale *= zoom;
     for(auto obj : mObjects)

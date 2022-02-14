@@ -57,6 +57,12 @@ private slots:
 
     void on_actionBisector_triggered();
 
+    void on_actionWhite_triggered();
+
+    void on_actionGray_triggered();
+
+    void on_actionGrid_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

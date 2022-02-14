@@ -47,12 +47,22 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
+    <widget class="QMenu" name="menuBackground">
+     <property name="title">
+      <string>Background...</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionWhite"/>
+     <addaction name="actionGray"/>
+     <addaction name="actionGrid"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="actionDelete_selected_objects"/>
     <addaction name="actionClear_all"/>
     <addaction name="actionHide_selected_objects"/>
     <addaction name="actionShow_all_hidden_objects"/>
+    <addaction name="menuBackground"/>
    </widget>
    <widget class="QMenu" name="menuNew_object">
     <property name="title">
@@ -349,6 +359,21 @@
   <action name="actionBisector">
    <property name="text">
     <string>Bisector</string>
+   </property>
+  </action>
+  <action name="actionWhite">
+   <property name="text">
+    <string>White</string>
+   </property>
+  </action>
+  <action name="actionGray">
+   <property name="text">
+    <string>Gray</string>
+   </property>
+  </action>
+  <action name="actionGrid">
+   <property name="text">
+    <string>Grid</string>
    </property>
   </action>
  </widget>

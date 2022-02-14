@@ -21,6 +21,7 @@ public:
     GeoBoard(QWidget *parent = 0, int width = 600, int height = 400, QColor color = Qt::white) : QWidget(parent), mColor(color){ this->resize(width, height); }
     QColor color() const { return mColor; }
     void setColor(QColor color) { mColor = color; }
+    void setGrid(bool active = true) {active_grid = active;}
     void selectAll();
     void unselectAll();
     void addObject(GOBJ* obj) { mObjects.push_back(obj); }
@@ -36,6 +37,7 @@ public:
     void clear_threePoints(){
         threePoints.clear();
     }
+    void drawGrid(QPainter* p);
     void paintEvent(QPaintEvent*) override;
     void mousePressEvent(QMouseEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;
@@ -43,6 +45,7 @@ public:
     void wheelEvent(QWheelEvent* e) override;
 private:
     QColor mColor;
+    bool active_grid = false;
     std::vector<GOBJ*> mObjects;
     std::vector<Point*> threePoints; //for bisector (order is important)
     bool board_grabbed = false;

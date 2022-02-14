@@ -584,3 +584,27 @@ void GeoPro::on_actionBisector_triggered()
     }
 }
 
+
+void GeoPro::on_actionWhite_triggered()
+{
+    b->setGrid(false);
+    b->setColor(Qt::white);
+    b->update();
+}
+
+
+void GeoPro::on_actionGray_triggered()
+{
+    b->setGrid(false);
+    b->setColor(Qt::gray);
+    b->update();
+}
+
+
+void GeoPro::on_actionGrid_triggered()
+{
+    b->setGrid(true);
+    b->setColor(Qt::white);
+    b->update();
+}
+
