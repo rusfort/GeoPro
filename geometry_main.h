@@ -202,6 +202,7 @@ public:
 signals:
     void posChanged();
 private:
+    std::vector<Point*> threePoints; //for bisector (order is important)
     Point *mP1, *mP2;
     bool is_vertical;
     qreal _x0, _y0, _k;   //x0, y0 - beginning of the ray, k - incline

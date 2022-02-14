@@ -71,6 +71,9 @@
     </property>
     <addaction name="actionIntersection"/>
     <addaction name="actionMiddle_Center"/>
+    <addaction name="actionParallel_line"/>
+    <addaction name="actionPerpendicular_line"/>
+    <addaction name="actionBisector"/>
    </widget>
    <widget class="QMenu" name="menuInfo">
     <property name="title">
@@ -117,6 +120,9 @@
    <addaction name="separator"/>
    <addaction name="actionIntersection"/>
    <addaction name="actionMiddle_Center"/>
+   <addaction name="actionParallel_line"/>
+   <addaction name="actionPerpendicular_line"/>
+   <addaction name="actionBisector"/>
    <addaction name="separator"/>
    <addaction name="actionHide_selected_objects"/>
    <addaction name="actionShow_all_hidden_objects"/>
@@ -328,6 +334,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+H</string>
+   </property>
+  </action>
+  <action name="actionParallel_line">
+   <property name="text">
+    <string>Parallel line</string>
+   </property>
+  </action>
+  <action name="actionPerpendicular_line">
+   <property name="text">
+    <string>Perpendicular line</string>
+   </property>
+  </action>
+  <action name="actionBisector">
+   <property name="text">
+    <string>Bisector</string>
    </property>
   </action>
  </widget>

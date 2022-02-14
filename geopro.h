@@ -51,6 +51,12 @@ private slots:
 
     void on_actionShow_all_hidden_objects_triggered();
 
+    void on_actionParallel_line_triggered();
+
+    void on_actionPerpendicular_line_triggered();
+
+    void on_actionBisector_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

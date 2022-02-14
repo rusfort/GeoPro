@@ -611,6 +611,30 @@ void Ray::recalculate(){
     checkExistance();
     scr_x0 = mP1->scr_x;
     scr_y0 = mP1->scr_y;
+    if (child_type == Child_Type::Bisector){
+        auto p1 = parentObjects[0];
+        auto p2 = parentObjects[1];
+        auto p3 = parentObjects[2];
+        QPointF res1 = QPointF(static_cast<Point*>(p1)->X, static_cast<Point*>(p1)->Y);
+        QPointF res2 = QPointF(static_cast<Point*>(p2)->X, static_cast<Point*>(p2)->Y);
+        QPointF res3 = QPointF(static_cast<Point*>(p3)->X, static_cast<Point*>(p3)->Y);
+        auto L32 = QLineF(res3, res2).length();
+        auto L12 = QLineF(res1, res2).length();
+        if (L12 < EPS || L32 < EPS){
+            exists = false;
+            return;
+        } else {
+            exists = true;
+            QPointF dr1 = res1 - res2;
+            QPointF dr3 = res3 - res2;
+            QPointF dr2 = dr1/L12 + dr3/L32;
+            QPointF bisector_point = res2 + dr2;
+            mP2->X = bisector_point.x();
+            mP2->Y = bisector_point.y();
+            mP2->scr_x = mBoard->getScreenView(QPointF(mP2->X, mP2->Y)).x();
+            mP2->scr_y = mBoard->getScreenView(QPointF(mP2->X, mP2->Y)).y();
+        }
+    }
     if (std::abs(mP1->scr_x - mP2->scr_x) < EPS){
         is_vertical = true;
         _k = 0;

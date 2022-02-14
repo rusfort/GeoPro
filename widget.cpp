@@ -50,6 +50,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     for(auto obj : mObjects){
         if (obj->isCaught(Pos) && !one_caught && obj->type_is() == GObj_Type::POINT){
             one_caught = true;
+            threePoints.push_back(static_cast<Point*>(obj));
             if (obj->isSelected()){
                 if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
                 else {
@@ -95,6 +96,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         for(auto obj : mObjects)
            obj->setSelected(false);
         num_obj_selected = 0;
+        threePoints.clear();
     }
 
     if((trytoadd == GObj_Type::NONE && selected_and_caught == 0) || num_obj_selected > 1){

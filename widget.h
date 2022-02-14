@@ -30,6 +30,12 @@ public:
     std::vector<GOBJ*>& getAllObj(){
         return mObjects;
     }
+    std::vector<Point*>& getThreePoints(){
+        return threePoints;
+    }
+    void clear_threePoints(){
+        threePoints.clear();
+    }
     void paintEvent(QPaintEvent*) override;
     void mousePressEvent(QMouseEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;
@@ -38,6 +44,7 @@ public:
 private:
     QColor mColor;
     std::vector<GOBJ*> mObjects;
+    std::vector<Point*> threePoints; //for bisector (order is important)
     bool board_grabbed = false;
 public:
     GObj_Type trytoadd = GObj_Type::NONE;

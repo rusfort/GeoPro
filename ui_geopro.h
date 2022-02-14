@@ -48,6 +48,9 @@ public:
     QAction *actionContact_author;
     QAction *actionHide_selected_objects;
     QAction *actionShow_all_hidden_objects;
+    QAction *actionParallel_line;
+    QAction *actionPerpendicular_line;
+    QAction *actionBisector;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QMenuBar *menuBar;
@@ -124,6 +127,12 @@ public:
         actionHide_selected_objects->setObjectName(QString::fromUtf8("actionHide_selected_objects"));
         actionShow_all_hidden_objects = new QAction(GeoPro);
         actionShow_all_hidden_objects->setObjectName(QString::fromUtf8("actionShow_all_hidden_objects"));
+        actionParallel_line = new QAction(GeoPro);
+        actionParallel_line->setObjectName(QString::fromUtf8("actionParallel_line"));
+        actionPerpendicular_line = new QAction(GeoPro);
+        actionPerpendicular_line->setObjectName(QString::fromUtf8("actionPerpendicular_line"));
+        actionBisector = new QAction(GeoPro);
+        actionBisector->setObjectName(QString::fromUtf8("actionBisector"));
         centralWidget = new QWidget(GeoPro);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -185,6 +194,9 @@ public:
         menuNew_object->addAction(actionCircle_by_3_points);
         menuConstruct->addAction(actionIntersection);
         menuConstruct->addAction(actionMiddle_Center);
+        menuConstruct->addAction(actionParallel_line);
+        menuConstruct->addAction(actionPerpendicular_line);
+        menuConstruct->addAction(actionBisector);
         menuInfo->addAction(actionAbout);
         menuInfo->addAction(actionContact_author);
         mainToolBar->addSeparator();
@@ -197,6 +209,9 @@ public:
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionIntersection);
         mainToolBar->addAction(actionMiddle_Center);
+        mainToolBar->addAction(actionParallel_line);
+        mainToolBar->addAction(actionPerpendicular_line);
+        mainToolBar->addAction(actionBisector);
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionHide_selected_objects);
         mainToolBar->addAction(actionShow_all_hidden_objects);
@@ -299,6 +314,9 @@ public:
 #ifndef QT_NO_SHORTCUT
         actionShow_all_hidden_objects->setShortcut(QApplication::translate("GeoPro", "Ctrl+Shift+H", nullptr));
 #endif // QT_NO_SHORTCUT
+        actionParallel_line->setText(QApplication::translate("GeoPro", "Parallel line", nullptr));
+        actionPerpendicular_line->setText(QApplication::translate("GeoPro", "Perpendicular line", nullptr));
+        actionBisector->setText(QApplication::translate("GeoPro", "Bisector", nullptr));
         menuFile->setTitle(QApplication::translate("GeoPro", "&File", nullptr));
         menuEdit->setTitle(QApplication::translate("GeoPro", "&Edit", nullptr));
         menuNew_object->setTitle(QApplication::translate("GeoPro", "&New object...", nullptr));

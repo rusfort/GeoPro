@@ -349,3 +349,97 @@ void GeoPro::on_actionShow_all_hidden_objects_triggered()
     b->update();
 }
 
+
+void GeoPro::on_actionParallel_line_triggered()
+{
+    //TODO
+}
+
+
+void GeoPro::on_actionPerpendicular_line_triggered()
+{
+    //TODO
+}
+
+
+void GeoPro::on_actionBisector_triggered()
+{
+    if(b->numitemstoadd > 0) return;
+    if(b->num_obj_selected > 3 || (b->num_obj_selected < 3 && b->num_obj_selected > 0)){
+        QMessageBox::critical(b, "BISECTOR ERROR", "Need 3 points!");
+        b->unselectAll();
+        b->update();
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "BISECTOR WARNING", "Select 3 points!");
+        return;
+    }
+    if(b->num_obj_selected == 3){
+        GOBJ* p1 = 0;
+        GOBJ* p2 = 0;
+        GOBJ* p3 = 0;
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                if (!p1) p1 = obj;
+                else {
+                    if (!p2) p2 = obj;
+                    else{
+                        p3 = obj;
+                        break;
+                    }
+                }
+            }
+        }
+        //check that only points are selected
+        if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT || p3->type_is() != GObj_Type::POINT){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! Need 3 points.");
+            return;
+        }
+
+        //forget the previous p1, p2, p3 (because order was random)
+        p1 = b->getThreePoints()[0];
+        p2 = b->getThreePoints()[1];
+        p3 = b->getThreePoints()[2];
+
+        b->clear_threePoints();
+
+        QPointF res1 = QPointF(static_cast<Point*>(p1)->X, static_cast<Point*>(p1)->Y);
+        QPointF res2 = QPointF(static_cast<Point*>(p2)->X, static_cast<Point*>(p2)->Y);
+        QPointF res3 = QPointF(static_cast<Point*>(p3)->X, static_cast<Point*>(p3)->Y);
+        auto L32 = QLineF(res3, res2).length();
+        auto L12 = QLineF(res1, res2).length();
+
+        if (L12 < EPS || L32 < EPS){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! Points are too close.");
+            return;
+        } else {
+            QPointF dr1 = res1 - res2;
+            QPointF dr3 = res3 - res2;
+            QPointF dr2 = dr1/L12 + dr3/L32;
+            QPointF bisector_point = res2 + dr2;
+            Point *b_p = new Point(b, bisector_point.x(), bisector_point.y());
+            Ray *r = new Ray(b, static_cast<Point*>(p2), b_p);
+            r->exists = true;
+            r->depending = true;
+            r->child_type = Child_Type::Bisector;
+            b->addObject(r);
+            p1->childObjects[r] = Child_Type::Bisector;
+            p2->childObjects[r] = Child_Type::Bisector;
+            p3->childObjects[r] = Child_Type::Bisector;
+            r->parentObjects.push_back(p1);
+            r->parentObjects.push_back(p2);
+            r->parentObjects.push_back(p3);
+            r->recalculate();
+        }
+
+        b->unselectAll();
+        b->update();
+        return;
+    }
+}
+
