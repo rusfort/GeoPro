@@ -485,14 +485,15 @@ void Line::recalculate(){
 
 std::pair<QPointF, QPointF> Line::get_draw_pair(){
     double A = mBoard->width() > mBoard->height() ? mBoard->width() : mBoard->height();
+    double S_len = sqrt(mBoard->shift.x() * mBoard->shift.x() + mBoard->shift.y() * mBoard->shift.y());//shift length
     QPointF res1 = QPointF(mP1->scr_x, mP1->scr_y);
     QPointF res2 = QPointF(mP2->scr_x, mP2->scr_y);
     auto L = QLineF(res1, res2).length();
     if (L < EPS) L = EPS;
     if (L > A/2) L = A/2;
     QPointF dr = res1 - res2;
-    QPointF p1 = res1 + A / L * dr; //BUG: line ends somewhere if the screen is moved
-    QPointF p2 = res1 - A / L * dr; //FIXME!
+    QPointF p1 = res1 + (S_len + A) / L * dr;
+    QPointF p2 = res1 + (-S_len - A) / L * dr;
     return std::make_pair(p1, p2);
 }
 
@@ -623,6 +624,7 @@ void Ray::recalculate(){
 
 std::pair<QPointF, QPointF> Ray::get_draw_pair(){
     double A = mBoard->width() > mBoard->height() ? mBoard->width() : mBoard->height();
+    double S_len = sqrt(mBoard->shift.x() * mBoard->shift.x() + mBoard->shift.y() * mBoard->shift.y());//shift length
     QPointF res1 = QPointF(mP1->scr_x, mP1->scr_y);
     QPointF res2 = QPointF(mP2->scr_x, mP2->scr_y);
     auto L = QLineF(res1, res2).length();
@@ -630,7 +632,7 @@ std::pair<QPointF, QPointF> Ray::get_draw_pair(){
     if (L > A/2) L = A/2;
     QPointF dr = res1 - res2;
     QPointF p1 = res1;
-    QPointF p2 = res1 - A / L * dr;
+    QPointF p2 = res1 - (S_len + A) / L * dr;
     return std::make_pair(p1, p2);
 }
 
