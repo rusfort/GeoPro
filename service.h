@@ -26,7 +26,14 @@ enum class Child_Type{
     OnThreePoints,
     Middle,
     Intersection,
-    Intersection2 //for circles
+    Intersection2, //for circles
+    OnLine,        //for non-free points
+    OnRay,         //for non-free points
+    OnSegment,     //for non-free points
+    OnCircle,      //for non-free points
+    Parallel,      //for non-free lines
+    Perpendicular, //for non-free lines
+    Bisector       //for non-free rays
 };
 
 enum class Intersection_Type{
