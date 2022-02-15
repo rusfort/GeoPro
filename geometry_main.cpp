@@ -402,8 +402,8 @@ void Point::recalculate(){
 
         X = p1->X + k * (p2->X - p1->X);
         Y = p1->Y + k * (p2->Y - p1->Y);
-        scr_x = p1->scr_x + k * mBoard->scale * (p2->scr_x - p1->scr_x);
-        scr_y = p1->scr_y + k * mBoard->scale * (p2->scr_y - p1->scr_y);
+        scr_x = p1->scr_x + k * (p2->scr_x - p1->scr_x);
+        scr_y = p1->scr_y + k * (p2->scr_y - p1->scr_y);
         break;
     }
     case Child_Type::OnRay:
@@ -420,8 +420,8 @@ void Point::recalculate(){
 
         X = p1->X + k * (p2->X - p1->X);
         Y = p1->Y + k * (p2->Y - p1->Y);
-        scr_x = p1->scr_x + k * mBoard->scale * (p2->scr_x - p1->scr_x);
-        scr_y = p1->scr_y + k * mBoard->scale * (p2->scr_y - p1->scr_y);
+        scr_x = p1->scr_x + k * (p2->scr_x - p1->scr_x);
+        scr_y = p1->scr_y + k * (p2->scr_y - p1->scr_y);
         break;
     }
     case Child_Type::OnLine:
@@ -438,8 +438,8 @@ void Point::recalculate(){
 
         X = p1->X + k * (p2->X - p1->X);
         Y = p1->Y + k * (p2->Y - p1->Y);
-        scr_x = p1->scr_x + k * mBoard->scale * (p2->scr_x - p1->scr_x);
-        scr_y = p1->scr_y + k * mBoard->scale * (p2->scr_y - p1->scr_y);
+        scr_x = p1->scr_x + k * (p2->scr_x - p1->scr_x);
+        scr_y = p1->scr_y + k * (p2->scr_y - p1->scr_y);
         break;
     }
     case Child_Type::OnCircle:
@@ -503,7 +503,7 @@ void Point::move(QPointF newPos){
             if (child_type == Child_Type::OnRay) l = new Line(mBoard, static_cast<Ray*>(parentObjects.at(0)));
             if (child_type == Child_Type::OnSegment) l = new Line(mBoard, static_cast<Segment*>(parentObjects.at(0)));
             l->recalculate();
-            auto P = getBaseOfPerpendicular(&newPos, l);
+            auto P = board()->getScreenView(getBaseOfPerpendicular(&newPos, l));
 
             switch (child_type) {
             case Child_Type::OnLine:{
@@ -515,7 +515,7 @@ void Point::move(QPointF newPos){
             }
             case Child_Type::OnSegment:{
                 auto s = static_cast<Segment*>(parentObjects.at(0));
-                if (s->isCaught(mBoard->getScreenView(P))){
+                if (s->isCaught(P)){
                     scr_x = P.x();
                     scr_y = P.y();
                     X = board()->getMathPoint(P).x();
@@ -525,7 +525,7 @@ void Point::move(QPointF newPos){
             }
             case Child_Type::OnRay:{
                 auto r = static_cast<Ray*>(parentObjects.at(0));
-                if (r->isCaught(mBoard->getScreenView(P))){
+                if (r->isCaught(P)){
                     scr_x = P.x();
                     scr_y = P.y();
                     X = board()->getMathPoint(P).x();

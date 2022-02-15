@@ -19,7 +19,7 @@ GeoPro::GeoPro(QWidget *parent) :
     ui(new Ui::GeoPro)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("GeoPro 0.0.1 [alpha] by Nikolay Kozakov"));
+    setWindowTitle(tr("GeoPro 0.0.2 [alpha] by Nikolay Kozakov"));
 
     b = new GeoBoard(this);
     setCentralWidget(b);
