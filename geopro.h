@@ -63,6 +63,8 @@ private slots:
 
     void on_actionGrid_triggered();
 
+    void on_actionBack_to_original_view_triggered();
+
 private:
     Ui::GeoPro *ui;
 public:

@@ -608,3 +608,15 @@ void GeoPro::on_actionGrid_triggered()
     b->update();
 }
 
+
+void GeoPro::on_actionBack_to_original_view_triggered()
+{
+    b->scale = 1.0;
+    b->shift.rx() = 0;
+    b->shift.ry() = 0;
+    for (auto obj : b->getAllObj()){
+        obj->changeView();
+    }
+    b->update();
+}
+

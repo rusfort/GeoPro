@@ -63,6 +63,7 @@
     <addaction name="actionHide_selected_objects"/>
     <addaction name="actionShow_all_hidden_objects"/>
     <addaction name="menuBackground"/>
+    <addaction name="actionBack_to_original_view"/>
    </widget>
    <widget class="QMenu" name="menuNew_object">
     <property name="title">
@@ -137,6 +138,7 @@
    <addaction name="actionHide_selected_objects"/>
    <addaction name="actionShow_all_hidden_objects"/>
    <addaction name="actionClear_all"/>
+   <addaction name="actionBack_to_original_view"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
@@ -374,6 +376,11 @@
   <action name="actionGrid">
    <property name="text">
     <string>Grid</string>
+   </property>
+  </action>
+  <action name="actionBack_to_original_view">
+   <property name="text">
+    <string>Back to original view</string>
    </property>
   </action>
  </widget>

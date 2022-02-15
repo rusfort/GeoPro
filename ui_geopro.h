@@ -54,6 +54,7 @@ public:
     QAction *actionWhite;
     QAction *actionGray;
     QAction *actionGrid;
+    QAction *actionBack_to_original_view;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QMenuBar *menuBar;
@@ -143,6 +144,8 @@ public:
         actionGray->setObjectName(QString::fromUtf8("actionGray"));
         actionGrid = new QAction(GeoPro);
         actionGrid->setObjectName(QString::fromUtf8("actionGrid"));
+        actionBack_to_original_view = new QAction(GeoPro);
+        actionBack_to_original_view->setObjectName(QString::fromUtf8("actionBack_to_original_view"));
         centralWidget = new QWidget(GeoPro);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -199,6 +202,7 @@ public:
         menuEdit->addAction(actionHide_selected_objects);
         menuEdit->addAction(actionShow_all_hidden_objects);
         menuEdit->addAction(menuBackground->menuAction());
+        menuEdit->addAction(actionBack_to_original_view);
         menuBackground->addSeparator();
         menuBackground->addAction(actionWhite);
         menuBackground->addAction(actionGray);
@@ -233,6 +237,7 @@ public:
         mainToolBar->addAction(actionHide_selected_objects);
         mainToolBar->addAction(actionShow_all_hidden_objects);
         mainToolBar->addAction(actionClear_all);
+        mainToolBar->addAction(actionBack_to_original_view);
 
         retranslateUi(GeoPro);
         QObject::connect(actionClose, SIGNAL(triggered()), GeoPro, SLOT(close()));
@@ -337,6 +342,7 @@ public:
         actionWhite->setText(QApplication::translate("GeoPro", "White", nullptr));
         actionGray->setText(QApplication::translate("GeoPro", "Gray", nullptr));
         actionGrid->setText(QApplication::translate("GeoPro", "Grid", nullptr));
+        actionBack_to_original_view->setText(QApplication::translate("GeoPro", "Back to original view", nullptr));
         menuFile->setTitle(QApplication::translate("GeoPro", "&File", nullptr));
         menuEdit->setTitle(QApplication::translate("GeoPro", "&Edit", nullptr));
         menuBackground->setTitle(QApplication::translate("GeoPro", "Background...", nullptr));
