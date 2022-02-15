@@ -388,6 +388,77 @@ void Point::recalculate(){
         scr_y = (p1->scr_y + p2->scr_y)/2;
         break;
     }
+    case Child_Type::OnSegment:
+    {
+        auto s = static_cast<Segment*>(parentObjects.at(0));
+        auto p1 = s->getFirstPoint();
+        auto p2 = s->getSecondPoint();
+
+        if (std::abs(k) < EPS){
+            if (std::abs(p1->X - p2->X) < EPS){
+                k =  (Y - p1->Y) / (p2->Y - p1->Y);
+            } else k = (X - p1->X) / (p2->X - p1->X);
+        }
+
+        X = p1->X + k * (p2->X - p1->X);
+        Y = p1->Y + k * (p2->Y - p1->Y);
+        scr_x = p1->scr_x + k * mBoard->scale * (p2->scr_x - p1->scr_x);
+        scr_y = p1->scr_y + k * mBoard->scale * (p2->scr_y - p1->scr_y);
+        break;
+    }
+    case Child_Type::OnRay:
+    {
+        auto r = static_cast<Ray*>(parentObjects.at(0));
+        auto p1 = r->getFirstPoint();
+        auto p2 = r->getSecondPoint();
+
+        if (std::abs(k) < EPS){
+            if (std::abs(p1->X - p2->X) < EPS){
+                k =  (Y - p1->Y) / (p2->Y - p1->Y);
+            } else k = (X - p1->X) / (p2->X - p1->X);
+        }
+
+        X = p1->X + k * (p2->X - p1->X);
+        Y = p1->Y + k * (p2->Y - p1->Y);
+        scr_x = p1->scr_x + k * mBoard->scale * (p2->scr_x - p1->scr_x);
+        scr_y = p1->scr_y + k * mBoard->scale * (p2->scr_y - p1->scr_y);
+        break;
+    }
+    case Child_Type::OnLine:
+    {
+        auto l = static_cast<Line*>(parentObjects.at(0));
+        auto p1 = l->getFirstPoint();
+        auto p2 = l->getSecondPoint();
+
+        if (std::abs(k) < EPS){
+            if (std::abs(p1->X - p2->X) < EPS){
+                k =  (Y - p1->Y) / (p2->Y - p1->Y);
+            } else k = (X - p1->X) / (p2->X - p1->X);
+        }
+
+        X = p1->X + k * (p2->X - p1->X);
+        Y = p1->Y + k * (p2->Y - p1->Y);
+        scr_x = p1->scr_x + k * mBoard->scale * (p2->scr_x - p1->scr_x);
+        scr_y = p1->scr_y + k * mBoard->scale * (p2->scr_y - p1->scr_y);
+        break;
+    }
+    case Child_Type::OnCircle:
+    {
+        auto c = static_cast<Circle*>(parentObjects.at(0));
+        auto p = c->getcenter();
+        auto r = c->r();
+
+        if (std::abs(k) < EPS){
+            if(Y > p->Y) k = acos((X - p->X)/r);
+            else k = -acos((X - p->X)/r);
+        }
+
+        X = p->X + r * cos(k);
+        Y = p->Y + r * sin(k);
+        scr_x = p->scr_x + r * mBoard->scale * cos(k);
+        scr_y = p->scr_y + r * mBoard->scale * sin(k);
+        break;
+    }
     default:
         break;
     }

@@ -15,11 +15,23 @@ void GeoBoard::paintEvent(QPaintEvent*)
         p.setBrush(QBrush(Qt::black));
         p.drawEllipse(QPointF(lastMousePos.x(), lastMousePos.y()), 5, 5);
     }
+
+    //high priority for points
+    bool caught_point = false;
+    for(auto* obj : mObjects){
+        if (obj->isCaught(lastMousePos) && obj->type_is() == GObj_Type::POINT){
+            caught_point = true;
+            break;
+        }
+    }
+    //then check & draw others
     for(auto* obj : mObjects){
         bool was_caught = false;
-        if (numitemstoadd > 0 && obj->isCaught(lastMousePos) && obj->type_is() == GObj_Type::POINT){
-            obj->setSelected();
-            was_caught = true;
+        if (numitemstoadd > 0 && obj->isCaught(lastMousePos)){
+            if (!caught_point || obj->type_is() == GObj_Type::POINT){
+                obj->setSelected();
+                was_caught = true;
+            }
         }
         obj->draw();   
         if (was_caught) obj->setSelected(false);
@@ -143,6 +155,36 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         }
         else {
             p = new Point(this, Pos.x(), Pos.y());
+            if (selected_and_caught){
+                switch (selected_and_caught->type_is()) {
+                case GObj_Type::SEGMENT:{
+                    p->child_type = Child_Type::OnSegment;
+                    selected_and_caught->childObjects[p] = Child_Type::OnSegment;
+                    break;
+                }
+                case GObj_Type::RAY:{
+                    p->child_type = Child_Type::OnRay;
+                    selected_and_caught->childObjects[p] = Child_Type::OnRay;
+                    break;
+                }
+                case GObj_Type::LINE:{
+                    p->child_type = Child_Type::OnLine;
+                    selected_and_caught->childObjects[p] = Child_Type::OnLine;
+                    break;
+                }
+                case GObj_Type::CIRCLE:{
+                    p->child_type = Child_Type::OnCircle;
+                    selected_and_caught->childObjects[p] = Child_Type::OnCircle;
+                    break;
+                }
+                default:
+                    break;
+                }
+                p->depending = true;
+                p->exists = true;
+                p->parentObjects.push_back(selected_and_caught);
+                p->recalculate();
+            }
             addObject(p);
         }
         numitemstoadd--;

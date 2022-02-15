@@ -121,6 +121,7 @@ private:
 public:
     qreal X, Y;          //mathematical (native) coords
     qreal scr_x, scr_y;  //screen coords
+    qreal k = 0;         //unused when the Point is free or intersection
     Intersection_Type inters_type = Intersection_Type::None;
     std::multimap<GObj_Type, GOBJ*> parents_intersected; //2 objects ordered by their type (to easily get the Intersection_Type)
 };
@@ -146,6 +147,8 @@ public:
     bool isVertical() const {return is_vertical;}
     void setBaseLine(GOBJ* l){baseline = l;}
     void setBasePoint(Point* p){mP1 = p;}
+    Point* getFirstPoint() const {return mP1;}
+    Point* getSecondPoint() const {return mP2;}
 signals:
     void posChanged();
 private:
@@ -223,7 +226,6 @@ public:
     void move(QPointF newPos) override;
     void changeView() override;
     void recalculate() override;
-    std::pair<QPointF, QPointF> get_draw_pair();
     qreal r() const {return _r;}
     qreal x0() const {return _x0;}
     qreal y0() const {return _y0;}
