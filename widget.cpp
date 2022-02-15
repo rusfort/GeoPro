@@ -171,6 +171,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) lastPoint->setFixOnFigure(selected_and_caught);
                 addObject(lastPoint);
             }
         } else {
@@ -182,6 +183,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 num_obj_selected++;
             } else {
                 p = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) p->setFixOnFigure(selected_and_caught);
                 addObject(p);
             }
             Line *l = new Line(this, lastPoint, p);
@@ -204,6 +206,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) lastPoint->setFixOnFigure(selected_and_caught);
                 addObject(lastPoint);
             }
         } else {
@@ -215,6 +218,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 num_obj_selected++;
             } else {
                 p = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) p->setFixOnFigure(selected_and_caught);
                 addObject(p);
             }
             Segment *s = new Segment(this, lastPoint, p);
@@ -237,6 +241,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) lastPoint->setFixOnFigure(selected_and_caught);
                 addObject(lastPoint);
             }
         } else {
@@ -248,6 +253,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 num_obj_selected++;
             } else {
                 p = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) p->setFixOnFigure(selected_and_caught);
                 addObject(p);
             }
             Ray *l = new Ray(this, lastPoint, p);
@@ -270,6 +276,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 lastPoint->setSelected(true);
             } else {
                 lastPoint = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) lastPoint->setFixOnFigure(selected_and_caught);
                 addObject(lastPoint);
             }
         } else {
@@ -281,6 +288,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 num_obj_selected++;
             } else {
                 p = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) p->setFixOnFigure(selected_and_caught);
                 addObject(p);
             }
             Circle* C = new Circle(this, lastPoint, sqrt((lastPoint->scr_x - p->scr_x) * (lastPoint->scr_x - p->scr_x) +
