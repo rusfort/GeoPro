@@ -155,36 +155,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         }
         else {
             p = new Point(this, Pos.x(), Pos.y());
-            if (selected_and_caught){
-                switch (selected_and_caught->type_is()) {
-                case GObj_Type::SEGMENT:{
-                    p->child_type = Child_Type::OnSegment;
-                    selected_and_caught->childObjects[p] = Child_Type::OnSegment;
-                    break;
-                }
-                case GObj_Type::RAY:{
-                    p->child_type = Child_Type::OnRay;
-                    selected_and_caught->childObjects[p] = Child_Type::OnRay;
-                    break;
-                }
-                case GObj_Type::LINE:{
-                    p->child_type = Child_Type::OnLine;
-                    selected_and_caught->childObjects[p] = Child_Type::OnLine;
-                    break;
-                }
-                case GObj_Type::CIRCLE:{
-                    p->child_type = Child_Type::OnCircle;
-                    selected_and_caught->childObjects[p] = Child_Type::OnCircle;
-                    break;
-                }
-                default:
-                    break;
-                }
-                p->depending = true;
-                p->exists = true;
-                p->parentObjects.push_back(selected_and_caught);
-                p->recalculate();
-            }
+            if (selected_and_caught) p->setFixOnFigure(selected_and_caught);
             addObject(p);
         }
         numitemstoadd--;

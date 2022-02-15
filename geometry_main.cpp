@@ -499,6 +499,37 @@ bool Point::isCaught(QPointF p){
     return QLineF(QPointF(scr_x, scr_y), p).length() < mRadius + 2;
 }
 
+void Point::setFixOnFigure(GOBJ* Figure){
+    switch (Figure->type_is()) {
+    case GObj_Type::SEGMENT:{
+        child_type = Child_Type::OnSegment;
+        Figure->childObjects[this] = Child_Type::OnSegment;
+        break;
+    }
+    case GObj_Type::RAY:{
+        child_type = Child_Type::OnRay;
+        Figure->childObjects[this] = Child_Type::OnRay;
+        break;
+    }
+    case GObj_Type::LINE:{
+        child_type = Child_Type::OnLine;
+        Figure->childObjects[this] = Child_Type::OnLine;
+        break;
+    }
+    case GObj_Type::CIRCLE:{
+        child_type = Child_Type::OnCircle;
+        Figure->childObjects[this] = Child_Type::OnCircle;
+        break;
+    }
+    default:
+        break;
+    }
+    depending = true;
+    exists = true;
+    parentObjects.push_back(Figure);
+    recalculate();
+}
+
 
 ///LINE METHODS==========================================================================================================
 

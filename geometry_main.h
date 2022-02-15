@@ -109,6 +109,7 @@ public:
     double rad() const { return mRadius; }
     void setRad(double rad) { mRadius = rad; }
     void setIntersectionType();
+    void setFixOnFigure(GOBJ* Figure);
     void draw() override;
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
