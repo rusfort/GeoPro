@@ -63,6 +63,8 @@ public:
     void changeLabel(const QString& new_label) {obj_label = new_label;}
     void delObj();
     void checkExistance();
+    GeoBoard* board() const { return mBoard; }
+    void setBoard(GeoBoard* board) { mBoard = board; }
     virtual void draw() = 0;
     virtual bool isCaught(QPointF p) = 0;
     virtual void move(QPointF dr) = 0;
@@ -104,8 +106,6 @@ class Point : public GOBJ
 public:
     Point(GeoBoard* board, double x = 0.0, double y = 0.0, double radius = 5.0,  QColor color = Qt::black);
     virtual ~Point() {}
-    GeoBoard* board() const { return mBoard; }
-    void setBoard(GeoBoard* board) { mBoard = board; }
     double rad() const { return mRadius; }
     void setRad(double rad) { mRadius = rad; }
     void setIntersectionType();
@@ -259,6 +259,7 @@ qreal sign_distance(const Point* p, const Line* l);
 qreal distance(const Point* p1, const Point* p2);
 qreal distance(const Point* p, const Line* l);
 QPointF getBaseOfPerpendicular(const Point* p, const Line* l);
+QPointF getBaseOfPerpendicular(const QPointF* p, const Line* l);
 intersect_sol get_inter_solution (const Line* l, const Circle* C);
 
 #endif // GEOMETRY_MAIN_H

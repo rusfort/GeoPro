@@ -486,7 +486,61 @@ void Point::move(QPointF newPos){
         scr_y = newPos.y();
         X = board()->getMathPoint(newPos).x();
         Y = board()->getMathPoint(newPos).y();
-    }
+    } else if (child_type >= Child_Type::OnLine && child_type <= Child_Type::OnCircle){
+        if (child_type == Child_Type::OnCircle){
+            auto c = static_cast<Circle*>(parentObjects.at(0));
+            auto cen = mBoard->getScreenView(QPointF(c->x0(), c->y0()));
+            auto L = QLineF(cen, newPos).length();
+            auto P = cen + c->r() * mBoard->scale / L * (newPos - cen);
+            scr_x = P.x();
+            scr_y = P.y();
+            X = board()->getMathPoint(P).x();
+            Y = board()->getMathPoint(P).y();
+        } else {
+            Line* l;
+            if (child_type == Child_Type::OnLine) l = static_cast<Line*>(parentObjects.at(0));
+            if (child_type == Child_Type::OnRay) l = new Line(mBoard, static_cast<Ray*>(parentObjects.at(0)));
+            if (child_type == Child_Type::OnSegment) l = new Line(mBoard, static_cast<Segment*>(parentObjects.at(0)));
+            l->recalculate();
+            auto P = getBaseOfPerpendicular(&newPos, l);
+
+            switch (child_type) {
+            case Child_Type::OnLine:{
+                scr_x = P.x();
+                scr_y = P.y();
+                X = board()->getMathPoint(P).x();
+                Y = board()->getMathPoint(P).y();
+                break;
+            }
+            case Child_Type::OnSegment:{
+                auto s = static_cast<Segment*>(parentObjects.at(0));
+                if (s->isCaught(mBoard->getScreenView(P))){
+                    scr_x = P.x();
+                    scr_y = P.y();
+                    X = board()->getMathPoint(P).x();
+                    Y = board()->getMathPoint(P).y();
+                }
+                break;
+            }
+            case Child_Type::OnRay:{
+                auto r = static_cast<Ray*>(parentObjects.at(0));
+                if (r->isCaught(mBoard->getScreenView(P))){
+                    scr_x = P.x();
+                    scr_y = P.y();
+                    X = board()->getMathPoint(P).x();
+                    Y = board()->getMathPoint(P).y();
+                }
+                break;
+            }
+            default:
+                break;
+            }
+
+            if (child_type != Child_Type::OnLine) delete l;
+        }
+    } else return;
+    k = 0;
+    recalculate();
     emit posChanged();
 }
 
@@ -976,6 +1030,13 @@ QPointF getBaseOfPerpendicular(const Point* p, const Line* l){
     qreal px = p->X - l->k() * d / sqrt (1.0 + l->k() * l->k());
     qreal py = l->y0() + l->k() * (px - l->x0());
     return QPointF(px, py);
+}
+
+QPointF getBaseOfPerpendicular(const QPointF* p, const Line* l){
+    auto point = new Point(l->board(), p->x(), p->y());
+    auto get = getBaseOfPerpendicular(point, l);
+    delete point;
+    return get;
 }
 
 intersect_sol get_inter_solution (const Line* l, const Circle* C){
