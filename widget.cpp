@@ -11,6 +11,14 @@ void GeoBoard::paintEvent(QPaintEvent*)
     p.setRenderHint(QPainter::Antialiasing);
     p.fillRect(0, 0, this->width(), this->height(), mColor);
     if(active_grid) drawGrid(&p);
+    if (trytoadd != GObj_Type::NONE){
+        int offset = 20;
+        if (trytoadd == GObj_Type::POINT)   p.drawText(QPointF(offset, offset), "Adding point");
+        if (trytoadd == GObj_Type::SEGMENT) p.drawText(QPointF(offset, offset), "Adding segment");
+        if (trytoadd == GObj_Type::RAY)     p.drawText(QPointF(offset, offset), "Adding ray");
+        if (trytoadd == GObj_Type::LINE)    p.drawText(QPointF(offset, offset), "Adding line");
+        if (trytoadd == GObj_Type::CIRCLE)  p.drawText(QPointF(offset, offset), "Adding circle");
+    }
     if (numitemstoadd > 0){
         p.setBrush(QBrush(Qt::black));
         p.drawEllipse(QPointF(lastMousePos.x(), lastMousePos.y()), 5, 5);
