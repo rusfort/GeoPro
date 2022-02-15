@@ -620,3 +620,47 @@ void GeoPro::on_actionBack_to_original_view_triggered()
     b->update();
 }
 
+
+void GeoPro::on_actionChange_object_label_triggered()
+{
+    if(b->numitemstoadd > 0) return;
+    if(b->num_obj_selected > 1){
+        QMessageBox::critical(b, "LABEL ERROR", "Can add a label only to one point!");
+        b->unselectAll();
+        b->update();
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "LABEL WARNING", "Select a point to add a label!");
+        return;
+    }
+    if(b->num_obj_selected == 1){
+        GOBJ* p = 0;
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                if (!p) p = obj;
+                else break;
+            }
+        }
+        if(p->type_is() != GObj_Type::POINT){
+            QMessageBox::critical(b, "LABEL ERROR", "Sorry, but now you can add a label only to a point.");
+            b->unselectAll();
+            b->update();
+            return;
+        }
+
+        menu = new Obj_menu(this);
+        menu->exec();
+        p->changeLabel(menu->getContent());
+    }
+    b->unselectAll();
+    b->update();
+    return;
+}
+
+void GeoPro::change_label(GOBJ* obj){
+    QString Label(b->AddLabel->text());
+
+    obj->changeLabel(Label);
+}
+

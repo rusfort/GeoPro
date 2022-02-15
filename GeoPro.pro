@@ -26,17 +26,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         geopro.cpp \
+    obj_menu.cpp \
     widget.cpp \
     geometry_main.cpp
 
 HEADERS += \
         geopro.h \
+    obj_menu.h \
     widget.h \
     geometry_main.h \
     service.h
 
 FORMS += \
-        geopro.ui
+        geopro.ui \
+        obj_menu.ui
 
 RESOURCES += \
     res.qrc

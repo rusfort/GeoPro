@@ -8,6 +8,9 @@
 #include <vector>
 #include <QPaintEvent>
 #include <QMouseEvent>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 #include "service.h"
 
@@ -50,6 +53,8 @@ private:
     std::vector<Point*> threePoints; //for bisector (order is important)
     bool board_grabbed = false;
 public:
+    QLineEdit *AddLabel;
+    QPushButton *LabelButton;
     GObj_Type trytoadd = GObj_Type::NONE;
     int numitemstoadd = 0;
     Point *lastPoint = 0;

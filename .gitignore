@@ -7,4 +7,6 @@ moc_geopro.cpp
 moc_predefs.h
 moc_widget.cpp
 qrc_res.cpp
+moc_obj_menu.cpp
+ui_obj_menu.h
 

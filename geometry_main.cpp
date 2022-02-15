@@ -478,6 +478,7 @@ void Point::draw(){
     }
     p.setBrush(QBrush(mColor));
     p.drawEllipse(QPointF(scr_x, scr_y), mRadius, mRadius);
+    p.drawText(QPointF(scr_x + 10, scr_y + 10), obj_label);
 }
 
 void Point::move(QPointF newPos){

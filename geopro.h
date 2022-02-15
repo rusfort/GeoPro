@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QtGui>
 #include "widget.h"
+#include "obj_menu.h"
 
 namespace Ui {
 class GeoPro;
@@ -65,8 +66,13 @@ private slots:
 
     void on_actionBack_to_original_view_triggered();
 
+    void on_actionChange_object_label_triggered();
+
+    void change_label(GOBJ* obj);
+
 private:
     Ui::GeoPro *ui;
+    Obj_menu *menu;
 public:
     GeoBoard *b;
 };
