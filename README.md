@@ -11,7 +11,14 @@ Here is what you can do with this software right now:
 - Build parallel, perpendicular lines, bisectors
 - View this all in an intuitive UI
 
-What's new?
+##Quick guide:
+
+#Adding an object
+You can add a geometry object simply clicking on a specific button in Menu -> New object or the toolbar.
+
+
+
+##What's new?
 Version 0.0.1 (alpha)
 - Classic geometry figures added (points, lines, rays, segments and circles)
 - Intersections added
