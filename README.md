@@ -23,7 +23,7 @@ For fast and experienced GeoPro users there're some keyboard shorcuts added:
 - R - add a Ray
 - S - add a Segment
 - C - add a Circle (center & some point)
-- Ctrl+I - make intersection
+- Ctrl+I - make an intersection
 - Ctrl+M - create a middle
 
 There will be a label with the type of added object on the left top corner.
