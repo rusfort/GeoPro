@@ -393,3 +393,10 @@ void GeoBoard::delObject(GOBJ* obj){
         delete obj;
     }
 }
+
+void GeoBoard::connect_objects(GOBJ* parent_obj, GOBJ* child_obj, Child_Type type){
+    child_obj->depending = true;
+    child_obj->child_type = type;
+    parent_obj->childObjects[child_obj] = type;
+    child_obj->parentObjects.push_back(parent_obj);
+}

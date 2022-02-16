@@ -65,4 +65,6 @@ public:
     QPoint lastMousePos;//for point drawing (when adding)
 };
 
+void connect_objects(GOBJ* parent_obj, GOBJ* child_obj, Child_Type type); //connecting two objects using parentObjects and childObjects
+
 #endif // WIDGET_H
