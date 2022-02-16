@@ -14,10 +14,7 @@
 #include <QCloseEvent>
 
 
-GeoPro::GeoPro(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::GeoPro)
-{
+GeoPro::GeoPro(QWidget *parent) : QMainWindow(parent), ui(new Ui::GeoPro) {
     ui->setupUi(this);
     setWindowTitle(tr("GeoPro 0.0.2 [alpha] by Nikolay Kozakov"));
 
@@ -25,10 +22,7 @@ GeoPro::GeoPro(QWidget *parent) :
     setCentralWidget(b);
 }
 
-GeoPro::~GeoPro()
-{
-    delete ui;
-}
+GeoPro::~GeoPro() { delete ui; }
 
 void GeoPro::closeEvent (QCloseEvent *event)
 {
@@ -131,14 +125,15 @@ void GeoPro::on_actionIntersection_triggered()
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
                 intersection->parents_intersected.insert(std::make_pair(obj->type_is(), obj));
-                if (!Obj1) Obj1 = obj;
-                else {
-                    Obj2 = obj;
-                    break;
+                if (!Obj1) {
+                    Obj1 = obj;
+                    continue;
                 }
+                Obj2 = obj;
+                break;
             }
         }
-        if (Obj1 == 0 || Obj2 == 0){
+        if (Obj1 == 0 || Obj2 == 0){ // !Obj1 || !Obj2
             delete intersection;
             delete intersection2;
             QMessageBox::critical(b, "FATAL LOGIC ERROR", "Null object intersection!");
@@ -216,14 +211,16 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
         GOBJ* p3 = 0;
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
-                if (!p1) p1 = obj;
-                else {
-                    if (!p2) p2 = obj;
-                    else{
-                        p3 = obj;
-                        break;
-                    }
+                if (!p1) {
+                    p1 = obj;
+                    continue;
                 }
+                if(!p2) {
+                    p2 = obj;
+                    continue;
+                }
+                p3 = obj;
+                break;
             }
         }
         if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT || p3->type_is() != GObj_Type::POINT){
@@ -281,12 +278,13 @@ void GeoPro::on_actionMiddle_Center_triggered()
 
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
-                if (!p1) p1 = obj;
-                else {
-                    if (!p2){
-                        p2 = obj;
-                        break;
-                    }
+                if(!p1) {
+                    p1 = obj;
+                    continue;
+                }
+                if(!p2) {
+                    p2 = obj;
+                    break;
                 }
             }
         }
@@ -369,12 +367,13 @@ void GeoPro::on_actionParallel_line_triggered()
         Line* line = 0;
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
-                if (!p1) p1 = obj;
-                else {
-                    if (!p2){
-                        p2 = obj;
-                        break;
-                    }
+                if(!p1) {
+                    p1 = obj;
+                    continue;
+                }
+                if(!p2) {
+                    p2 = obj;
+                    break;
                 }
             }
         }
@@ -445,12 +444,13 @@ void GeoPro::on_actionPerpendicular_line_triggered()
         Line* line = 0;
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
-                if (!p1) p1 = obj;
-                else {
-                    if (!p2){
-                        p2 = obj;
-                        break;
-                    }
+                if(!p1) {
+                    p1 = obj;
+                    continue;
+                }
+                if(!p2) {
+                    p2 = obj;
+                    break;
                 }
             }
         }
@@ -522,13 +522,17 @@ void GeoPro::on_actionBisector_triggered()
         GOBJ* p3 = 0;
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
-                if (!p1) p1 = obj;
-                else {
-                    if (!p2) p2 = obj;
-                    else{
-                        p3 = obj;
-                        break;
-                    }
+                if(!p1) {
+                    p1 = obj;
+                    continue;
+                }
+                if(!p2) {
+                    p2 = obj;
+                    continue;
+                }
+                if(!p3) {
+                    p3 = obj;
+                    break;
                 }
             }
         }
