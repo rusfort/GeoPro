@@ -50,6 +50,12 @@ If you need to change the background, use Menu -> "Edit" -> "Background".
 
 If you "walked too far away" from your initial position, press "Back to original view" on the toolbar. 
 
+### Bugs!
+
+Yes, there're some. As I've already found that in 0.0.2 there are some troubles when circle intersects with a segment or a ray (line is still ok).
+
+Will be removed soon!
+
 
 ## What's new?
 
