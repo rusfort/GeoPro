@@ -156,13 +156,9 @@ void GeoPro::on_actionIntersection_triggered()
         }
         if (Obj1->type_is() == GObj_Type::CIRCLE || Obj2->type_is() == GObj_Type::CIRCLE) inter_circle = true;
         intersection->exists = false;
-        intersection->depending = true;
-        intersection->child_type = Child_Type::Intersection;
+        b->connect_objects(Obj1, intersection, Child_Type::Intersection);
+        b->connect_objects(Obj2, intersection, Child_Type::Intersection);
         b->addObject(intersection);
-        Obj1->childObjects[intersection] = Child_Type::Intersection;
-        Obj2->childObjects[intersection] = Child_Type::Intersection;
-        intersection->parentObjects.push_back(Obj1);
-        intersection->parentObjects.push_back(Obj2);
         intersection->setIntersectionType();
         intersection->recalculate();
         if (inter_circle){
@@ -172,13 +168,9 @@ void GeoPro::on_actionIntersection_triggered()
             intersection2->parents_intersected.insert(*it1);
             intersection2->parents_intersected.insert(*it2);
             intersection2->exists = false;
-            intersection2->depending = true;
-            intersection2->child_type = Child_Type::Intersection2;
+            b->connect_objects(Obj1, intersection2, Child_Type::Intersection2);
+            b->connect_objects(Obj2, intersection2, Child_Type::Intersection2);
             b->addObject(intersection2);
-            Obj1->childObjects[intersection2] = Child_Type::Intersection2;
-            Obj2->childObjects[intersection2] = Child_Type::Intersection2;
-            intersection2->parentObjects.push_back(Obj1);
-            intersection2->parentObjects.push_back(Obj2);
             intersection2->setIntersectionType();
             intersection2->recalculate();
         }
@@ -240,20 +232,12 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
         Circle* C = new Circle(b, cen, params.second);
         if (C->r() < EPS) C->exists = false;
         else C->exists = true;
-        C->depending = true;
-        cen->depending = true;
-        C->child_type = Child_Type::Middle;
-        cen->child_type = Child_Type::OnThreePoints;
+        b->connect_objects(cen, C, Child_Type::Middle);
+        b->connect_objects(p1, cen, Child_Type::OnThreePoints);
+        b->connect_objects(p2, cen, Child_Type::OnThreePoints);
+        b->connect_objects(p3, cen, Child_Type::OnThreePoints);
         b->addObject(C);
         b->addObject(cen);
-        p1->childObjects[cen] = Child_Type::OnThreePoints;
-        p2->childObjects[cen] = Child_Type::OnThreePoints;
-        p3->childObjects[cen] = Child_Type::OnThreePoints;
-        cen->parentObjects.push_back(p1);
-        cen->parentObjects.push_back(p2);
-        cen->parentObjects.push_back(p3);
-        cen->childObjects[C] = Child_Type::Middle;
-        C->parentObjects.push_back(cen);
         C->basePoints.push_back(static_cast<Point*>(p1));
         C->basePoints.push_back(static_cast<Point*>(p2));
         C->basePoints.push_back(static_cast<Point*>(p3));
@@ -304,13 +288,9 @@ void GeoPro::on_actionMiddle_Center_triggered()
         }
 
         middle->exists = true;
-        middle->depending = true;
-        middle->child_type = Child_Type::Middle;
+        b->connect_objects(p1, middle, Child_Type::Middle);
+        b->connect_objects(p2, middle, Child_Type::Middle);
         b->addObject(middle);
-        p1->childObjects[middle] = Child_Type::Middle;
-        p2->childObjects[middle] = Child_Type::Middle;
-        middle->parentObjects.push_back(p1);
-        middle->parentObjects.push_back(p2);
         middle->recalculate();
         b->unselectAll();
         b->update();
@@ -413,13 +393,9 @@ void GeoPro::on_actionParallel_line_triggered()
         parallel->setBasePoint(point1);
 
         parallel->exists = true;
-        parallel->depending = true;
-        parallel->child_type = Child_Type::Parallel;
+        b->connect_objects(p1, parallel, Child_Type::Parallel);
+        b->connect_objects(p2, parallel, Child_Type::Parallel);
         b->addObject(parallel);
-        p1->childObjects[parallel] = Child_Type::Parallel;
-        p2->childObjects[parallel] = Child_Type::Parallel;
-        parallel->parentObjects.push_back(p1);
-        parallel->parentObjects.push_back(p2);
         parallel->recalculate();
 
         b->unselectAll();
@@ -486,19 +462,15 @@ void GeoPro::on_actionPerpendicular_line_triggered()
 
         auto point1 = static_cast<Point*>(p1);
         auto tmp_k = std::abs(line->k()) < EPS ? 1 : -1/line->k();
-        auto parallel = new Line(b, tmp_k, -1, (point1->Y - line->k() * point1->X));
-        parallel->setBaseLine(p2);
-        parallel->setBasePoint(point1);
+        auto perpendicular = new Line(b, tmp_k, -1, (point1->Y - line->k() * point1->X));
+        perpendicular->setBaseLine(p2);
+        perpendicular->setBasePoint(point1);
 
-        parallel->exists = true;
-        parallel->depending = true;
-        parallel->child_type = Child_Type::Perpendicular;
-        b->addObject(parallel);
-        p1->childObjects[parallel] = Child_Type::Perpendicular;
-        p2->childObjects[parallel] = Child_Type::Perpendicular;
-        parallel->parentObjects.push_back(p1);
-        parallel->parentObjects.push_back(p2);
-        parallel->recalculate();
+        perpendicular->exists = true;
+        b->connect_objects(p1, perpendicular, Child_Type::Perpendicular);
+        b->connect_objects(p2, perpendicular, Child_Type::Perpendicular);
+        b->addObject(perpendicular);
+        perpendicular->recalculate();
 
         b->unselectAll();
         b->update();
@@ -576,15 +548,10 @@ void GeoPro::on_actionBisector_triggered()
             Point *b_p = new Point(b, bisector_point.x(), bisector_point.y());
             Ray *r = new Ray(b, static_cast<Point*>(p2), b_p);
             r->exists = true;
-            r->depending = true;
-            r->child_type = Child_Type::Bisector;
+            b->connect_objects(p1, r, Child_Type::Bisector);
+            b->connect_objects(p2, r, Child_Type::Bisector);
+            b->connect_objects(p3, r, Child_Type::Bisector);
             b->addObject(r);
-            p1->childObjects[r] = Child_Type::Bisector;
-            p2->childObjects[r] = Child_Type::Bisector;
-            p3->childObjects[r] = Child_Type::Bisector;
-            r->parentObjects.push_back(p1);
-            r->parentObjects.push_back(p2);
-            r->parentObjects.push_back(p3);
             r->recalculate();
         }
 
