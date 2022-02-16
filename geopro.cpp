@@ -13,6 +13,12 @@
 #include <QShortcut>
 #include <QCloseEvent>
 
+#include "line.h"
+#include "point.h"
+#include "ray.h"
+#include "segment.h"
+#include "circle.h"
+
 
 GeoPro::GeoPro(QWidget *parent) :
     QMainWindow(parent),

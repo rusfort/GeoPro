@@ -4,6 +4,12 @@
 #include <QPainter>
 #include <iostream>
 
+#include "line.h"
+#include "point.h"
+#include "ray.h"
+#include "segment.h"
+#include "circle.h"
+
 void GeoBoard::paintEvent(QPaintEvent*)
 {
     QPainter p;

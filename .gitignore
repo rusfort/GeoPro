@@ -10,4 +10,9 @@ qrc_res.cpp
 moc_obj_menu.cpp
 ui_obj_menu.h
 GeoPro.pro.user
+moc_circle.cpp
+moc_line.cpp
+moc_point.cpp
+moc_ray.cpp
+moc_segment.cpp
 
