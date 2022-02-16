@@ -38,7 +38,7 @@ To add a bisector or circle by 3 points choose three points first and then click
 
 You can easily hide or delete objects in GeoPro.
 
-To hide objects select them by clicking and then press "Hide selected objects" or Ctrl+H. You can always show all hidden object by clicking on eponymous toolbar button or Ctrl+Shift+H.
+To hide objects select them by clicking and then press "Hide selected objects" or Ctrl+H. You can always show all hidden objects by clicking on eponymous toolbar button or Ctrl+Shift+H.
 
 To delete objects select them by clicking and then press Delete on the keyboard (or in Menu -> "Edit"). You can delete all objects by "Clear all" button or Ctrl+Delete (You have to confirm clearing all). Notice: deleting the object with some child objects causes child objects deletion!
 
