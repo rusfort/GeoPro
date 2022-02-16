@@ -24,15 +24,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    circle.cpp \
+    line.cpp \
         main.cpp \
         geopro.cpp \
     obj_menu.cpp \
+    point.cpp \
+    ray.cpp \
+    segment.cpp \
     widget.cpp \
     geometry_main.cpp
 
 HEADERS += \
+    circle.h \
         geopro.h \
+    line.h \
     obj_menu.h \
+    point.h \
+    ray.h \
+    segment.h \
     widget.h \
     geometry_main.h \
     service.h
