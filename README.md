@@ -2,7 +2,7 @@
 
 GeoPro is a professional geometry toolkit for teachers & students made by Nick Rusfort (Nikolay Kozakov). 
 
-![GeoPro App](shorturl.at/xEZ57)
+![Снимок экрана от 2022-02-15 23-08-29](https://user-images.githubusercontent.com/81856641/154209815-4287b874-d0c6-44c4-a1d9-c4af4a7855f9.png)
 
 Here is what you can do with this software right now:
 - Build classic geometry figures (points, lines, rays, segments and circles)
