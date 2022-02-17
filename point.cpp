@@ -220,6 +220,7 @@ void Point::recalculate(){
             auto r = static_cast<Ray*>(it1->second);
             auto c = static_cast<Circle*>(it2->second);
             auto l = new Line(board(), r);
+            l->recalculate();
             auto sol = get_inter_solution(l, c);
             if (sol.num_points == 0){
                 exists = false;
@@ -277,6 +278,7 @@ void Point::recalculate(){
             auto s = static_cast<Segment*>(it1->second);
             auto c = static_cast<Circle*>(it2->second);
             auto l = new Line(board(), s);
+            l->recalculate();
             auto sol = get_inter_solution(l, c);
             if (sol.num_points == 0){
                 exists = false;
