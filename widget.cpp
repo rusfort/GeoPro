@@ -202,10 +202,8 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             }
             Line *l = new Line(this, lastPoint, p);
             addObject(l);
-            lastPoint->childObjects[l] = Child_Type::OnTwoPoints;
-            p->childObjects[l] = Child_Type::OnTwoPoints;
-            l->parentObjects.push_back(lastPoint);
-            l->parentObjects.push_back(p);
+            connect_objects(lastPoint, l, Child_Type::OnTwoPoints);
+            connect_objects(p, l, Child_Type::OnTwoPoints);
         }
         numitemstoadd--;
         update();
@@ -237,10 +235,8 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             }
             Segment *s = new Segment(this, lastPoint, p);
             addObject(s);
-            lastPoint->childObjects[s] = Child_Type::OnTwoPoints;
-            p->childObjects[s] = Child_Type::OnTwoPoints;
-            s->parentObjects.push_back(lastPoint);
-            s->parentObjects.push_back(p);
+            connect_objects(lastPoint, s, Child_Type::OnTwoPoints);
+            connect_objects(p, s, Child_Type::OnTwoPoints);
         }
         numitemstoadd--;
         update();
@@ -270,12 +266,10 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                 if (selected_and_caught) p->setFixOnFigure(selected_and_caught);
                 addObject(p);
             }
-            Ray *l = new Ray(this, lastPoint, p);
-            addObject(l);
-            lastPoint->childObjects[l] = Child_Type::OnTwoPoints;
-            p->childObjects[l] = Child_Type::OnTwoPoints;
-            l->parentObjects.push_back(lastPoint);
-            l->parentObjects.push_back(p);
+            Ray *r = new Ray(this, lastPoint, p);
+            addObject(r);
+            connect_objects(lastPoint, r, Child_Type::OnTwoPoints);
+            connect_objects(p, r, Child_Type::OnTwoPoints);
         }
         numitemstoadd--;
         update();
@@ -309,13 +303,9 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
                                                       (lastPoint->scr_y - p->scr_y) * (lastPoint->scr_y - p->scr_y)) / scale);
             if (C->r() * scale < EPS) C->exists = false;
             else C->exists = true;
-            C->depending = true;
-            C->child_type = Child_Type::OnTwoPoints;
+            connect_objects(lastPoint, C, Child_Type::OnTwoPoints);
+            connect_objects(p, C, Child_Type::OnTwoPoints);
             addObject(C);
-            lastPoint->childObjects[C] = Child_Type::OnTwoPoints;
-            p->childObjects[C] = Child_Type::OnTwoPoints;
-            C->parentObjects.push_back(lastPoint);
-            C->parentObjects.push_back(p);
             C->basePoints.push_back(lastPoint);
             C->basePoints.push_back(p);
             C->recalculate();
