@@ -321,6 +321,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         trytoadd = GObj_Type::NONE;
         setMouseTracking(false);
     }
+    unselectAll();
 }
 
 void GeoBoard::mouseMoveEvent(QMouseEvent* e)

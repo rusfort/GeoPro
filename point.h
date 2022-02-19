@@ -24,6 +24,7 @@ private:
     double mRadius;
 public:
     qreal X, Y;          //mathematical (native) coords
+    qreal mX, mY;        //previous math coords (e.g. for intersection swap check)
     qreal scr_x, scr_y;  //screen coords
     qreal k = 0;         //unused when the Point is free or intersection
     Intersection_Type inters_type = Intersection_Type::None;

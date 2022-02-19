@@ -19,6 +19,8 @@ Point::Point(GeoBoard* board, double x, double y, double radius, QColor color) :
     scr_y = y;
     X = board->getMathPoint(QPointF(x, y)).x();
     Y = board->getMathPoint(QPointF(x, y)).y();
+    mX = X;
+    mY = Y;
 }
 
 void Point::setIntersectionType(){
@@ -433,6 +435,9 @@ void Point::recalculate(){
     default:
         break;
     }
+
+    mX = X;
+    mY = Y;
 }
 
 void Point::draw(){

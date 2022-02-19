@@ -115,10 +115,13 @@ struct intersect_sol //solution of line+circle intersection
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3);
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const std::vector<Point *> &bPoints);
 qreal sign_distance(const Point* p, const Line* l);
+qreal distance(qreal x1, qreal y1, qreal x2, qreal y2);
 qreal distance(const Point* p1, const Point* p2);
 qreal distance(const Point* p, const Line* l);
 QPointF getBaseOfPerpendicular(const Point* p, const Line* l);
 QPointF getBaseOfPerpendicular(const QPointF* p, const Line* l);
 intersect_sol get_inter_solution (const Line* l, const Circle* C);
+bool onTheOneSide(QPointF firstP, QPointF secondP, QPointF thisP); //returns 'true' if thisP and secondP lie on the one side of firstP and 'false' otherwise
+bool rightOrder4(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 
 #endif // GEOMETRY_MAIN_H

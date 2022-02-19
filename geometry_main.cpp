@@ -75,6 +75,10 @@ std::pair<QPointF, qreal> getCircleCenterAndRadius(const std::vector<Point*>& bP
     return getCircleCenterAndRadius(bPoints[0], bPoints[1], bPoints[2]);
 }
 
+qreal distance(qreal x1, qreal y1, qreal x2, qreal y2){
+    return QLineF(QPointF(x1, y1), QPointF(x2, y2)).length();
+}
+
 qreal distance(const Point* p1, const Point* p2){
     return QLineF(QPointF(p1->X, p1->Y), QPointF(p2->X, p2->Y)).length();
 }
@@ -120,28 +124,65 @@ intersect_sol get_inter_solution (const Line* l, const Circle* C){
         SOL.y1 = C->y0() - sqrt(C->r()*C->r() - (l->x0() - C->x0())*(l->x0() - C->x0()));
         SOL.x2 = l->x0();
         SOL.y2 = C->y0() + sqrt(C->r()*C->r() - (l->x0() - C->x0())*(l->x0() - C->x0()));
+    } else {
+        qreal dist = distance(C->getcenter(), l);
+        auto p = getBaseOfPerpendicular(C->getcenter(), l);
+
+        if (dist > C->r()){
+            SOL.num_points = 0;
+            return SOL;
+        }
+        if (dist > C->r() - EPS){
+            SOL.num_points = 1;
+            SOL.x1 = p.x();
+            SOL.y1 = p.y();
+            return SOL;
+        }
+        SOL.num_points = 2;
+        qreal z = sqrt(C->r()*C->r() - dist * dist);
+        qreal dx = z / sqrt (1.0 + l->k() * l->k());
+        SOL.x1 = p.x() + dx;
+        SOL.y1 = p.y() + dx * l->k();
+        SOL.x2 = p.x() - dx;
+        SOL.y2 = p.y() - dx * l->k();
+    }
+
+    //CASE 1: TWO LINE BASE POINTS ARE OUTSIDE THE CIRCLE
+
+    auto dist1 = distance(l->getFirstPoint(), C->getcenter());
+    auto dist2 = distance(l->getSecondPoint(), C->getcenter());
+
+    if (dist1 > C->r() && dist2 > C->r()){
+        auto p1 = QPointF(l->getFirstPoint()->X, l->getFirstPoint()->Y);
+        auto p2 = QPointF(l->getSecondPoint()->X, l->getSecondPoint()->Y);
+        auto p3 = QPointF(SOL.x1, SOL.y1);
+        auto p4 = QPointF(SOL.x2, SOL.y2);
+        if (!rightOrder4(p1, p2, p3, p4) && !rightOrder4(p1, p3, p4, p2) &&
+                !rightOrder4(p2, p1, p4, p3) && !rightOrder4(p2, p4, p3, p1)){
+            std::swap(SOL.x1, SOL.x2);
+            std::swap(SOL.y1, SOL.y2);
+        }
         return SOL;
     }
 
-    qreal dist = distance(C->getcenter(), l);
-    auto p = getBaseOfPerpendicular(C->getcenter(), l);
+    //CASE 2: AT LEAST ONE OF THE LINE BASE POINTS IS INSIDE THE CIRCLE
 
-    if (dist > C->r()){
-        SOL.num_points = 0;
-        return SOL;
+    if (!onTheOneSide(QPointF(l->getFirstPoint()->X, l->getFirstPoint()->Y),
+            QPointF(l->getSecondPoint()->X, l->getSecondPoint()->Y), QPointF(SOL.x2, SOL.y2)) ||
+            !onTheOneSide(QPointF(l->getSecondPoint()->X, l->getSecondPoint()->Y),
+            QPointF(l->getFirstPoint()->X, l->getFirstPoint()->Y), QPointF(SOL.x1, SOL.y1))){
+        std::swap(SOL.x1, SOL.x2);
+        std::swap(SOL.y1, SOL.y2);
     }
-    if (dist > C->r() - EPS){
-        SOL.num_points = 1;
-        SOL.x1 = p.x();
-        SOL.y1 = p.y();
-        return SOL;
-    }
-    SOL.num_points = 2;
-    qreal z = sqrt(C->r()*C->r() - dist * dist);
-    qreal dx = z / sqrt (1.0 + l->k() * l->k());
-    SOL.x1 = p.x() + dx;
-    SOL.y1 = p.y() + dx * l->k();
-    SOL.x2 = p.x() - dx;
-    SOL.y2 = p.y() - dx * l->k();
     return SOL;
+}
+
+bool onTheOneSide(QPointF firstP, QPointF secondP, QPointF thisP){
+    QPointF dr = secondP - firstP;
+    QPointF v = thisP - firstP;
+    return (dr.x()*v.x() + dr.y()*v.y() > 0);
+}
+
+bool rightOrder4(QPointF p1, QPointF p2, QPointF p3, QPointF p4){
+    return (onTheOneSide(p1, p2, p3) && onTheOneSide(p2, p3, p4) && onTheOneSide(p4, p3, p2) && onTheOneSide(p3, p2, p1));
 }

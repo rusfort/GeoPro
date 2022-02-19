@@ -130,7 +130,6 @@ void GeoPro::on_actionIntersection_triggered()
         GOBJ* Obj2 = 0;
         for (auto& obj : b->getAllObj()){
             if (obj->isSelected()){
-                intersection->parents_intersected.insert(std::make_pair(obj->type_is(), obj));
                 if (!Obj1) {
                     Obj1 = obj;
                     continue;
@@ -158,6 +157,8 @@ void GeoPro::on_actionIntersection_triggered()
         intersection->exists = false;
         b->connect_objects(Obj1, intersection, Child_Type::Intersection);
         b->connect_objects(Obj2, intersection, Child_Type::Intersection);
+        intersection->parents_intersected.insert(std::make_pair(Obj1->type_is(), Obj1));
+        intersection->parents_intersected.insert(std::make_pair(Obj2->type_is(), Obj2));
         b->addObject(intersection);
         intersection->setIntersectionType();
         intersection->recalculate();
