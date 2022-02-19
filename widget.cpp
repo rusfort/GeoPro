@@ -152,6 +152,15 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         threePoints.clear();
     }
 
+    if(numitemstoadd == 0 && misscliked){ //label movements
+        for(auto obj : mObjects){
+            if (obj->labelCaught(Pos)){
+                //TODO
+                break;
+            }
+        }
+    }
+
     if((trytoadd == GObj_Type::NONE && selected_and_caught == 0) || num_obj_selected > 1){
         board_grabbed = true;
         mouseG = Pos;

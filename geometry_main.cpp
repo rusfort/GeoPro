@@ -45,6 +45,12 @@ void GOBJ::checkExistance(){
     exists = true; //try to resurrect the object
 }
 
+bool GOBJ::labelCaught(QPoint p){
+    if (getLabel() == "") return false;
+    //TODO
+    return false;
+}
+
 
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3){
     qreal x = 0;

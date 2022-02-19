@@ -22,6 +22,14 @@ class Ray;
 class Segment;
 class Circle;
 
+struct ObjLabel{
+    QString label = "";
+    int font_size = 15;
+    int pos_x = 10;    //relative position
+    int pos_y = 10;    //relative position
+    QString font = "Times";
+};
+
 class GOBJ : public QObject{
     Q_OBJECT
 public:
@@ -61,8 +69,9 @@ public:
         auto res = childObjects.find(obj);
         if (res != childObjects.end()) childObjects.erase(res);
     }
-    QString getLabel() const {return obj_label;}
-    void changeLabel(const QString& new_label) {obj_label = new_label;}
+    QString getLabel() const {return obj_label.label;}
+    void changeLabel(const QString& new_label) {obj_label.label = new_label;}
+    bool labelCaught(QPoint p);
     void delObj();
     void checkExistance();
     GeoBoard* board() const { return mBoard; }
@@ -79,7 +88,7 @@ protected:
     QColor mColor;
     GeoBoard* mBoard;
     bool mIsSelected;
-    QString obj_label = "";
+    ObjLabel obj_label;
 public:
     bool depending;
     std::map<GOBJ*, Child_Type> childObjects;
