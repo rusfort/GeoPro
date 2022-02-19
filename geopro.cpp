@@ -228,6 +228,12 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
             return;
         }
         auto params = getCircleCenterAndRadius(static_cast<Point*>(p1), static_cast<Point*>(p2), static_cast<Point*>(p3));
+        if (params.second < EPS){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "CIRCLE ERROR", "Cannot build a circle! 3 points on the same line!");
+            return;
+        }
         Point* cen = new Point(b, params.first.x(), params.first.y());
         Circle* C = new Circle(b, cen, params.second);
         if (C->r() < EPS) C->exists = false;
