@@ -529,6 +529,23 @@ void GeoPro::on_actionBisector_triggered()
             return;
         }
 
+        //check if 3 points are not on one line
+        auto point1 = static_cast<Point*>(p1);
+        auto point2 = static_cast<Point*>(p2);
+        auto point3 = static_cast<Point*>(p3);
+        qreal a1 = point1->X - point2->X;
+        qreal b1 = point1->Y - point2->Y;
+        qreal a2 = point1->X - point3->X;
+        qreal b2 = point1->Y - point3->Y;
+        qreal d = b2 * a1 - b1 * a2;
+
+        if (std::abs(d) < EPS || (std::abs(a1) < EPS && std::abs(a2) < EPS)){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! 3 points on the same line!\nTip: use perpendicular line.");
+            return;
+        }
+
         //forget the previous p1, p2, p3 (because order was random)
         p1 = b->getThreePoints()[0];
         p2 = b->getThreePoints()[1];
