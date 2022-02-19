@@ -16,6 +16,7 @@ Obj_menu::~Obj_menu()
 
 void Obj_menu::on_Name_Ok_Button_clicked()
 {
-    content = ui->Name_Edit->text();
+    *content = ui->Name_Edit->text();
+    close();
 }
 

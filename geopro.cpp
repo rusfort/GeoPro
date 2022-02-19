@@ -650,9 +650,12 @@ void GeoPro::on_actionChange_object_label_triggered()
             return;
         }
 
+        QString newname;
         menu = new Obj_menu(this);
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->setContentPtr(&newname);
         menu->exec();
-        p->changeLabel(menu->getContent());
+        p->changeLabel(newname);
     }
     b->unselectAll();
     b->update();

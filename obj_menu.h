@@ -13,7 +13,7 @@ class Obj_menu : public QDialog
 
 public:
     explicit Obj_menu(QWidget *parent = nullptr);
-    QString getContent() {return content;}
+    void setContentPtr(QString *ptr) {content = ptr;}
     ~Obj_menu();
 
 private slots:
@@ -21,7 +21,7 @@ private slots:
 
 private:
     Ui::Obj_menu *ui;
-    QString content;
+    QString *content;
 };
 
 #endif // OBJ_MENU_H
