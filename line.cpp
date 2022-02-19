@@ -124,8 +124,8 @@ std::pair<QPointF, QPointF> Line::get_draw_pair(){
     if (L < EPS) L = EPS;
     if (L > A/2) L = A/2;
     QPointF dr = res1 - res2;
-    QPointF p1 = res1 + (S_len + A) / L * dr;
-    QPointF p2 = res1 + (-S_len - A) / L * dr;
+    QPointF p1 = res1 + (S_len / mBoard->scale + A) / L * dr;
+    QPointF p2 = res1 + (-S_len / mBoard->scale - A) / L * dr;
     return std::make_pair(p1, p2);
 }
 
