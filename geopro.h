@@ -70,6 +70,12 @@ private slots:
 
     void change_label(GOBJ* obj);
 
+    void on_actionAngle_by_3_points_triggered();
+
+    void on_actionAngle_by_the_ray_and_point_triggered();
+
+    void on_actionAngle_by_the_ray_and_degree_measure_triggered();
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;

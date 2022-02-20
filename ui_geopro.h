@@ -56,6 +56,9 @@ public:
     QAction *actionGrid;
     QAction *actionBack_to_original_view;
     QAction *actionChange_object_label;
+    QAction *actionAngle_by_3_points;
+    QAction *actionAngle_by_the_ray_and_point;
+    QAction *actionAngle_by_the_ray_and_degree_measure;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QMenuBar *menuBar;
@@ -72,7 +75,7 @@ public:
     {
         if (GeoPro->objectName().isEmpty())
             GeoPro->setObjectName(QString::fromUtf8("GeoPro"));
-        GeoPro->resize(849, 546);
+        GeoPro->resize(849, 649);
         GeoPro->setCursor(QCursor(Qt::ArrowCursor));
         QIcon icon;
         icon.addFile(QString::fromUtf8("../\320\230\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\321\217/\320\241\320\275\320\270\320\274\320\276\320\272 \321\215\320\272\321\200\320\260\320\275\320\260 \320\276\321\202 2022-01-13 23-40-10.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -149,6 +152,12 @@ public:
         actionBack_to_original_view->setObjectName(QString::fromUtf8("actionBack_to_original_view"));
         actionChange_object_label = new QAction(GeoPro);
         actionChange_object_label->setObjectName(QString::fromUtf8("actionChange_object_label"));
+        actionAngle_by_3_points = new QAction(GeoPro);
+        actionAngle_by_3_points->setObjectName(QString::fromUtf8("actionAngle_by_3_points"));
+        actionAngle_by_the_ray_and_point = new QAction(GeoPro);
+        actionAngle_by_the_ray_and_point->setObjectName(QString::fromUtf8("actionAngle_by_the_ray_and_point"));
+        actionAngle_by_the_ray_and_degree_measure = new QAction(GeoPro);
+        actionAngle_by_the_ray_and_degree_measure->setObjectName(QString::fromUtf8("actionAngle_by_the_ray_and_degree_measure"));
         centralWidget = new QWidget(GeoPro);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -217,6 +226,9 @@ public:
         menuNew_object->addAction(actionRay);
         menuNew_object->addAction(actionCircle_by_the_center_radius);
         menuNew_object->addAction(actionCircle_by_3_points);
+        menuNew_object->addAction(actionAngle_by_3_points);
+        menuNew_object->addAction(actionAngle_by_the_ray_and_point);
+        menuNew_object->addAction(actionAngle_by_the_ray_and_degree_measure);
         menuConstruct->addAction(actionIntersection);
         menuConstruct->addAction(actionMiddle_Center);
         menuConstruct->addAction(actionParallel_line);
@@ -237,6 +249,9 @@ public:
         mainToolBar->addAction(actionParallel_line);
         mainToolBar->addAction(actionPerpendicular_line);
         mainToolBar->addAction(actionBisector);
+        mainToolBar->addAction(actionAngle_by_3_points);
+        mainToolBar->addAction(actionAngle_by_the_ray_and_point);
+        mainToolBar->addAction(actionAngle_by_the_ray_and_degree_measure);
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionHide_selected_objects);
         mainToolBar->addAction(actionShow_all_hidden_objects);
@@ -349,6 +364,9 @@ public:
         actionGrid->setText(QApplication::translate("GeoPro", "Grid", nullptr));
         actionBack_to_original_view->setText(QApplication::translate("GeoPro", "Back to original view", nullptr));
         actionChange_object_label->setText(QApplication::translate("GeoPro", "Change object label", nullptr));
+        actionAngle_by_3_points->setText(QApplication::translate("GeoPro", "Angle by 3 points", nullptr));
+        actionAngle_by_the_ray_and_point->setText(QApplication::translate("GeoPro", "Angle by the ray and point", nullptr));
+        actionAngle_by_the_ray_and_degree_measure->setText(QApplication::translate("GeoPro", "Angle by the ray and degree measure", nullptr));
         menuFile->setTitle(QApplication::translate("GeoPro", "&File", nullptr));
         menuEdit->setTitle(QApplication::translate("GeoPro", "&Edit", nullptr));
         menuBackground->setTitle(QApplication::translate("GeoPro", "Background...", nullptr));

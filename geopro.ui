@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>849</width>
-    <height>546</height>
+    <height>649</height>
    </rect>
   </property>
   <property name="cursor">
@@ -76,6 +76,9 @@
     <addaction name="actionRay"/>
     <addaction name="actionCircle_by_the_center_radius"/>
     <addaction name="actionCircle_by_3_points"/>
+    <addaction name="actionAngle_by_3_points"/>
+    <addaction name="actionAngle_by_the_ray_and_point"/>
+    <addaction name="actionAngle_by_the_ray_and_degree_measure"/>
    </widget>
    <widget class="QMenu" name="menuConstruct">
     <property name="title">
@@ -135,6 +138,9 @@
    <addaction name="actionParallel_line"/>
    <addaction name="actionPerpendicular_line"/>
    <addaction name="actionBisector"/>
+   <addaction name="actionAngle_by_3_points"/>
+   <addaction name="actionAngle_by_the_ray_and_point"/>
+   <addaction name="actionAngle_by_the_ray_and_degree_measure"/>
    <addaction name="separator"/>
    <addaction name="actionHide_selected_objects"/>
    <addaction name="actionShow_all_hidden_objects"/>
@@ -388,6 +394,21 @@
   <action name="actionChange_object_label">
    <property name="text">
     <string>Change object label</string>
+   </property>
+  </action>
+  <action name="actionAngle_by_3_points">
+   <property name="text">
+    <string>Angle by 3 points</string>
+   </property>
+  </action>
+  <action name="actionAngle_by_the_ray_and_point">
+   <property name="text">
+    <string>Angle by the ray and point</string>
+   </property>
+  </action>
+  <action name="actionAngle_by_the_ray_and_degree_measure">
+   <property name="text">
+    <string>Angle by the ray and degree measure</string>
    </property>
   </action>
  </widget>

@@ -668,3 +668,21 @@ void GeoPro::change_label(GOBJ* obj){
     obj->changeLabel(Label);
 }
 
+
+void GeoPro::on_actionAngle_by_3_points_triggered()
+{
+    //TODO
+}
+
+
+void GeoPro::on_actionAngle_by_the_ray_and_point_triggered()
+{
+    //TODO
+}
+
+
+void GeoPro::on_actionAngle_by_the_ray_and_degree_measure_triggered()
+{
+    //TODO
+}
+

@@ -29,6 +29,7 @@ private:
     qreal _degrees;       //degree measure
     qreal _x0, _y0;       //_x0, _y0 - vertex coords
     qreal scr_x0, scr_y0; //the same, but actual on the screen
+    bool fixed_degrees;   // = true if the Angle was set with fixed degree measure
 };
 
 #endif // ANGLE_H

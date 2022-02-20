@@ -14,6 +14,7 @@
 #include "service.h"
 
 #define EPS 0.0001
+#define PI 3.14159265
 
 class GOBJ;
 class Point;
