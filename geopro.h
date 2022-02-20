@@ -76,9 +76,12 @@ private slots:
 
     void on_actionAngle_by_the_ray_and_degree_measure_triggered();
 
+    bool getThreePoints(const QString& Obj_name, const QString& Err_msg);
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;
+    std::vector<Point*> threePoints;
 public:
     GeoBoard *b;
 };

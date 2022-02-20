@@ -191,68 +191,81 @@ void GeoPro::on_actionCircle_by_the_center_radius_triggered()
     b->setMouseTracking(true);
 }
 
-void GeoPro::on_actionCircle_by_3_points_triggered()
-{
-    if(b->numitemstoadd > 0) return;
+bool GeoPro::getThreePoints(const QString& Obj_name, const QString& Err_msg){
+    if(b->numitemstoadd > 0) return false;
     if(b->num_obj_selected > 3 || (b->num_obj_selected < 3 && b->num_obj_selected > 0)){
-        QMessageBox::critical(b, "CIRCLE ERROR", "Need 3 points!");
+        QMessageBox::critical(b, Obj_name + " ERROR", "Need 3 points!");
         b->unselectAll();
         b->update();
-        return;
+        return false;
     }
     if(b->num_obj_selected == 0){
-        QMessageBox::warning(b, "CIRCLE WARNING", "Select 3 points!");
-        return;
+        QMessageBox::warning(b, Obj_name + " WARNING", "Select 3 points!");
+        return false;
     }
-    if(b->num_obj_selected == 3){
-        GOBJ* p1 = 0;
-        GOBJ* p2 = 0;
-        GOBJ* p3 = 0;
-        for (auto& obj : b->getAllObj()){
-            if (obj->isSelected()){
-                if (!p1) {
-                    p1 = obj;
-                    continue;
-                }
-                if(!p2) {
-                    p2 = obj;
-                    continue;
-                }
-                p3 = obj;
-                break;
+
+    GOBJ* p1 = 0;
+    GOBJ* p2 = 0;
+    GOBJ* p3 = 0;
+    for (auto& obj : b->getAllObj()){
+        if (obj->isSelected()){
+            if (!p1) {
+                p1 = obj;
+                continue;
             }
+            if(!p2) {
+                p2 = obj;
+                continue;
+            }
+            p3 = obj;
+            break;
         }
-        if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT || p3->type_is() != GObj_Type::POINT){
-            b->unselectAll();
-            b->update();
-            QMessageBox::critical(b, "CIRCLE ERROR", "Cannot build a circle! Need 3 points.");
-            return;
-        }
-        auto params = getCircleCenterAndRadius(static_cast<Point*>(p1), static_cast<Point*>(p2), static_cast<Point*>(p3));
-        if (params.second < EPS){
-            b->unselectAll();
-            b->update();
-            QMessageBox::critical(b, "CIRCLE ERROR", "Cannot build a circle! 3 points on the same line!");
-            return;
-        }
-        Point* cen = new Point(b, params.first.x(), params.first.y());
-        Circle* C = new Circle(b, cen, params.second);
-        if (C->r() < EPS) C->exists = false;
-        else C->exists = true;
-        b->connect_objects(cen, C, Child_Type::Middle);
-        b->connect_objects(p1, cen, Child_Type::OnThreePoints);
-        b->connect_objects(p2, cen, Child_Type::OnThreePoints);
-        b->connect_objects(p3, cen, Child_Type::OnThreePoints);
-        b->addObject(C);
-        b->addObject(cen);
-        C->basePoints.push_back(static_cast<Point*>(p1));
-        C->basePoints.push_back(static_cast<Point*>(p2));
-        C->basePoints.push_back(static_cast<Point*>(p3));
-        C->recalculate();
+    }
+    if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT || p3->type_is() != GObj_Type::POINT){
         b->unselectAll();
         b->update();
+        QMessageBox::critical(b, Obj_name + " ERROR", Err_msg);
+        return false;
+    }
+
+    threePoints.clear();
+    threePoints.push_back(static_cast<Point*>(p1));
+    threePoints.push_back(static_cast<Point*>(p2));
+    threePoints.push_back(static_cast<Point*>(p3));
+
+    return true;
+}
+
+void GeoPro::on_actionCircle_by_3_points_triggered()
+{
+    if(!getThreePoints("CIRCLE", "Cannot build a circle! Need 3 points.")) return;
+    Point* p1 = threePoints[0];
+    Point* p2 = threePoints[1];
+    Point* p3 = threePoints[2];
+    auto params = getCircleCenterAndRadius(p1, p2, p3);
+    if (params.second < EPS){
+        b->unselectAll();
+        b->update();
+        QMessageBox::critical(b, "CIRCLE ERROR", "Cannot build a circle! 3 points on the same line!");
         return;
     }
+    Point* cen = new Point(b, params.first.x(), params.first.y());
+    Circle* C = new Circle(b, cen, params.second);
+    if (C->r() < EPS) C->exists = false;
+    else C->exists = true;
+    b->connect_objects(cen, C, Child_Type::Middle);
+    b->connect_objects(p1, cen, Child_Type::OnThreePoints);
+    b->connect_objects(p2, cen, Child_Type::OnThreePoints);
+    b->connect_objects(p3, cen, Child_Type::OnThreePoints);
+    b->addObject(C);
+    b->addObject(cen);
+    C->basePoints.push_back(p1);
+    C->basePoints.push_back(p2);
+    C->basePoints.push_back(p3);
+    C->recalculate();
+    b->unselectAll();
+    b->update();
+    return;
 }
 
 void GeoPro::on_actionMiddle_Center_triggered()
@@ -490,99 +503,61 @@ void GeoPro::on_actionPerpendicular_line_triggered()
 
 void GeoPro::on_actionBisector_triggered()
 {
-    if(b->numitemstoadd > 0) return;
-    if(b->num_obj_selected > 3 || (b->num_obj_selected < 3 && b->num_obj_selected > 0)){
-        QMessageBox::critical(b, "BISECTOR ERROR", "Need 3 points!");
+    if(!getThreePoints("BISECTOR", "Cannot build a bisector! Need 3 points.")) return;
+    auto point1 = threePoints[0];
+    auto point2 = threePoints[1];
+    auto point3 = threePoints[2];
+
+    qreal a1 = point1->X - point2->X;
+    qreal b1 = point1->Y - point2->Y;
+    qreal a2 = point1->X - point3->X;
+    qreal b2 = point1->Y - point3->Y;
+    qreal d = b2 * a1 - b1 * a2;
+
+    if (std::abs(d) < EPS || (std::abs(a1) < EPS && std::abs(a2) < EPS)){
         b->unselectAll();
         b->update();
+        QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! 3 points on the same line!\nTip: use perpendicular line.");
         return;
     }
-    if(b->num_obj_selected == 0){
-        QMessageBox::warning(b, "BISECTOR WARNING", "Select 3 points!");
-        return;
-    }
-    if(b->num_obj_selected == 3){
-        GOBJ* p1 = 0;
-        GOBJ* p2 = 0;
-        GOBJ* p3 = 0;
-        for (auto& obj : b->getAllObj()){
-            if (obj->isSelected()){
-                if(!p1) {
-                    p1 = obj;
-                    continue;
-                }
-                if(!p2) {
-                    p2 = obj;
-                    continue;
-                }
-                if(!p3) {
-                    p3 = obj;
-                    break;
-                }
-            }
-        }
-        //check that only points are selected
-        if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT || p3->type_is() != GObj_Type::POINT){
-            b->unselectAll();
-            b->update();
-            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! Need 3 points.");
-            return;
-        }
 
-        //check if 3 points are not on one line
-        auto point1 = static_cast<Point*>(p1);
-        auto point2 = static_cast<Point*>(p2);
-        auto point3 = static_cast<Point*>(p3);
-        qreal a1 = point1->X - point2->X;
-        qreal b1 = point1->Y - point2->Y;
-        qreal a2 = point1->X - point3->X;
-        qreal b2 = point1->Y - point3->Y;
-        qreal d = b2 * a1 - b1 * a2;
+    //forget the previous p1, p2, p3 (because order was random)
+    auto p1 = b->getThreePoints()[0];
+    auto p2 = b->getThreePoints()[1];
+    auto p3 = b->getThreePoints()[2];
 
-        if (std::abs(d) < EPS || (std::abs(a1) < EPS && std::abs(a2) < EPS)){
-            b->unselectAll();
-            b->update();
-            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! 3 points on the same line!\nTip: use perpendicular line.");
-            return;
-        }
+    b->clear_threePoints();
 
-        //forget the previous p1, p2, p3 (because order was random)
-        p1 = b->getThreePoints()[0];
-        p2 = b->getThreePoints()[1];
-        p3 = b->getThreePoints()[2];
+    QPointF res1 = QPointF(static_cast<Point*>(p1)->X, static_cast<Point*>(p1)->Y);
+    QPointF res2 = QPointF(static_cast<Point*>(p2)->X, static_cast<Point*>(p2)->Y);
+    QPointF res3 = QPointF(static_cast<Point*>(p3)->X, static_cast<Point*>(p3)->Y);
+    auto L32 = QLineF(res3, res2).length();
+    auto L12 = QLineF(res1, res2).length();
 
-        b->clear_threePoints();
-
-        QPointF res1 = QPointF(static_cast<Point*>(p1)->X, static_cast<Point*>(p1)->Y);
-        QPointF res2 = QPointF(static_cast<Point*>(p2)->X, static_cast<Point*>(p2)->Y);
-        QPointF res3 = QPointF(static_cast<Point*>(p3)->X, static_cast<Point*>(p3)->Y);
-        auto L32 = QLineF(res3, res2).length();
-        auto L12 = QLineF(res1, res2).length();
-
-        if (L12 < EPS || L32 < EPS){
-            b->unselectAll();
-            b->update();
-            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! Points are too close.");
-            return;
-        } else {
-            QPointF dr1 = res1 - res2;
-            QPointF dr3 = res3 - res2;
-            QPointF dr2 = dr1/L12 + dr3/L32;
-            QPointF bisector_point = res2 + dr2;
-            Point *b_p = new Point(b, bisector_point.x(), bisector_point.y());
-            Ray *r = new Ray(b, static_cast<Point*>(p2), b_p);
-            r->exists = true;
-            b->connect_objects(p1, r, Child_Type::Bisector);
-            b->connect_objects(p2, r, Child_Type::Bisector);
-            b->connect_objects(p3, r, Child_Type::Bisector);
-            b->addObject(r);
-            r->recalculate();
-        }
-
+    if (L12 < EPS || L32 < EPS){
         b->unselectAll();
         b->update();
+        QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! Points are too close.");
         return;
+    } else {
+        QPointF dr1 = res1 - res2;
+        QPointF dr3 = res3 - res2;
+        QPointF dr2 = dr1/L12 + dr3/L32;
+        QPointF bisector_point = res2 + dr2;
+        Point *b_p = new Point(b, bisector_point.x(), bisector_point.y());
+        Ray *r = new Ray(b, static_cast<Point*>(p2), b_p);
+        r->exists = true;
+        b->connect_objects(p1, r, Child_Type::Bisector);
+        b->connect_objects(p2, r, Child_Type::Bisector);
+        b->connect_objects(p3, r, Child_Type::Bisector);
+        b->addObject(r);
+        r->recalculate();
     }
+
+    b->unselectAll();
+    b->update();
+    return;
+
 }
 
 
@@ -671,7 +646,99 @@ void GeoPro::change_label(GOBJ* obj){
 
 void GeoPro::on_actionAngle_by_3_points_triggered()
 {
-    //TODO
+    if(b->numitemstoadd > 0) return;
+    if(b->num_obj_selected > 3 || (b->num_obj_selected < 3 && b->num_obj_selected > 0)){
+        QMessageBox::critical(b, "ANGLE ERROR", "Need 3 points!");
+        b->unselectAll();
+        b->update();
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "ANGLE WARNING", "Select 3 points!");
+        return;
+    }
+    if(b->num_obj_selected == 3){
+        GOBJ* p1 = 0;
+        GOBJ* p2 = 0;
+        GOBJ* p3 = 0;
+        for (auto& obj : b->getAllObj()){
+            if (obj->isSelected()){
+                if(!p1) {
+                    p1 = obj;
+                    continue;
+                }
+                if(!p2) {
+                    p2 = obj;
+                    continue;
+                }
+                if(!p3) {
+                    p3 = obj;
+                    break;
+                }
+            }
+        }
+        //check that only points are selected
+        if (p1->type_is() != GObj_Type::POINT || p2->type_is() != GObj_Type::POINT || p3->type_is() != GObj_Type::POINT){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "ANGLE ERROR", "Cannot build an angle! Need 3 points.");
+            return;
+        }
+        /*
+        //check if 3 points are not on one line
+        auto point1 = static_cast<Point*>(p1);
+        auto point2 = static_cast<Point*>(p2);
+        auto point3 = static_cast<Point*>(p3);
+        qreal a1 = point1->X - point2->X;
+        qreal b1 = point1->Y - point2->Y;
+        qreal a2 = point1->X - point3->X;
+        qreal b2 = point1->Y - point3->Y;
+        qreal d = b2 * a1 - b1 * a2;
+
+        if (std::abs(d) < EPS || (std::abs(a1) < EPS && std::abs(a2) < EPS)){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! 3 points on the same line!\nTip: use perpendicular line.");
+            return;
+        }
+
+        //forget the previous p1, p2, p3 (because order was random)
+        p1 = b->getThreePoints()[0];
+        p2 = b->getThreePoints()[1];
+        p3 = b->getThreePoints()[2];
+
+        b->clear_threePoints();
+
+        QPointF res1 = QPointF(static_cast<Point*>(p1)->X, static_cast<Point*>(p1)->Y);
+        QPointF res2 = QPointF(static_cast<Point*>(p2)->X, static_cast<Point*>(p2)->Y);
+        QPointF res3 = QPointF(static_cast<Point*>(p3)->X, static_cast<Point*>(p3)->Y);
+        auto L32 = QLineF(res3, res2).length();
+        auto L12 = QLineF(res1, res2).length();
+
+        if (L12 < EPS || L32 < EPS){
+            b->unselectAll();
+            b->update();
+            QMessageBox::critical(b, "BISECTOR ERROR", "Cannot build a bisector! Points are too close.");
+            return;
+        } else {
+            QPointF dr1 = res1 - res2;
+            QPointF dr3 = res3 - res2;
+            QPointF dr2 = dr1/L12 + dr3/L32;
+            QPointF bisector_point = res2 + dr2;
+            Point *b_p = new Point(b, bisector_point.x(), bisector_point.y());
+            Ray *r = new Ray(b, static_cast<Point*>(p2), b_p);
+            r->exists = true;
+            b->connect_objects(p1, r, Child_Type::Bisector);
+            b->connect_objects(p2, r, Child_Type::Bisector);
+            b->connect_objects(p3, r, Child_Type::Bisector);
+            b->addObject(r);
+            r->recalculate();
+        }
+
+        b->unselectAll();
+        b->update();*/
+        return;
+    }
 }
 
 
