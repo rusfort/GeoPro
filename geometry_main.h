@@ -27,7 +27,12 @@ struct ObjLabel{
     int font_size = 15;
     int pos_x = 10;    //relative position
     int pos_y = 10;    //relative position
+    int stringHeight = 0;
+    int stringWidth = 0;
+    int left = 0;
+    int top = 0;
     QString font = "Times";
+    bool label_grabbed = false;
 };
 
 class GOBJ : public QObject{
@@ -71,7 +76,10 @@ public:
     }
     QString getLabel() const {return obj_label.label;}
     void changeLabel(const QString& new_label) {obj_label.label = new_label;}
-    bool labelCaught(QPoint p);
+    virtual bool labelCaught(QPoint p);
+    void labelSetGrabbed(bool grabbed = true) {obj_label.label_grabbed = grabbed;}
+    bool labelGrabbed() {return obj_label.label_grabbed;}
+    virtual void moveLabel(QPointF newpos);
     void delObj();
     void checkExistance();
     GeoBoard* board() const { return mBoard; }

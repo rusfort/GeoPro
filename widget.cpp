@@ -155,9 +155,9 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     if(numitemstoadd == 0 && misscliked){ //label movements
         for(auto obj : mObjects){
             if (obj->labelCaught(Pos)){
-                //TODO
+                obj->labelSetGrabbed();
                 break;
-            }
+            } else obj->labelSetGrabbed(false);
         }
     }
 
@@ -349,6 +349,10 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
             obj->move(e->pos());
             board_grabbed = false;
         }
+        if(obj->labelGrabbed()){
+            obj->moveLabel(e->pos());
+            board_grabbed = false;
+        }
     }
 
     if (board_grabbed){
@@ -360,6 +364,7 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
         }
         update();
     }
+    update();
 }
 
 void GeoBoard::mouseReleaseEvent(QMouseEvent* e){

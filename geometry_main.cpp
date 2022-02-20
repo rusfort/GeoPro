@@ -46,9 +46,13 @@ void GOBJ::checkExistance(){
 }
 
 bool GOBJ::labelCaught(QPoint p){
+    Q_UNUSED(p);
     if (getLabel() == "") return false;
-    //TODO
     return false;
+}
+
+void GOBJ::moveLabel(QPointF newpos){
+    Q_UNUSED(newpos);
 }
 
 

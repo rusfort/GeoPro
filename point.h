@@ -18,6 +18,8 @@ public:
     void move(QPointF newPos) override;
     void changeView() override;
     void recalculate() override;
+    bool labelCaught(QPoint p) override;
+    void moveLabel(QPointF newpos) override;
 signals:
     void posChanged();
 private:

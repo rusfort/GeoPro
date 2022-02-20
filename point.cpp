@@ -456,7 +456,11 @@ void Point::draw(){
     p.drawEllipse(QPointF(scr_x, scr_y), mRadius, mRadius);
 
     p.setFont(QFont(obj_label.font, obj_label.font_size, QFont::Bold));
-
+    QFontMetrics metrics = p.fontMetrics();
+    obj_label.stringHeight = metrics.ascent() + metrics.descent();
+    obj_label.stringWidth = metrics.width(obj_label.label);
+    obj_label.left = scr_x + obj_label.pos_x;
+    obj_label.top = scr_y + obj_label.pos_y - metrics.ascent();
     p.drawText(QPointF(scr_x + obj_label.pos_x, scr_y + obj_label.pos_y), obj_label.label);
 }
 
@@ -531,6 +535,23 @@ void Point::changeView(){
 
 bool Point::isCaught(QPointF p){
     return QLineF(QPointF(scr_x, scr_y), p).length() < mRadius + 2;
+}
+
+bool Point::labelCaught(QPoint p){
+    if (getLabel() == "") return false;
+    return (p.x() >= obj_label.left && p.y() >= obj_label.top &&
+            p.x() <= obj_label.left + obj_label.stringWidth &&
+            p.y() <= obj_label.top + obj_label.stringHeight);
+}
+
+void Point::moveLabel(QPointF newpos){
+    const int max_offset = 5;
+    if (newpos.x() >= scr_x - mRadius - max_offset - obj_label.stringWidth && newpos.x() <= scr_x + mRadius + max_offset)
+        obj_label.pos_x = newpos.x() - scr_x;
+    auto ascent = scr_y + obj_label.pos_y - obj_label.top;
+    auto descent = obj_label.stringHeight - ascent;
+    if (newpos.y() >= scr_y - mRadius - max_offset - descent && newpos.y() <= scr_y + mRadius + max_offset + ascent)
+        obj_label.pos_y = newpos.y() - scr_y;
 }
 
 void Point::setFixOnFigure(GOBJ* Figure){
