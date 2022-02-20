@@ -10,6 +10,7 @@
 #include "line.h"
 #include "segment.h"
 #include "circle.h"
+#include "angle.h"
 
 Point::Point(GeoBoard* board, double x, double y, double radius, QColor color) :
     GOBJ(board, GObj_Type::POINT, false, true, color), mRadius(radius)

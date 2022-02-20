@@ -24,6 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    angle.cpp \
     circle.cpp \
     line.cpp \
         main.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
     geometry_main.cpp
 
 HEADERS += \
+    angle.h \
     circle.h \
         geopro.h \
     line.h \

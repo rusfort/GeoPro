@@ -9,6 +9,7 @@
 #include "ray.h"
 #include "segment.h"
 #include "circle.h"
+#include "angle.h"
 
 void GeoBoard::paintEvent(QPaintEvent*)
 {

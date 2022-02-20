@@ -10,6 +10,7 @@
 #include "ray.h"
 #include "segment.h"
 #include "circle.h"
+#include "angle.h"
 
 Line::Line(GeoBoard* board, Point* p1, Point* p2) :
     GOBJ(board, GObj_Type::LINE, true, true, p1->color()), mP1(p1), mP2(p2)

@@ -10,6 +10,7 @@
 #include "ray.h"
 #include "line.h"
 #include "segment.h"
+#include "angle.h"
 
 Circle::Circle(GeoBoard* board, Point* c, qreal radius) :
     GOBJ(board, GObj_Type::CIRCLE, true, true, c->color()), center(c), _r(radius)
