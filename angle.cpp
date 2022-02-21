@@ -57,6 +57,8 @@ void Angle::recalculate(){
         qreal second_deg = acos(dx2 / d2) * 180 / PI;
         if (dy2 > 0) second_deg = -second_deg;
         _degrees = second_deg - _startdeg;
+        if (_degrees > 180) _degrees = -360 + _degrees;
+        else if (_degrees < -180) _degrees = 360 + _degrees;
     }
 }
 
@@ -65,15 +67,21 @@ void Angle::draw(){
     recalculate();
     if (!is_visible()) return;
 
-    QRectF rectangle(100.0, 200.0, 50.0, 50.0); //test!
+    QRectF rectangle(vertex->scr_x - _radius, vertex->scr_y - _radius, 2*_radius, 2*_radius);
     int startAngle = _startdeg * 16;
     int spanAngle = _degrees * 16;
+
+    if (180 - std::abs(_degrees) < EPS) return;
 
     QPainter p;
     p.begin(mBoard);
     p.setRenderHint(QPainter::Antialiasing);
-    p.setPen(Qt::blue);
-    p.setBrush(QBrush(Qt::blue));
+    p.setPen(mColor);
+    p.setBrush(QBrush(mColor));
+    if(mIsSelected){
+        p.setPen(Qt::blue);
+        p.setBrush(QBrush(Qt::blue));
+    }
     p.drawPie(rectangle, startAngle, spanAngle);
 }
 
@@ -83,7 +91,13 @@ void Angle::changeView(){
 
 bool Angle::isCaught(QPointF p){
     recalculate();
-    //
+    auto d = QLineF(QPointF(vertex->scr_x, vertex->scr_y), p).length();
+    if (d > _radius) return false;
+    auto dx = p.x() - vertex->scr_x;
+    auto dy = p.y() - vertex->scr_y;
+    auto deg = acos(dx / d) * 180 / PI;
+    if (dy > 0) deg = -deg;
+    if (deg > _startdeg && deg < _startdeg + _degrees) return true; //NOT correct!
     return false;
 }
 
