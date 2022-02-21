@@ -27,11 +27,11 @@ Angle::Angle(GeoBoard* board, Ray* ray, qreal deg) :
     auto d = QLineF(QPointF(vertex->X, vertex->Y), QPointF(mP1->X, mP1->Y)).length();
     auto dx = mP1->X - vertex->X;
     auto dy = mP1->Y - vertex->Y;
-    qreal init_deg = acos(dx / d);
-    if (dy < 0) init_deg = -init_deg;
+    qreal init_deg = acos(dx / d) * 180 / PI;
+    if (dy > 0) init_deg = -init_deg;
     init_deg += deg;
 
-    mP2 = new Point(board, vertex->X + 10 * cos(init_deg), vertex->Y + 10 * sin(init_deg));
+    mP2 = new Point(board, vertex->X + 10 * cos(init_deg / 180 * PI), vertex->Y + 10 * sin(init_deg / 180 * PI));
     _degrees = deg;
 }
 
@@ -44,19 +44,19 @@ void Angle::recalculate(){
     auto d = QLineF(QPointF(vertex->X, vertex->Y), QPointF(mP1->X, mP1->Y)).length();
     auto dx = mP1->X - vertex->X;
     auto dy = mP1->Y - vertex->Y;
-    qreal first_deg = acos(dx / d);
-    if (dy < 0) first_deg = -first_deg;
+    _startdeg = acos(dx / d) * 180 / PI;
+    if (dy > 0) _startdeg = -_startdeg;
     if (fixed_degrees){
-        first_deg += _degrees;
-        mP2->X = vertex->X + 10 * cos(first_deg);
-        mP2->Y = vertex->Y + 10 * sin(first_deg);
+        _startdeg += _degrees;
+        mP2->X = vertex->X + 10 * cos(_startdeg / 180 * PI);
+        mP2->Y = vertex->Y + 10 * sin(_startdeg / 180 * PI);
     } else {
         auto d2 = QLineF(QPointF(vertex->X, vertex->Y), QPointF(mP2->X, mP2->Y)).length();
         auto dx2 = mP2->X - vertex->X;
         auto dy2 = mP2->Y - vertex->Y;
-        qreal second_deg = acos(dx2 / d2);
-        if (dy2 < 0) second_deg = -second_deg;
-        _degrees = second_deg - first_deg;
+        qreal second_deg = acos(dx2 / d2) * 180 / PI;
+        if (dy2 > 0) second_deg = -second_deg;
+        _degrees = second_deg - _startdeg;
     }
 }
 
@@ -65,11 +65,14 @@ void Angle::draw(){
     recalculate();
     if (!is_visible()) return;
 
-    QRectF rectangle(100.0, 200.0, 500.0, 600.0); //test!
-    int startAngle = 30 * 16; //test!
-    int spanAngle = 120 * 16; //test!
+    QRectF rectangle(100.0, 200.0, 50.0, 50.0); //test!
+    int startAngle = _startdeg * 16;
+    int spanAngle = _degrees * 16;
 
     QPainter p;
+    p.begin(mBoard);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setPen(Qt::blue);
     p.setBrush(QBrush(Qt::blue));
     p.drawPie(rectangle, startAngle, spanAngle);
 }
