@@ -65,7 +65,7 @@ void Angle::draw(){
     recalculate();
     if (!is_visible()) return;
 
-    QRectF rectangle(10.0, 20.0, 80.0, 60.0); //test!
+    QRectF rectangle(100.0, 200.0, 500.0, 600.0); //test!
     int startAngle = 30 * 16; //test!
     int spanAngle = 120 * 16; //test!
 

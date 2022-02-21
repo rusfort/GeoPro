@@ -33,7 +33,8 @@ enum class Child_Type{
     OnCircle,      //for non-free points
     Parallel,      //for non-free lines
     Perpendicular, //for non-free lines
-    Bisector       //for non-free rays
+    Bisector,       //for non-free rays
+    Angle
 };
 
 enum class Intersection_Type{

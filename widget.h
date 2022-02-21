@@ -34,14 +34,15 @@ public:
     std::vector<GOBJ*>& getAllObj(){
         return mObjects;
     }
-    std::vector<Point*>& getThreePoints(){
-        return threePoints;
+    std::vector<Point*>& getThreeOrderedPoints(){
+        return threeOrderedPoints;
     }
-    void clear_threePoints(){
-        threePoints.clear();
+    void clear_threeOrderedPoints(){
+        threeOrderedPoints.clear();
     }
     void drawGrid(QPainter* p);
     void connect_objects(GOBJ* parent_obj, GOBJ* child_obj, Child_Type type); //connecting two objects using parentObjects and childObjects
+    bool onOneLine(const Point* p1, const Point* p2, const Point* p3);
     void paintEvent(QPaintEvent*) override;
     void mousePressEvent(QMouseEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;
@@ -51,7 +52,7 @@ private:
     QColor mColor;
     bool active_grid = false;
     std::vector<GOBJ*> mObjects;
-    std::vector<Point*> threePoints; //for bisector (order is important)
+    std::vector<Point*> threeOrderedPoints; //for bisector (order is important)
     bool board_grabbed = false;
 public:
     QLineEdit *AddLabel;

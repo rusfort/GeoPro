@@ -104,7 +104,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     for(auto obj : mObjects){
         if (obj->isCaught(Pos) && !one_caught && obj->type_is() == GObj_Type::POINT){
             one_caught = true;
-            threePoints.push_back(static_cast<Point*>(obj));
+            threeOrderedPoints.push_back(static_cast<Point*>(obj));
             if (obj->isSelected()){
                 if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
                 else {
@@ -146,12 +146,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             if (obj->isSelected()) num_obj_selected++;
         }
     }
-    if (misscliked){
-        for(auto obj : mObjects)
-           obj->setSelected(false);
-        num_obj_selected = 0;
-        threePoints.clear();
-    }
+    if (misscliked) unselectAll();
 
     if(numitemstoadd == 0 && misscliked){ //label movements
         for(auto obj : mObjects){
@@ -390,6 +385,7 @@ void GeoBoard::unselectAll() {
     for(auto obj : mObjects)
         obj->setSelected(false);
     num_obj_selected = 0;
+    threeOrderedPoints.clear();
 }
 
 void GeoBoard::delObject(GOBJ* obj){
@@ -405,4 +401,15 @@ void GeoBoard::connect_objects(GOBJ* parent_obj, GOBJ* child_obj, Child_Type typ
     child_obj->child_type = type;
     parent_obj->childObjects[child_obj] = type;
     child_obj->parentObjects.push_back(parent_obj);
+}
+
+bool GeoBoard::onOneLine(const Point* p1, const Point* p2, const Point* p3){
+    qreal a1 = p1->X - p2->X;
+    qreal b1 = p1->Y - p2->Y;
+    qreal a2 = p1->X - p3->X;
+    qreal b2 = p1->Y - p3->Y;
+    qreal d = b2 * a1 - b1 * a2;
+
+    if (std::abs(d) < EPS || (std::abs(a1) < EPS && std::abs(a2) < EPS)) return true;
+    return false;
 }
