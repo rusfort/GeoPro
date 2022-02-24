@@ -97,7 +97,24 @@ bool Angle::isCaught(QPointF p){
     auto dy = p.y() - vertex->scr_y;
     auto deg = acos(dx / d) * 180 / PI;
     if (dy > 0) deg = -deg;
-    if (deg > _startdeg && deg < _startdeg + _degrees) return true; //NOT correct!
+    auto enddeg = _startdeg + _degrees;
+
+    if (_startdeg >= 0){
+        if (_degrees < 0 && enddeg < deg && deg < _startdeg) return true;
+        if (_degrees > 0){
+            if (_startdeg < deg && deg < enddeg) return true;
+            if (_startdeg < deg + 360 && deg + 360 < enddeg) return true;
+        }
+    } else {
+        if (_degrees < 0){
+            if (deg > 0) deg -= 360;
+            if (enddeg < deg && deg < _startdeg) return true;
+        } else {
+            if (deg < 0 && _startdeg < deg) return true;
+            if (deg > 0 && deg < enddeg) return true;
+        }
+    }
+
     return false;
 }
 
