@@ -209,6 +209,10 @@ QString getNameOfType(GObj_Type t){
         return "Segment";
     case GObj_Type::CIRCLE:
         return "Circle";
+    case GObj_Type::ANGLE:
+        return "Angle";
+    case GObj_Type::TRIANGLE:
+        return "Triangle";
     default:
         return "None";
     }

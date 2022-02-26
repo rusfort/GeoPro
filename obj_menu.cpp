@@ -81,7 +81,62 @@ void Obj_menu::ui_setup(){
     trace->setFont(font);
     layout->addWidget(visible, 0, 1);
     layout->addWidget(trace, 1, 1);
+
+    switch (gobj->type_is()) {
+    case GObj_Type::POINT:
+        ui_setup_point();
+        break;
+    case GObj_Type::SEGMENT:
+        ui_setup_segment();
+        break;
+    case GObj_Type::LINE:
+        ui_setup_line();
+        break;
+    case GObj_Type::RAY:
+        ui_setup_ray();
+        break;
+    case GObj_Type::CIRCLE:
+        ui_setup_circle();
+        break;
+    case GObj_Type::ANGLE:
+        ui_setup_angle();
+        break;
+    case GObj_Type::TRIANGLE:
+        ui_setup_triangle();
+        break;
+    default:
+        break;
+    }
 }
+
+void Obj_menu::ui_setup_point(){
+    //TODO
+}
+
+void Obj_menu::ui_setup_segment(){
+    //TODO
+}
+
+void Obj_menu::ui_setup_line(){
+    //TODO
+}
+
+void Obj_menu::ui_setup_ray(){
+    //TODO
+}
+
+void Obj_menu::ui_setup_circle(){
+    //TODO
+}
+
+void Obj_menu::ui_setup_angle(){
+    //TODO
+}
+
+void Obj_menu::ui_setup_triangle(){
+    //TODO
+}
+
 
 void Obj_menu::on_Name_Ok_Button_clicked()
 {

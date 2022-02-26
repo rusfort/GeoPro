@@ -17,6 +17,13 @@ public:
     explicit Obj_menu(QWidget *parent = nullptr);
     explicit Obj_menu(QWidget *parent, GOBJ* ptr);
     void ui_setup();
+    void ui_setup_point();
+    void ui_setup_segment();
+    void ui_setup_line();
+    void ui_setup_ray();
+    void ui_setup_circle();
+    void ui_setup_angle();
+    void ui_setup_triangle();
     ~Obj_menu();
 
 private slots:

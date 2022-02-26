@@ -14,15 +14,15 @@
 #include "circle.h"
 
 Angle::Angle(GeoBoard* board, Point* vert, Point* p1, Point* p2) :
-    GOBJ(board, GObj_Type::LINE, true, true, vert->color()), vertex(vert), mP1(p1), mP2(p2), fixed_degrees(false)
+    GOBJ(board, GObj_Type::ANGLE, true, true, vert->color()), vertex(vert), mP1(p1), mP2(p2), fixed_degrees(false)
 {
 }
 Angle::Angle(GeoBoard* board, Ray* ray, Point* p) :
-    GOBJ(board, GObj_Type::LINE, true, true, p->color()), vertex(ray->getFirstPoint()), mP1(ray->getSecondPoint()), mP2(p), fixed_degrees(false)
+    GOBJ(board, GObj_Type::ANGLE, true, true, p->color()), vertex(ray->getFirstPoint()), mP1(ray->getSecondPoint()), mP2(p), fixed_degrees(false)
 {
 }
 Angle::Angle(GeoBoard* board, Ray* ray, qreal deg) :
-    GOBJ(board, GObj_Type::LINE, true, true, ray->color()), vertex(ray->getFirstPoint()), mP1(ray->getSecondPoint()), fixed_degrees(true)
+    GOBJ(board, GObj_Type::ANGLE, true, true, ray->color()), vertex(ray->getFirstPoint()), mP1(ray->getSecondPoint()), fixed_degrees(true)
 {
     auto d = QLineF(QPointF(vertex->X, vertex->Y), QPointF(mP1->X, mP1->Y)).length();
     auto dx = mP1->X - vertex->X;
