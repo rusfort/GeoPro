@@ -2,6 +2,7 @@
 #define OBJ_MENU_H
 
 #include <QDialog>
+#include "geometry_main.h"
 
 namespace Ui {
 class Obj_menu;
@@ -13,7 +14,7 @@ class Obj_menu : public QDialog
 
 public:
     explicit Obj_menu(QWidget *parent = nullptr);
-    void setContentPtr(QString *ptr) {content = ptr;}
+    explicit Obj_menu(QWidget *parent, GOBJ* ptr);
     ~Obj_menu();
 
 private slots:
@@ -21,7 +22,7 @@ private slots:
 
 private:
     Ui::Obj_menu *ui;
-    QString *content;
+    GOBJ* gobj;
 };
 
 #endif // OBJ_MENU_H

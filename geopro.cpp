@@ -609,19 +609,16 @@ void GeoPro::on_actionChange_object_label_triggered()
                 else break;
             }
         }
-        if(p->type_is() != GObj_Type::POINT){
-            QMessageBox::critical(b, "LABEL ERROR", "Sorry, but now you can add a label only to a point.");
+        if(!p){
+            QMessageBox::critical(b, "LABEL ERROR", "NULL OBJECT ERROR");
             b->unselectAll();
             b->update();
             return;
         }
 
-        QString newname;
-        menu = new Obj_menu(this);
+        menu = new Obj_menu(this, p);
         menu->setAttribute(Qt::WA_DeleteOnClose);
-        menu->setContentPtr(&newname);
         menu->exec();
-        p->changeLabel(newname);
     }
     b->unselectAll();
     b->update();

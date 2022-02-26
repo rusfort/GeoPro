@@ -196,3 +196,20 @@ bool onTheOneSide(QPointF firstP, QPointF secondP, QPointF thisP){
 bool rightOrder4(QPointF p1, QPointF p2, QPointF p3, QPointF p4){
     return (onTheOneSide(p1, p2, p3) && onTheOneSide(p2, p3, p4) && onTheOneSide(p4, p3, p2) && onTheOneSide(p3, p2, p1));
 }
+
+QString getNameOfType(GObj_Type t){
+    switch (t) {
+    case GObj_Type::POINT:
+        return "Point";
+    case GObj_Type::LINE:
+        return "Line";
+    case GObj_Type::RAY:
+        return "Ray";
+    case GObj_Type::SEGMENT:
+        return "Segment";
+    case GObj_Type::CIRCLE:
+        return "Circle";
+    default:
+        return "None";
+    }
+}
