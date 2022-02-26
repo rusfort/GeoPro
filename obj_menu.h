@@ -15,6 +15,7 @@ class Obj_menu : public QDialog
 public:
     explicit Obj_menu(QWidget *parent = nullptr);
     explicit Obj_menu(QWidget *parent, GOBJ* ptr);
+    void ui_setup();
     ~Obj_menu();
 
 private slots:
@@ -23,6 +24,7 @@ private slots:
 private:
     Ui::Obj_menu *ui;
     GOBJ* gobj;
+    QGridLayout *layout;
 };
 
 #endif // OBJ_MENU_H
