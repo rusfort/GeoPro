@@ -588,17 +588,17 @@ void GeoPro::on_actionBack_to_original_view_triggered()
 }
 
 
-void GeoPro::on_actionChange_object_label_triggered()
+void GeoPro::on_actionOpen_object_settings_triggered()
 {
     if(b->numitemstoadd > 0) return;
     if(b->num_obj_selected > 1){
-        QMessageBox::critical(b, "LABEL ERROR", "Can add a label only to one point!");
+        QMessageBox::critical(b, "OBJECT SETTINGS ERROR", "Can manage only one object!");
         b->unselectAll();
         b->update();
         return;
     }
     if(b->num_obj_selected == 0){
-        QMessageBox::warning(b, "LABEL WARNING", "Select a point to add a label!");
+        QMessageBox::warning(b, "OBJECT SETTINGS WARNING", "Select an object!");
         return;
     }
     if(b->num_obj_selected == 1){
@@ -610,7 +610,7 @@ void GeoPro::on_actionChange_object_label_triggered()
             }
         }
         if(!p){
-            QMessageBox::critical(b, "LABEL ERROR", "NULL OBJECT ERROR");
+            QMessageBox::critical(b, "OBJECT SETTINGS ERROR", "NULL OBJECT ERROR");
             b->unselectAll();
             b->update();
             return;

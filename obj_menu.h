@@ -2,6 +2,7 @@
 #define OBJ_MENU_H
 
 #include <QDialog>
+#include <QCheckBox>
 #include "geometry_main.h"
 
 namespace Ui {
@@ -25,6 +26,8 @@ private:
     Ui::Obj_menu *ui;
     GOBJ* gobj;
     QGridLayout *layout;
+    QCheckBox *visible;
+    QCheckBox *trace;
 };
 
 #endif // OBJ_MENU_H

@@ -66,7 +66,7 @@ private slots:
 
     void on_actionBack_to_original_view_triggered();
 
-    void on_actionChange_object_label_triggered();
+    void on_actionOpen_object_settings_triggered();
 
     void change_label(GOBJ* obj);
 

@@ -64,7 +64,7 @@
     <addaction name="actionShow_all_hidden_objects"/>
     <addaction name="menuBackground"/>
     <addaction name="actionBack_to_original_view"/>
-    <addaction name="actionChange_object_label"/>
+    <addaction name="actionOpen_object_settings"/>
    </widget>
    <widget class="QMenu" name="menuNew_object">
     <property name="title">
@@ -146,7 +146,7 @@
    <addaction name="actionShow_all_hidden_objects"/>
    <addaction name="actionClear_all"/>
    <addaction name="actionBack_to_original_view"/>
-   <addaction name="actionChange_object_label"/>
+   <addaction name="actionOpen_object_settings"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
@@ -391,9 +391,9 @@
     <string>Back to original view</string>
    </property>
   </action>
-  <action name="actionChange_object_label">
+  <action name="actionOpen_object_settings">
    <property name="text">
-    <string>Change object label</string>
+    <string>Open object settings</string>
    </property>
   </action>
   <action name="actionAngle_by_3_points">

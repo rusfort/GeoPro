@@ -55,7 +55,7 @@ public:
     QAction *actionGray;
     QAction *actionGrid;
     QAction *actionBack_to_original_view;
-    QAction *actionChange_object_label;
+    QAction *actionOpen_object_settings;
     QAction *actionAngle_by_3_points;
     QAction *actionAngle_by_the_ray_and_point;
     QAction *actionAngle_by_the_ray_and_degree_measure;
@@ -150,8 +150,8 @@ public:
         actionGrid->setObjectName(QString::fromUtf8("actionGrid"));
         actionBack_to_original_view = new QAction(GeoPro);
         actionBack_to_original_view->setObjectName(QString::fromUtf8("actionBack_to_original_view"));
-        actionChange_object_label = new QAction(GeoPro);
-        actionChange_object_label->setObjectName(QString::fromUtf8("actionChange_object_label"));
+        actionOpen_object_settings = new QAction(GeoPro);
+        actionOpen_object_settings->setObjectName(QString::fromUtf8("actionOpen_object_settings"));
         actionAngle_by_3_points = new QAction(GeoPro);
         actionAngle_by_3_points->setObjectName(QString::fromUtf8("actionAngle_by_3_points"));
         actionAngle_by_the_ray_and_point = new QAction(GeoPro);
@@ -215,7 +215,7 @@ public:
         menuEdit->addAction(actionShow_all_hidden_objects);
         menuEdit->addAction(menuBackground->menuAction());
         menuEdit->addAction(actionBack_to_original_view);
-        menuEdit->addAction(actionChange_object_label);
+        menuEdit->addAction(actionOpen_object_settings);
         menuBackground->addSeparator();
         menuBackground->addAction(actionWhite);
         menuBackground->addAction(actionGray);
@@ -257,7 +257,7 @@ public:
         mainToolBar->addAction(actionShow_all_hidden_objects);
         mainToolBar->addAction(actionClear_all);
         mainToolBar->addAction(actionBack_to_original_view);
-        mainToolBar->addAction(actionChange_object_label);
+        mainToolBar->addAction(actionOpen_object_settings);
 
         retranslateUi(GeoPro);
         QObject::connect(actionClose, SIGNAL(triggered()), GeoPro, SLOT(close()));
@@ -363,7 +363,7 @@ public:
         actionGray->setText(QApplication::translate("GeoPro", "Gray", nullptr));
         actionGrid->setText(QApplication::translate("GeoPro", "Grid", nullptr));
         actionBack_to_original_view->setText(QApplication::translate("GeoPro", "Back to original view", nullptr));
-        actionChange_object_label->setText(QApplication::translate("GeoPro", "Change object label", nullptr));
+        actionOpen_object_settings->setText(QApplication::translate("GeoPro", "Open object settings", nullptr));
         actionAngle_by_3_points->setText(QApplication::translate("GeoPro", "Angle by 3 points", nullptr));
         actionAngle_by_the_ray_and_point->setText(QApplication::translate("GeoPro", "Angle by the ray and point", nullptr));
         actionAngle_by_the_ray_and_degree_measure->setText(QApplication::translate("GeoPro", "Angle by the ray and degree measure", nullptr));

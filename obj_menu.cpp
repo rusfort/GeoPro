@@ -61,16 +61,26 @@ void Obj_menu::ui_setup(){
     QMetaObject::connectSlotsByName(this);
 
     setWindowTitle(tr("Object menu & settings"));
+
     layout = new QGridLayout();
     ui->verticalLayout->addLayout(layout);
     QLabel *type_label = new QLabel();
-    QLabel *type = new QLabel();
-    type_label->setText("Object type: ");
+    type_label->setText("Object type: " + getNameOfType(gobj->type_is()));
     type_label->setFont(font);
-    type->setText(getNameOfType(gobj->type_is()));
-    type->setFont(font);
+    QLabel *depends_label = new QLabel();
+    QString dep = (gobj->depending) ? "true" : "false";
+    depends_label->setText("Depending: " + dep);
+    depends_label->setFont(font);
     layout->addWidget(type_label, 0, 0);
-    layout->addWidget(type, 0, 1);
+    layout->addWidget(depends_label, 1, 0);
+
+    visible = new QCheckBox("Visible", this);
+    if (gobj->is_visible()) visible->setCheckState(Qt::Checked);
+    visible->setFont(font);
+    trace = new QCheckBox("Leave trace (not availible now)", this);
+    trace->setFont(font);
+    layout->addWidget(visible, 0, 1);
+    layout->addWidget(trace, 1, 1);
 }
 
 void Obj_menu::on_Name_Ok_Button_clicked()
