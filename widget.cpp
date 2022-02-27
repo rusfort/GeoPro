@@ -11,6 +11,8 @@
 #include "circle.h"
 #include "angle.h"
 
+#include "obj_menu.h"
+
 void GeoBoard::paintEvent(QPaintEvent*)
 {
     QPainter p;
@@ -99,6 +101,24 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     bool one_caught = false;
     bool misscliked = true;
     num_obj_selected = 0;
+
+    if(e->button() == Qt::RightButton){ //Object menu opening
+        unselectAll();
+        for(auto obj : mObjects){
+            if (obj->isCaught(Pos)){
+                selected_and_caught = obj;
+                obj->setSelected();
+                num_obj_selected++;
+                break;
+            }
+        }
+        if (num_obj_selected == 0) return;
+        Obj_menu *menu = new Obj_menu(this, selected_and_caught);
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->exec();
+        unselectAll();
+        return;
+    }
 
     //high priority for points
     for(auto obj : mObjects){

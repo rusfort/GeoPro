@@ -16,6 +16,7 @@
 
 class GOBJ;
 class Point;
+class Obj_menu;
 
 class GeoBoard : public QWidget
 {
