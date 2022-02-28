@@ -13,6 +13,9 @@ public:
     void setRad(double rad) { mRadius = rad; }
     void setIntersectionType();
     void setFixOnFigure(GOBJ* Figure);
+    void fix() {fixed = true;}
+    void unfix() {fixed = false;}
+    bool is_fixed() {return fixed;}
     void draw() override;
     bool isCaught(QPointF p) override;
     void move(QPointF newPos) override;
@@ -24,6 +27,7 @@ signals:
     void posChanged();
 private:
     double mRadius;
+    bool fixed = false;
 public:
     qreal X, Y;          //mathematical (native) coords
     qreal mX, mY;        //previous math coords (e.g. for intersection swap check)

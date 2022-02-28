@@ -32,9 +32,13 @@ private slots:
 private:
     Ui::Obj_menu *ui;
     GOBJ* gobj;
+    QFont font;
     QGridLayout *layout;
     QCheckBox *visible;
     QCheckBox *trace;
+    QCheckBox *fixed;
+    QLineEdit *xEdit;
+    QLineEdit *yEdit;
 };
 
 #endif // OBJ_MENU_H

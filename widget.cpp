@@ -97,33 +97,17 @@ void GeoBoard::wheelEvent(QWheelEvent* e){
 void GeoBoard::mousePressEvent(QMouseEvent* e)
 {
     GOBJ* selected_and_caught = 0;
+    GOBJ* selected4menu = 0; //selected for opening the menu
     auto Pos = e->pos();
     bool one_caught = false;
     bool misscliked = true;
     num_obj_selected = 0;
 
-    if(e->button() == Qt::RightButton){ //Object menu opening
-        unselectAll();
-        for(auto obj : mObjects){
-            if (obj->isCaught(Pos)){
-                selected_and_caught = obj;
-                obj->setSelected();
-                num_obj_selected++;
-                break;
-            }
-        }
-        if (num_obj_selected == 0) return;
-        Obj_menu *menu = new Obj_menu(this, selected_and_caught);
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-        menu->exec();
-        unselectAll();
-        return;
-    }
-
     //high priority for points
     for(auto obj : mObjects){
         if (obj->isCaught(Pos) && !one_caught && obj->type_is() == GObj_Type::POINT){
             one_caught = true;
+            if (!selected4menu) selected4menu = obj;
             threeOrderedPoints.push_back(static_cast<Point*>(obj));
             if (obj->isSelected()){
                 if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
@@ -148,6 +132,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         for(auto obj : mObjects){
             if (obj->isCaught(Pos) && !one_caught){
                 one_caught = true;
+                if (!selected4menu) selected4menu = obj;
                 if (obj->isSelected()){
                     if (trytoadd == GObj_Type::NONE) obj->setSelected(false);
                     else {
@@ -167,6 +152,16 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         }
     }
     if (misscliked) unselectAll();
+
+    if(e->button() == Qt::RightButton){ //Object menu opening
+        threeOrderedPoints.clear();
+        Obj_menu *menu = new Obj_menu(parentWidget(), selected4menu);
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->exec();
+        unselectAll();
+        update();
+        return;
+    }
 
     if(numitemstoadd == 0 && misscliked){ //label movements
         for(auto obj : mObjects){

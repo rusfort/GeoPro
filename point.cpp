@@ -466,6 +466,7 @@ void Point::draw(){
 }
 
 void Point::move(QPointF newPos){
+    if (fixed) return;
     if (!depending){
         scr_x = newPos.x();
         scr_y = newPos.y();
