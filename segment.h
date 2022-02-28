@@ -21,6 +21,7 @@ public:
     qreal y2() const {return _y2;}
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
+    void setNumSticks(int n) {num_sticks = (n < 4 && n > -1) ? n : 3;}
 signals:
     void posChanged();
 private:
@@ -29,6 +30,7 @@ private:
     qreal _x1, _y1, _x2, _y2;                 //xi, yi - ends
     qreal scr_x1, scr_y1, scr_x2, scr_y2; //the same, but actual on the screen
     qreal length;
+    int num_sticks; //number of sticks which show the equality
 };
 
 #endif // SEGMENT_H

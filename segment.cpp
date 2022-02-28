@@ -43,14 +43,36 @@ void Segment::draw(){
 
     p.begin(mBoard);
     p.setRenderHint(QPainter::Antialiasing);
+
+    //sticks calculations
+    auto r = p2 - p1;
+    qreal dr = distance(0, 0, r.x(), r.y());
+    qreal ax, ay;
+    if (std::abs(r.x()) < EPS){
+        ax = 1;
+        ay = 0;
+    } else {
+        ay = 1;
+        ax = - r.y() / r.x();
+    }
+    qreal d = sqrt(ax * ax + ay * ay);
+    ax *= 5/d;
+    ay *= 5/d;
+    auto mid = QPointF((p1.x() + p2.x())/2, (p1.y() + p2.y())/2);
+    auto stick = QPointF(ax, ay);
+    //
+
+    p.setPen(mColor);
     if (mIsSelected){
         QPen pen(Qt::blue);
         pen.setWidth(3);
         p.setPen(pen);
-        p.drawLine(p1, p2);
     }
-    p.setPen(mColor);
     p.drawLine(p1, p2);
+
+    if (num_sticks > 0) p.drawLine(mid + stick, mid - stick);
+    if (num_sticks > 1) p.drawLine(mid + 3/dr * r + stick, mid + 3/dr * r - stick);
+    if (num_sticks > 2) p.drawLine(mid - 3/dr * r + stick, mid - 3/dr * r - stick);
 }
 
 void Segment::changeView(){

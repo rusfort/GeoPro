@@ -37,8 +37,10 @@ private:
     QCheckBox *visible;
     QCheckBox *trace;
     QCheckBox *fixed;
+    QCheckBox *show;
     QLineEdit *xEdit;
     QLineEdit *yEdit;
+    QPushButton *numsticks;
 };
 
 #endif // OBJ_MENU_H

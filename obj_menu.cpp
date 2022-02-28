@@ -8,6 +8,7 @@
 #include "angle.h"
 
 #include <QRegExpValidator>
+#include <QMenu>
 
 Obj_menu::Obj_menu(QWidget *parent) :
     QDialog(parent),
@@ -86,6 +87,26 @@ void Obj_menu::ui_setup(){
     layout->addWidget(visible, 1, 1);
     layout->addWidget(trace, 2, 1);
 
+    QPushButton *col_popupButton = new QPushButton(tr("Select color (N/A)"));
+    col_popupButton->setFont(font);
+    QMenu *col_menu = new QMenu();
+    col_menu->addAction(tr("Black"));
+    col_menu->addAction(tr("Red"));
+    col_menu->addAction(tr("Green"));
+    col_menu->addAction(tr("Gray"));
+    col_popupButton->setMenu(col_menu);
+
+    QPushButton *st_popupButton = new QPushButton(tr("Select style (N/A)"));
+    st_popupButton->setFont(font);
+    QMenu *st_menu = new QMenu();
+    st_menu->addAction(tr("Thin"));
+    st_menu->addAction(tr("Thick"));
+    st_menu->addAction(tr("Dashed"));
+    st_popupButton->setMenu(st_menu);
+
+    layout->addWidget(col_popupButton, 3, 0);
+    layout->addWidget(st_popupButton, 3, 1);
+
     switch (gobj->type_is()) {
     case GObj_Type::POINT:
         ui_setup_point();
@@ -121,18 +142,18 @@ void Obj_menu::ui_setup(){
 }
 
 void Obj_menu::ui_setup_point(){
-    resize(450, 200);
+    resize(450, 250);
     auto p = static_cast<Point*>(gobj);
     QString x = QString::number(p->X);
     QString y = QString::number(p->Y);
     QLabel *coordsx = new QLabel();
     coordsx->setText("x = " + x);
     coordsx->setFont(font);
-    layout->addWidget(coordsx, 3, 0);
+    layout->addWidget(coordsx, 4, 0);
     QLabel *coordsy = new QLabel();
     coordsy->setText("y = " + y);
     coordsy->setFont(font);
-    layout->addWidget(coordsy, 4, 0);
+    layout->addWidget(coordsy, 5, 0);
 
     QRegExpValidator* rxv = new QRegExpValidator(QRegExp("[+-]?\\d*"), this);
 
@@ -160,8 +181,8 @@ void Obj_menu::ui_setup_point(){
     horLO2->addWidget(yLabel);
     if (!gobj->depending) horLO2->addWidget(yEdit);
 
-    layout->addLayout(horLO1, 3, 1);
-    layout->addLayout(horLO2, 4, 1);
+    layout->addLayout(horLO1, 4, 1);
+    layout->addLayout(horLO2, 5, 1);
 
     fixed = new QCheckBox("Fix the point");
     if (p->is_fixed()) fixed->setCheckState(Qt::Checked);
@@ -169,12 +190,35 @@ void Obj_menu::ui_setup_point(){
     auto cannot_fix = new QLabel();
     cannot_fix->setObjectName(QString::fromUtf8("cannot_fix"));
     cannot_fix->setText(QApplication::translate("Obj_menu", "Cannot fix (depending object)", nullptr));
-    if (!gobj->depending) layout->addWidget(fixed, 5, 1);
-    else layout->addWidget(cannot_fix, 5, 1);
+    if (!gobj->depending) layout->addWidget(fixed, 6, 1);
+    else layout->addWidget(cannot_fix, 6, 1);
 }
 
 void Obj_menu::ui_setup_segment(){
-    //TODO
+    resize(450, 200);
+
+    auto s = static_cast<Segment*>(gobj);
+    QString l = QString::number(s->getlength());
+    QLabel *len = new QLabel();
+    len->setText("length = " + l);
+    len->setFont(font);
+    layout->addWidget(len, 4, 0);
+
+    show = new QCheckBox("Show length (not availible now)");
+    //if (s->len_showed()) show->setCheckState(Qt::Checked); //will be added soon
+    show->setFont(font);
+    layout->addWidget(show, 4, 1);
+
+    /*numsticks = new QPushButton(tr("Equality sticks"));
+    numsticks->setFont(font);
+    QMenu *col_menu = new QMenu();
+    col_menu->addAction(tr("No sticks"));
+    col_menu->addAction(tr("1"));
+    col_menu->addAction(tr("2"));
+    col_menu->addAction(tr("3"));
+    numsticks->setMenu(col_menu);
+
+    layout->addWidget(numsticks, 5, 1);*/
 }
 
 void Obj_menu::ui_setup_line(){
