@@ -105,7 +105,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
 
     //high priority for points
     for(auto obj : mObjects){
-        if (obj->isCaught(Pos) && !one_caught && obj->type_is() == GObj_Type::POINT){
+        if (obj->isCaught(Pos) && !one_caught && obj->type_is() == GObj_Type::POINT && obj->is_visible()){
             one_caught = true;
             if (!selected4menu) selected4menu = obj;
             threeOrderedPoints.push_back(static_cast<Point*>(obj));
@@ -130,7 +130,7 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     if(!one_caught){
         num_obj_selected = 0;
         for(auto obj : mObjects){
-            if (obj->isCaught(Pos) && !one_caught){
+            if (obj->isCaught(Pos) && !one_caught && obj->is_visible()){
                 one_caught = true;
                 if (!selected4menu) selected4menu = obj;
                 if (obj->isSelected()){
@@ -155,9 +155,11 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
 
     if(e->button() == Qt::RightButton){ //Object menu opening
         threeOrderedPoints.clear();
-        Obj_menu *menu = new Obj_menu(parentWidget(), selected4menu);
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-        menu->exec();
+        if (selected4menu){
+            Obj_menu *menu = new Obj_menu(parentWidget(), selected4menu);
+            menu->setAttribute(Qt::WA_DeleteOnClose);
+            menu->exec();
+        }
         unselectAll();
         update();
         return;

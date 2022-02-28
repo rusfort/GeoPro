@@ -30,7 +30,7 @@ private:
     qreal _x1, _y1, _x2, _y2;                 //xi, yi - ends
     qreal scr_x1, scr_y1, scr_x2, scr_y2; //the same, but actual on the screen
     qreal length;
-    int num_sticks; //number of sticks which show the equality
+    int num_sticks = 0; //number of sticks which show the equality
 };
 
 #endif // SEGMENT_H
