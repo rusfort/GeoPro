@@ -23,7 +23,11 @@
 
 GeoPro::GeoPro(QWidget *parent) : QMainWindow(parent), ui(new Ui::GeoPro) {
     ui->setupUi(this);
-    setWindowTitle(tr("GeoPro 0.0.2 [alpha] by Nikolay Kozakov"));
+    setWindowTitle(tr("GeoPro 0.0.3 [alpha] by Nikolay Kozakov"));
+
+    auto ex = new QShortcut(this);
+    ex->setKey(Qt::Key_Backspace);
+    connect(ex, SIGNAL(activated()), this, SLOT(on_actionDelete_selected_objects_triggered()));
 
     b = new GeoBoard(this);
     setCentralWidget(b);
