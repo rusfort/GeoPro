@@ -9,6 +9,8 @@
 
 #include <QRegExpValidator>
 #include <QMenu>
+#include <QGroupBox>
+#include <QRadioButton>
 
 Obj_menu::Obj_menu(QWidget *parent) :
     QDialog(parent),
@@ -39,7 +41,7 @@ void Obj_menu::ui_setup(){
     sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth());
     setSizePolicy(sizePolicy);
     setMinimumSize(QSize(400, 100));
-    setMaximumSize(QSize(500, 500));
+    setMaximumSize(QSize(600, 500));
     ui->verticalLayout = new QVBoxLayout(this);
     ui->verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
     ui->horizontalLayout = new QHBoxLayout();
@@ -195,7 +197,7 @@ void Obj_menu::ui_setup_point(){
 }
 
 void Obj_menu::ui_setup_segment(){
-    resize(450, 200);
+    resize(550, 300);
 
     auto s = static_cast<Segment*>(gobj);
     QString l = QString::number(s->getlength());
@@ -211,14 +213,41 @@ void Obj_menu::ui_setup_segment(){
 
     /*numsticks = new QPushButton(tr("Equality sticks"));
     numsticks->setFont(font);
-    QMenu *col_menu = new QMenu();
-    col_menu->addAction(tr("No sticks"));
-    col_menu->addAction(tr("1"));
-    col_menu->addAction(tr("2"));
-    col_menu->addAction(tr("3"));
-    numsticks->setMenu(col_menu);
+    QMenu *stick_menu = new QMenu();
+    stick_menu->addAction(tr("No sticks"));
+    stick_menu->addAction(tr("1"));
+    stick_menu->addAction(tr("2"));
+    stick_menu->addAction(tr("3"));
+    numsticks->setMenu(stick_menu);*/
 
-    layout->addWidget(numsticks, 5, 1);*/
+    /*numsticks = new QGroupBox(tr("Equality sticks"));
+    QRadioButton *radio0 = new QRadioButton(tr("No sticks"));
+    QRadioButton *radio1 = new QRadioButton(tr("1"));
+    QRadioButton *radio2 = new QRadioButton(tr("2"));
+    QRadioButton *radio3 = new QRadioButton(tr("3"));
+    radio0->setChecked(true);
+    QVBoxLayout *vbox = new QVBoxLayout;
+    vbox->addWidget(radio0);
+    vbox->addWidget(radio1);
+    vbox->addWidget(radio2);
+    vbox->addWidget(radio3);
+    numsticks->setLayout(vbox);*/
+
+    QRegExpValidator* rxv = new QRegExpValidator(QRegExp("[0-3]\\d{0}"), this);
+    auto horLO = new QHBoxLayout();
+    horLO->setObjectName(QString::fromUtf8("horLO"));
+    auto stickLabel = new QLabel();
+    stickLabel->setObjectName(QString::fromUtf8("label"));
+    stickLabel->setText(QApplication::translate("Obj_menu", "Set number of equality sticks (0-3):", nullptr));
+    stickLabel->setFont(font);
+    stickEdit = new QLineEdit();
+    stickEdit->setObjectName(QString::fromUtf8("stickEdit"));
+    stickEdit->setValidator(rxv);
+    horLO->addWidget(stickLabel);
+    horLO->addWidget(stickEdit);
+    layout->addLayout(horLO, 5, 1);
+
+
 }
 
 void Obj_menu::ui_setup_line(){
@@ -262,9 +291,12 @@ void Obj_menu::on_Name_Ok_Button_clicked()
         else p->unfix();
         break;
     }
-    case GObj_Type::SEGMENT:
-        //TODO
+    case GObj_Type::SEGMENT:{
+        auto s = static_cast<Segment*>(gobj);
+        auto newNum = stickEdit->text();
+        if (newNum != "") s->setNumSticks(newNum.toInt());
         break;
+    }
     case GObj_Type::LINE:
         //TODO
         break;
@@ -286,5 +318,10 @@ void Obj_menu::on_Name_Ok_Button_clicked()
 
     gobj->changeView();
     close();
+}
+
+void Obj_menu::setnumsticks(){
+    auto s = static_cast<Segment*>(gobj);
+    s->setNumSticks(2);
 }
 

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QCheckBox>
+#include <QGroupBox>
 #include "geometry_main.h"
 
 namespace Ui {
@@ -24,6 +25,7 @@ public:
     void ui_setup_circle();
     void ui_setup_angle();
     void ui_setup_triangle();
+    void setnumsticks();
     ~Obj_menu();
 
 private slots:
@@ -40,7 +42,8 @@ private:
     QCheckBox *show;
     QLineEdit *xEdit;
     QLineEdit *yEdit;
-    QPushButton *numsticks;
+    QLineEdit *stickEdit;
+    QGroupBox *numsticks;
 };
 
 #endif // OBJ_MENU_H
