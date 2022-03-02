@@ -56,6 +56,9 @@ public:
     inline GObj_Type type_is() const{
         return type;
     }
+    inline Child_Type get_child_type() const{
+        return child_type;
+    }
     QColor color() const{
         return mColor;
     }
@@ -142,5 +145,6 @@ intersect_sol get_inter_solution (const Line* l, const Circle* C);
 bool onTheOneSide(QPointF firstP, QPointF secondP, QPointF thisP); //returns 'true' if thisP and secondP lie on the one side of firstP and 'false' otherwise
 bool rightOrder4(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 QString getNameOfType(GObj_Type t);
+QString getNameOfChildType(Child_Type t);
 
 #endif // GEOMETRY_MAIN_H

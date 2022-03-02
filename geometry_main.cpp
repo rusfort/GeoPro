@@ -217,3 +217,18 @@ QString getNameOfType(GObj_Type t){
         return "None";
     }
 }
+
+QString getNameOfChildType(Child_Type t){
+    switch (t) {
+    case Child_Type::Parallel:
+        return "Parallel";
+    case Child_Type::Perpendicular:
+        return "Perpendicular";
+    case Child_Type::OnTwoPoints:
+        return "Standard";
+    case Child_Type::Bisector:
+        return "Bisector";
+    default:
+        return "Unknown";
+    }
+}

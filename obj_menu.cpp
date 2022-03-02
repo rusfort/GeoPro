@@ -246,16 +246,78 @@ void Obj_menu::ui_setup_segment(){
     horLO->addWidget(stickLabel);
     horLO->addWidget(stickEdit);
     layout->addLayout(horLO, 5, 1);
-
-
 }
 
 void Obj_menu::ui_setup_line(){
-    //TODO
+    resize(500, 250);
+    auto l = static_cast<Line*>(gobj);
+    QString k = QString::number(l->k());
+    bool negX = false;
+    bool negY = false;
+    auto getX = l->x0();
+    if (getX < 0){
+        negX = true;
+        getX = -getX;
+    }
+    auto getY = l->y0();
+    if (getY < 0){
+        negY = true;
+        getY = -getY;
+    }
+    QString x0 = QString::number(getX);
+    QString y0 = QString::number(getY);
+    QLabel *equation_label = new QLabel();
+    equation_label->setText("Line equation: ");
+    equation_label->setFont(font);
+    layout->addWidget(equation_label, 4, 0);
+    QLabel *equation = new QLabel();
+    if (!negX && !negY) equation->setText("y - " + y0 + " = " + k + " * (x - " + x0 + ")");
+    if ( negX && !negY) equation->setText("y - " + y0 + " = " + k + " * (x + " + x0 + ")");
+    if (!negX &&  negY) equation->setText("y + " + y0 + " = " + k + " * (x - " + x0 + ")");
+    if ( negX &&  negY) equation->setText("y + " + y0 + " = " + k + " * (x + " + x0 + ")");
+    equation->setFont(font);
+    layout->addWidget(equation, 4, 1);
+
+    QLabel *line_type = new QLabel();
+    line_type->setText("Line type: " + getNameOfChildType(gobj->get_child_type()));
+    line_type->setFont(font);
+    layout->addWidget(line_type, 5, 0);
 }
 
 void Obj_menu::ui_setup_ray(){
-    //TODO
+    resize(500, 250);
+    auto r = static_cast<Ray*>(gobj);
+    QString k = QString::number(r->k());
+    bool negX = false;
+    bool negY = false;
+    auto getX = r->x0();
+    if (getX < 0){
+        negX = true;
+        getX = -getX;
+    }
+    auto getY = r->y0();
+    if (getY < 0){
+        negY = true;
+        getY = -getY;
+    }
+    QString x0 = QString::number(getX);
+    QString y0 = QString::number(getY);
+    QLabel *equation_label = new QLabel();
+    equation_label->setText("Ray (line) equation: ");
+    equation_label->setFont(font);
+    layout->addWidget(equation_label, 4, 0);
+    QLabel *equation = new QLabel();
+    if (!negX && !negY) equation->setText("y - " + y0 + " = " + k + " * (x - " + x0 + ")");
+    if ( negX && !negY) equation->setText("y - " + y0 + " = " + k + " * (x + " + x0 + ")");
+    if (!negX &&  negY) equation->setText("y + " + y0 + " = " + k + " * (x - " + x0 + ")");
+    if ( negX &&  negY) equation->setText("y + " + y0 + " = " + k + " * (x + " + x0 + ")");
+    equation->setFont(font);
+    layout->addWidget(equation, 4, 1);
+
+    QLabel *ray_type = new QLabel();
+    ray_type->setText("Ray type: " + getNameOfChildType(gobj->get_child_type()));
+    ray_type->setFont(font);
+    layout->addWidget(ray_type, 5, 0);
 }
 
 void Obj_menu::ui_setup_circle(){
