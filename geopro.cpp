@@ -38,18 +38,14 @@ void GeoPro::closeEvent (QCloseEvent *event)
     if (reply != QMessageBox::Yes) {
         event->ignore();
     } else {
+        b->getAllObj().clear();
+        b->update();
         event->accept();
     }
 }
 
 void GeoPro::on_actionClose_triggered()
 {
-    /*QMessageBox::StandardButton reply = QMessageBox::question(this, "EXIT", "Are you sure you want to exit?",
-                                                              QMessageBox::Yes | QMessageBox::No);
-    if (reply == QMessageBox::Yes){
-        exited = true;
-        QApplication::quit();
-    }*/
 }
 
 void GeoPro::on_actionPoint_triggered()

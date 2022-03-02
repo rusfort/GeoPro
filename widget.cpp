@@ -84,7 +84,9 @@ void GeoBoard::drawGrid(QPainter* p){
 void GeoBoard::addObject(GOBJ* obj) {
     mObjects.push_back(obj);
     if (!obj->childObjects.empty()){
-        for (auto ob : obj->childObjects) mObjects.push_back(ob.first);
+        for (auto ob : obj->childObjects){
+            addObject(ob.first);
+        }
     }
 }
 

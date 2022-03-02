@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <limits>
 #include "math.h"
 #include <QPainter>
@@ -22,28 +22,36 @@ Triangle::Triangle(GeoBoard* board, Point* p1, Point* p2, Point* p3) :
     hgt_i = new Point(board);
     mdp_i = new Point(board);
     eul_c = new Point(board);
+    edge_a = new Segment(board, p2, p3);
+    edge_b = new Segment(board, p3, p1);
+    edge_c = new Segment(board, p1, p2);
     in = new Circle(board, bis_i, 100);
     cir = new Circle(board, mdp_i, 100);
     Euler = new Circle(board, eul_c, 100);
-    _alpha = new Angle(board, p3, p1, p2);
+    _alpha = new Angle(board, mP3, mP1, mP2);
     _alpha->setNumArcs(1);
     _beta  = new Angle(board, p1, p2, p3);
     _beta->setNumArcs(2);
     _gamma = new Angle(board, p2, p3, p1);
     _gamma->setNumArcs(3);
-    board->connect_objects(this, bis_i, Child_Type::InTriangle);
-    board->connect_objects(this, med_i, Child_Type::InTriangle);
-    board->connect_objects(this, hgt_i, Child_Type::InTriangle);
-    board->connect_objects(this, mdp_i, Child_Type::InTriangle);
-    board->connect_objects(this, eul_c, Child_Type::InTriangle);
-    board->connect_objects(this, in, Child_Type::InTriangle);
-    board->connect_objects(this, cir, Child_Type::InTriangle);
-    board->connect_objects(this, Euler, Child_Type::InTriangle);
+    board->connect_objects(this, bis_i,  Child_Type::InTriangle);
+    board->connect_objects(this, med_i,  Child_Type::InTriangle);
+    board->connect_objects(this, hgt_i,  Child_Type::InTriangle);
+    board->connect_objects(this, mdp_i,  Child_Type::InTriangle);
+    board->connect_objects(this, eul_c,  Child_Type::InTriangle);
+    board->connect_objects(this, in,     Child_Type::InTriangle);
+    board->connect_objects(this, cir,    Child_Type::InTriangle);
+    board->connect_objects(this, Euler,  Child_Type::InTriangle);
+    board->connect_objects(this, edge_a, Child_Type::InTriangle);
+    board->connect_objects(this, edge_b, Child_Type::InTriangle);
+    board->connect_objects(this, edge_c, Child_Type::InTriangle);
     board->connect_objects(this, _alpha, Child_Type::InTriangle);
-    board->connect_objects(this, _beta, Child_Type::InTriangle);
+    board->connect_objects(this, _beta,  Child_Type::InTriangle);
     board->connect_objects(this, _gamma, Child_Type::InTriangle);
 }
 
+Triangle::~Triangle(){
+}
 
 void Triangle::recalculate(){
     checkExistance();
