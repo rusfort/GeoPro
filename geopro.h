@@ -78,6 +78,8 @@ private slots:
 
     bool getThreePoints(const QString& Obj_name, const QString& Err_msg);
 
+    void on_actionTriangle_triggered();
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;

@@ -79,6 +79,7 @@
     <addaction name="actionAngle_by_3_points"/>
     <addaction name="actionAngle_by_the_ray_and_point"/>
     <addaction name="actionAngle_by_the_ray_and_degree_measure"/>
+    <addaction name="actionTriangle"/>
    </widget>
    <widget class="QMenu" name="menuConstruct">
     <property name="title">
@@ -141,6 +142,7 @@
    <addaction name="actionAngle_by_3_points"/>
    <addaction name="actionAngle_by_the_ray_and_point"/>
    <addaction name="actionAngle_by_the_ray_and_degree_measure"/>
+   <addaction name="actionTriangle"/>
    <addaction name="separator"/>
    <addaction name="actionHide_selected_objects"/>
    <addaction name="actionShow_all_hidden_objects"/>
@@ -409,6 +411,11 @@
   <action name="actionAngle_by_the_ray_and_degree_measure">
    <property name="text">
     <string>Angle by the ray and degree measure</string>
+   </property>
+  </action>
+  <action name="actionTriangle">
+   <property name="text">
+    <string>Triangle</string>
    </property>
   </action>
  </widget>

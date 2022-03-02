@@ -20,6 +20,7 @@ Circle::Circle(GeoBoard* board, Point* c, qreal radius) :
 void Circle::recalculate(){
     checkExistance();
     if (!exists) return;
+    if (child_type == Child_Type::InTriangle) return;
     if (child_type == Child_Type::OnTwoPoints){
         scr_r = sqrt((basePoints[0]->scr_x - basePoints[1]->scr_x) * (basePoints[0]->scr_x - basePoints[1]->scr_x) +
                      (basePoints[0]->scr_y - basePoints[1]->scr_y) * (basePoints[0]->scr_y - basePoints[1]->scr_y));

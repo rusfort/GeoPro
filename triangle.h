@@ -27,6 +27,7 @@ private:
     Point *med_i;  //medians intersection
     Point *hgt_i;  //heights intersection
     Point *mdp_i;  //midperpendiculars intersection (circumscribed circle center)
+    Point *eul_c;  //Euler circle center
     Circle *in;    //inscribed circle
     Circle *cir;   //circumscribed circle
     Circle *Euler; //Euler circle

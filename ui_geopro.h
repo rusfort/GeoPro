@@ -59,6 +59,7 @@ public:
     QAction *actionAngle_by_3_points;
     QAction *actionAngle_by_the_ray_and_point;
     QAction *actionAngle_by_the_ray_and_degree_measure;
+    QAction *actionTriangle;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QMenuBar *menuBar;
@@ -158,6 +159,8 @@ public:
         actionAngle_by_the_ray_and_point->setObjectName(QString::fromUtf8("actionAngle_by_the_ray_and_point"));
         actionAngle_by_the_ray_and_degree_measure = new QAction(GeoPro);
         actionAngle_by_the_ray_and_degree_measure->setObjectName(QString::fromUtf8("actionAngle_by_the_ray_and_degree_measure"));
+        actionTriangle = new QAction(GeoPro);
+        actionTriangle->setObjectName(QString::fromUtf8("actionTriangle"));
         centralWidget = new QWidget(GeoPro);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -229,6 +232,7 @@ public:
         menuNew_object->addAction(actionAngle_by_3_points);
         menuNew_object->addAction(actionAngle_by_the_ray_and_point);
         menuNew_object->addAction(actionAngle_by_the_ray_and_degree_measure);
+        menuNew_object->addAction(actionTriangle);
         menuConstruct->addAction(actionIntersection);
         menuConstruct->addAction(actionMiddle_Center);
         menuConstruct->addAction(actionParallel_line);
@@ -252,6 +256,7 @@ public:
         mainToolBar->addAction(actionAngle_by_3_points);
         mainToolBar->addAction(actionAngle_by_the_ray_and_point);
         mainToolBar->addAction(actionAngle_by_the_ray_and_degree_measure);
+        mainToolBar->addAction(actionTriangle);
         mainToolBar->addSeparator();
         mainToolBar->addAction(actionHide_selected_objects);
         mainToolBar->addAction(actionShow_all_hidden_objects);
@@ -367,6 +372,7 @@ public:
         actionAngle_by_3_points->setText(QApplication::translate("GeoPro", "Angle by 3 points", nullptr));
         actionAngle_by_the_ray_and_point->setText(QApplication::translate("GeoPro", "Angle by the ray and point", nullptr));
         actionAngle_by_the_ray_and_degree_measure->setText(QApplication::translate("GeoPro", "Angle by the ray and degree measure", nullptr));
+        actionTriangle->setText(QApplication::translate("GeoPro", "Triangle", nullptr));
         menuFile->setTitle(QApplication::translate("GeoPro", "&File", nullptr));
         menuEdit->setTitle(QApplication::translate("GeoPro", "&Edit", nullptr));
         menuBackground->setTitle(QApplication::translate("GeoPro", "Background...", nullptr));

@@ -19,6 +19,7 @@
 #include "segment.h"
 #include "circle.h"
 #include "angle.h"
+#include "triangle.h"
 
 GeoPro::GeoPro(QWidget *parent) : QMainWindow(parent), ui(new Ui::GeoPro) {
     ui->setupUi(this);
@@ -739,5 +740,37 @@ void GeoPro::on_actionAngle_by_the_ray_and_point_triggered()
 void GeoPro::on_actionAngle_by_the_ray_and_degree_measure_triggered()
 {
     QMessageBox::information(b, "ANGLE BY DEGREE MEASURE", "Will be available in beta :)");
+}
+
+
+void GeoPro::on_actionTriangle_triggered()
+{
+    if(!getThreePoints("TRIANGLE", "Cannot build a triangle! Need 3 points.")) return;
+    if (b->onOneLine(threePoints[0], threePoints[1], threePoints[2])){
+        b->unselectAll();
+        b->update();
+        QMessageBox::critical(b, "TRIANGLE ERROR", "Cannot build a triangle! 3 points on the same line!");
+        return;
+    }
+
+    //forget the previous points (because order was random)
+    auto p1 = b->getThreeOrderedPoints()[0];
+    auto p2 = b->getThreeOrderedPoints()[1];
+    auto p3 = b->getThreeOrderedPoints()[2];
+
+    b->clear_threeOrderedPoints();
+
+
+    Triangle *t = new Triangle(b, p1, p2, p3);
+    t->exists = true;
+    b->connect_objects(p1, t, Child_Type::Triangle);
+    b->connect_objects(p2, t, Child_Type::Triangle);
+    b->connect_objects(p3, t, Child_Type::Triangle);
+    b->addObject(t);
+    t->recalculate();
+
+    b->unselectAll();
+    b->update();
+    return;
 }
 

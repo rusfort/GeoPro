@@ -28,7 +28,7 @@ public:
     void setGrid(bool active = true) {active_grid = active;}
     void selectAll();
     void unselectAll();
-    void addObject(GOBJ* obj) { mObjects.push_back(obj); }
+    void addObject(GOBJ* obj);
     void delObject(GOBJ* obj);
     QPointF getScreenView (const QPointF& math_point);
     QPointF getMathPoint (const QPointF& screen_point);
