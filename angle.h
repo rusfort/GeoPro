@@ -22,6 +22,7 @@ public:
     Point* getVertex() const {return vertex;}
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
+    void setNumArcs(int n) {num_arcs = (n < 4 && n > -1) ? n : 3;}
 signals:
     void posChanged();
 private:
@@ -32,6 +33,7 @@ private:
     qreal _x0, _y0;       //_x0, _y0 - vertex coords
     qreal scr_x0, scr_y0; //the same, but actual on the screen
     bool fixed_degrees;   // = true if the Angle was set with fixed degree measure
+    int num_arcs = 0; //number of arcs which show the equality
 };
 
 #endif // ANGLE_H

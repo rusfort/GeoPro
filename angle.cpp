@@ -77,12 +77,20 @@ void Angle::draw(){
     p.begin(mBoard);
     p.setRenderHint(QPainter::Antialiasing);
     p.setPen(mColor);
-    p.setBrush(QBrush(mColor));
+    if (num_arcs == 0) p.setBrush(QBrush(mColor));
     if(mIsSelected){
         p.setPen(Qt::blue);
-        p.setBrush(QBrush(Qt::blue));
+        if (num_arcs == 0) p.setBrush(QBrush(Qt::blue));
     }
     p.drawPie(rectangle, startAngle, spanAngle);
+    if (num_arcs >= 2){
+        QRectF rectangle2(vertex->scr_x - _radius + 3, vertex->scr_y - _radius + 3, 2*_radius - 6, 2*_radius - 6);
+        p.drawArc(rectangle2, startAngle, spanAngle);
+    }
+    if (num_arcs == 3){
+        QRectF rectangle3(vertex->scr_x - _radius + 6, vertex->scr_y - _radius + 6, 2*_radius - 12, 2*_radius - 12);
+        p.drawArc(rectangle3, startAngle, spanAngle);
+    }
 }
 
 void Angle::changeView(){

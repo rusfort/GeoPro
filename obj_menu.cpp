@@ -342,7 +342,33 @@ void Obj_menu::ui_setup_circle(){
 }
 
 void Obj_menu::ui_setup_angle(){
-    //TODO
+    resize(550, 300);
+
+    auto a = static_cast<Angle*>(gobj);
+    QString d = QString::number(a->degrees());
+    QLabel *len = new QLabel();
+    len->setText("degree measure = " + d);
+    len->setFont(font);
+    layout->addWidget(len, 4, 0);
+
+    show = new QCheckBox("Show degree measure \n(not availible now)");
+    //if (s->deg_showed()) show->setCheckState(Qt::Checked); //will be added soon
+    show->setFont(font);
+    layout->addWidget(show, 4, 1);
+
+    QRegExpValidator* rxv = new QRegExpValidator(QRegExp("[0-3]\\d{0}"), this);
+    auto horLO = new QHBoxLayout();
+    horLO->setObjectName(QString::fromUtf8("horLO"));
+    auto stickLabel = new QLabel();
+    stickLabel->setObjectName(QString::fromUtf8("label"));
+    stickLabel->setText(QApplication::translate("Obj_menu", "Set number of equality arcs (0-3):", nullptr));
+    stickLabel->setFont(font);
+    stickEdit = new QLineEdit();
+    stickEdit->setObjectName(QString::fromUtf8("stickEdit"));
+    stickEdit->setValidator(rxv);
+    horLO->addWidget(stickLabel);
+    horLO->addWidget(stickEdit);
+    layout->addLayout(horLO, 5, 1);
 }
 
 void Obj_menu::ui_setup_triangle(){
@@ -385,9 +411,12 @@ void Obj_menu::on_Name_Ok_Button_clicked()
     case GObj_Type::CIRCLE:
         //TODO
         break;
-    case GObj_Type::ANGLE:
-        //TODO
+    case GObj_Type::ANGLE:{
+        auto a = static_cast<Angle*>(gobj);
+        auto newNum = stickEdit->text();
+        if (newNum != "") a->setNumArcs(newNum.toInt());
         break;
+    }
     case GObj_Type::TRIANGLE:
         //TODO
         break;
