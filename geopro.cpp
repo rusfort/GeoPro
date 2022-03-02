@@ -760,7 +760,6 @@ void GeoPro::on_actionTriangle_triggered()
 
     b->clear_threeOrderedPoints();
 
-
     Triangle *t = new Triangle(b, p1, p2, p3);
     t->exists = true;
     b->connect_objects(p1, t, Child_Type::Triangle);

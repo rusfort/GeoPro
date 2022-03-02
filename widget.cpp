@@ -133,10 +133,11 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
         }
         if (obj->isSelected()) num_obj_selected++;
     }
-    //WARNING: CODE DUPLICATING! FIX: mObject has to be a multimap sorted by the obj type
+
     if(!one_caught){
         num_obj_selected = 0;
-        for(auto obj : mObjects){
+        for(auto it = mObjects.rbegin(); it != mObjects.rend(); ++it){
+            auto obj = *it;
             if (obj->isCaught(Pos) && !one_caught && obj->is_visible()){
                 one_caught = true;
                 if (!selected4menu) selected4menu = obj;
