@@ -678,12 +678,66 @@ void GeoPro::on_actionAngle_by_3_points_triggered()
 
 void GeoPro::on_actionAngle_by_the_ray_and_point_triggered()
 {
-    //TODO
+    if(b->numitemstoadd > 0) return;
+    if(b->num_obj_selected > 2 || b->num_obj_selected == 1){
+        QMessageBox::critical(b, "ANGLE ERROR", "This type of angle need one ray and one point!");
+        b->unselectAll();
+        b->update();
+        return;
+    }
+    if(b->num_obj_selected == 0){
+        QMessageBox::warning(b, "ANGLE WARNING", "Select one ray and one point!");
+        return;
+    }
+
+    GOBJ* o1 = 0;
+    GOBJ* o2 = 0;
+
+    for (auto& obj : b->getAllObj()){
+        if (obj->isSelected()){
+            if(!o1) {
+                o1 = obj;
+                continue;
+            }
+            if(!o2) {
+                o2 = obj;
+                break;
+            }
+        }
+    }
+
+    if ((o1->type_is() != GObj_Type::POINT && o2->type_is() != GObj_Type::POINT)
+            || (o1->type_is() != GObj_Type::RAY && o2->type_is() != GObj_Type::RAY)){
+        b->unselectAll();
+        b->update();
+        QMessageBox::critical(b, "ANGLE ERROR", "Cannot build an angle! This type of angle need one ray and one point.");
+        return;
+    }
+
+    if (o1->type_is() != GObj_Type::POINT) std::swap(o1, o2);
+
+    auto r = static_cast<Ray*>(o2);
+    auto p = static_cast<Point*>(o1);
+
+    if (b->onOneLine(p, r->getFirstPoint(), r->getSecondPoint())){
+        b->unselectAll();
+        b->update();
+        QMessageBox::critical(b, "ANGLE ERROR", "Cannot build an angle! Three points on the one line.");
+        return;
+    }
+
+    Angle *a = new Angle(b, r, p);
+    a->exists = true;
+    b->connect_objects(o1, a, Child_Type::Angle);
+    b->connect_objects(o2, a, Child_Type::Angle);
+    b->addObject(a);
+    a->recalculate();
+    b->update();
 }
 
 
 void GeoPro::on_actionAngle_by_the_ray_and_degree_measure_triggered()
 {
-    //TODO
+    QMessageBox::information(b, "ANGLE BY DEGREE MEASURE", "Will be available in beta :)");
 }
 
