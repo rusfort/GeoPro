@@ -17,6 +17,9 @@ public:
     qreal a() const;
     qreal b() const;
     qreal c() const;
+    qreal alpha() const;
+    qreal beta() const;
+    qreal gamma() const;
     qreal perimeter() const {return a() + b() + c();}
     qreal area() const;
 signals:
@@ -31,6 +34,9 @@ private:
     Circle *in;    //inscribed circle
     Circle *cir;   //circumscribed circle
     Circle *Euler; //Euler circle
+    Angle *_alpha;
+    Angle *_beta;
+    Angle *_gamma;
 };
 
 #endif // TRIANGLE_H

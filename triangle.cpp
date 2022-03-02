@@ -25,6 +25,12 @@ Triangle::Triangle(GeoBoard* board, Point* p1, Point* p2, Point* p3) :
     in = new Circle(board, bis_i, 100);
     cir = new Circle(board, mdp_i, 100);
     Euler = new Circle(board, eul_c, 100);
+    _alpha = new Angle(board, p3, p1, p2);
+    _alpha->setNumArcs(1);
+    _beta  = new Angle(board, p1, p2, p3);
+    _beta->setNumArcs(2);
+    _gamma = new Angle(board, p2, p3, p1);
+    _gamma->setNumArcs(3);
     board->connect_objects(this, bis_i, Child_Type::InTriangle);
     board->connect_objects(this, med_i, Child_Type::InTriangle);
     board->connect_objects(this, hgt_i, Child_Type::InTriangle);
@@ -33,6 +39,9 @@ Triangle::Triangle(GeoBoard* board, Point* p1, Point* p2, Point* p3) :
     board->connect_objects(this, in, Child_Type::InTriangle);
     board->connect_objects(this, cir, Child_Type::InTriangle);
     board->connect_objects(this, Euler, Child_Type::InTriangle);
+    board->connect_objects(this, _alpha, Child_Type::InTriangle);
+    board->connect_objects(this, _beta, Child_Type::InTriangle);
+    board->connect_objects(this, _gamma, Child_Type::InTriangle);
 }
 
 
@@ -152,4 +161,14 @@ qreal Triangle::c() const{
 qreal Triangle::area() const{
     auto p = perimeter()/2;
     return sqrt(p * (p - a()) * (p - b()) * (p - c()));
+}
+
+qreal Triangle::alpha() const{
+    return _alpha->degrees();
+}
+qreal Triangle::beta() const{
+    return _beta->degrees();
+}
+qreal Triangle::gamma() const{
+    return _gamma->degrees();
 }

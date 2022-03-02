@@ -22,6 +22,7 @@ class Line;
 class Ray;
 class Segment;
 class Circle;
+class Angle;
 
 struct ObjLabel{
     QString label = "";
