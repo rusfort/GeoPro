@@ -40,10 +40,6 @@ void Circle::recalculate(){
         center->scr_x = mBoard->getScreenView(QPointF(center->X, center->Y)).x();
         center->scr_y = mBoard->getScreenView(QPointF(center->X, center->Y)).y();
     }
-    scr_x0 = center->scr_x;
-    scr_y0 = center->scr_y;
-    _x0 = center->X;
-    _y0 = center->Y;
 }
 
 void Circle::draw(){
@@ -64,6 +60,11 @@ void Circle::draw(){
 
 void Circle::changeView(){
     recalculate();
+    scr_x0 = center->scr_x;
+    scr_y0 = center->scr_y;
+    _x0 = center->X;
+    _y0 = center->Y;
+    scr_r = _r * mBoard->scale;
 }
 
 

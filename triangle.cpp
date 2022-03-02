@@ -15,16 +15,16 @@
 #include "circle.h"
 
 Triangle::Triangle(GeoBoard* board, Point* p1, Point* p2, Point* p3) :
-    GOBJ(board, GObj_Type::ANGLE, true, true, Qt::lightGray), mP1(p1), mP2(p2), mP3(p3)
+    GOBJ(board, GObj_Type::TRIANGLE, true, true, Qt::lightGray), mP1(p1), mP2(p2), mP3(p3)
 {
     bis_i = new Point(board);
     med_i = new Point(board);
     hgt_i = new Point(board);
     mdp_i = new Point(board);
     eul_c = new Point(board);
-    in = new Circle(board, bis_i, 1);
-    cir = new Circle(board, mdp_i, 1);
-    Euler = new Circle(board, eul_c, 1);
+    in = new Circle(board, bis_i, 100);
+    cir = new Circle(board, mdp_i, 100);
+    Euler = new Circle(board, eul_c, 100);
     board->connect_objects(this, bis_i, Child_Type::InTriangle);
     board->connect_objects(this, med_i, Child_Type::InTriangle);
     board->connect_objects(this, hgt_i, Child_Type::InTriangle);
@@ -68,9 +68,21 @@ void Triangle::recalculate(){
     mdp_i->X = mdp_i_point.x();
     mdp_i->Y = mdp_i_point.y();
 
-    auto eul_c_point = hgt_i_point / 3 + 2 * med_i_point / 3;
+    auto eul_c_point = (mdp_i_point + hgt_i_point) / 2;
     eul_c->X = eul_c_point.x();
     eul_c->Y = eul_c_point.y();
+
+    auto l = new Line(mBoard, mP1, mP2);
+    l->recalculate();
+    auto r = distance(bis_i, l);
+    delete l;
+    in->set_r(r);
+
+    r = distance(mdp_i, mP1);
+    cir->set_r(r);
+
+    r /= 2;
+    Euler->set_r(r);
 
     changeView();
 }
@@ -86,8 +98,8 @@ void Triangle::draw(){
     p.setPen(mColor);
     p.setBrush(QBrush(mColor));
     if(mIsSelected){
-        p.setPen(Qt::blue);
-        p.setBrush(QBrush(Qt::blue));
+        p.setPen(Qt::cyan);
+        p.setBrush(QBrush(Qt::cyan));
     }
 
     QPolygonF pol;
@@ -110,10 +122,14 @@ void Triangle::changeView(){
 
 bool Triangle::isCaught(QPointF p){
     recalculate();
-    //auto d = QLineF(QPointF(vertex->scr_x, vertex->scr_y), p).length();
-
-
-    return false;
+    auto m = (mP1->scr_x - p.x()) * (mP2->scr_y - mP1->scr_y) - (mP2->scr_x - mP1->scr_x) * (mP1->scr_y - p.y());
+    auto n = (mP2->scr_x - p.x()) * (mP3->scr_y - mP2->scr_y) - (mP3->scr_x - mP2->scr_x) * (mP2->scr_y - p.y());
+    auto k = (mP3->scr_x - p.x()) * (mP1->scr_y - mP3->scr_y) - (mP1->scr_x - mP3->scr_x) * (mP3->scr_y - p.y());
+    auto pr1 = (n*m < 0);
+    auto pr2 = (n*k < 0);
+    auto pr3 = (k*m < 0);
+    if (pr1 || pr2 || pr3) return false;
+    return true;
 }
 
 
