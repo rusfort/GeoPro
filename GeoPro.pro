@@ -33,6 +33,7 @@ SOURCES += \
     point.cpp \
     ray.cpp \
     segment.cpp \
+    triangle.cpp \
     widget.cpp \
     geometry_main.cpp
 
@@ -45,6 +46,7 @@ HEADERS += \
     point.h \
     ray.h \
     segment.h \
+    triangle.h \
     widget.h \
     geometry_main.h \
     service.h
