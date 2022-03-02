@@ -321,7 +321,24 @@ void Obj_menu::ui_setup_ray(){
 }
 
 void Obj_menu::ui_setup_circle(){
-    //TODO
+    resize(450, 250);
+    auto c = static_cast<Circle*>(gobj);
+    auto p = c->getcenter();
+    QString x = QString::number(p->X);
+    QString y = QString::number(p->Y);
+    QString r = QString::number(c->r());
+    QLabel *coordsx = new QLabel();
+    coordsx->setText("Center x = " + x);
+    coordsx->setFont(font);
+    layout->addWidget(coordsx, 4, 0);
+    QLabel *coordsy = new QLabel();
+    coordsy->setText("Center y = " + y);
+    coordsy->setFont(font);
+    layout->addWidget(coordsy, 5, 0);
+    QLabel *rad = new QLabel();
+    rad->setText("Radius = " + r);
+    rad->setFont(font);
+    layout->addWidget(rad, 4, 1);
 }
 
 void Obj_menu::ui_setup_angle(){
