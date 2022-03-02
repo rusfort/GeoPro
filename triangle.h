@@ -22,6 +22,17 @@ public:
     qreal gamma() const;
     qreal perimeter() const {return a() + b() + c();}
     qreal area() const;
+    Point*  manage_bis()   {return bis_i;}
+    Point*  manage_med()   {return med_i;}
+    Point*  manage_hgt()   {return hgt_i;}
+    Point*  manage_mdp()   {return mdp_i;}
+    Point*  manage_eul()   {return eul_c;}
+    Circle* manage_in ()   {return in;}
+    Circle* manage_cir()   {return cir;}
+    Circle* manage_Euler() {return Euler;}
+    Angle*  manage_alpha() {return _alpha;}
+    Angle*  manage_beta()  {return _beta;}
+    Angle*  manage_gamma() {return _gamma;}
 signals:
     void posChanged();
 private:

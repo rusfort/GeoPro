@@ -40,6 +40,7 @@ private:
     QCheckBox *trace;
     QCheckBox *fixed;
     QCheckBox *show;
+    std::vector<QCheckBox*> boxes;
     QLineEdit *xEdit;
     QLineEdit *yEdit;
     QLineEdit *stickEdit;

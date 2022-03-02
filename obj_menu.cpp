@@ -6,6 +6,7 @@
 #include "segment.h"
 #include "circle.h"
 #include "angle.h"
+#include "triangle.h"
 
 #include <QRegExpValidator>
 #include <QMenu>
@@ -372,7 +373,105 @@ void Obj_menu::ui_setup_angle(){
 }
 
 void Obj_menu::ui_setup_triangle(){
-    //TODO
+    resize(450, 550);
+    auto t = static_cast<Triangle*>(gobj);
+    QString a = QString::number(t->a());
+    QString b = QString::number(t->b());
+    QString c = QString::number(t->c());
+    QString per = QString::number(t->perimeter());
+    QString area = QString::number(t->area());
+    QLabel *a_label = new QLabel();
+    a_label->setText("a = " + a);
+    a_label->setFont(font);
+    layout->addWidget(a_label, 4, 0);
+    QLabel *b_label = new QLabel();
+    b_label->setText("b = " + b);
+    b_label->setFont(font);
+    layout->addWidget(b_label, 5, 0);
+    QLabel *c_label = new QLabel();
+    c_label->setText("c = " + c);
+    c_label->setFont(font);
+    layout->addWidget(c_label, 6, 0);
+    QLabel *p_label = new QLabel();
+    p_label->setText("perimeter = " + per);
+    p_label->setFont(font);
+    layout->addWidget(p_label, 7, 0);
+    QLabel *ar_label = new QLabel();
+    ar_label->setText("area = " + area);
+    ar_label->setFont(font);
+    layout->addWidget(ar_label, 8, 0);
+
+    //main points
+
+    auto box = new QCheckBox("Show bisectors intersection");
+    if (t->manage_bis()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 4, 1);
+
+    box = new QCheckBox("Show medians intersection");
+    if (t->manage_med()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 5, 1);
+
+    box = new QCheckBox("Show heights intersection");
+    if (t->manage_hgt()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 6, 1);
+
+    box = new QCheckBox("Show midperpendiculars intersection");
+    if (t->manage_mdp()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 7, 1);
+
+    box = new QCheckBox("Show Euler circle center");
+    if (t->manage_eul()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 8, 1);
+
+    //main angles
+
+    box = new QCheckBox("Show alpha angle");
+    if (t->manage_alpha()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 9, 1);
+
+    box = new QCheckBox("Show beta angle");
+    if (t->manage_beta()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 10, 1);
+
+    box = new QCheckBox("Show gamma angle");
+    if (t->manage_gamma()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 11, 1);
+
+    //main circles
+
+    box = new QCheckBox("Show inscribed circle");
+    if (t->manage_in()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 9, 0);
+
+    box = new QCheckBox("Show circumscribed circle");
+    if (t->manage_cir()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 10, 0);
+
+    box = new QCheckBox("Show Euler circle");
+    if (t->manage_Euler()->is_visible()) box->setCheckState(Qt::Checked);
+    boxes.push_back(box);
+    box->setFont(font);
+    layout->addWidget(box, 11, 0);
 }
 
 
@@ -417,9 +516,34 @@ void Obj_menu::on_Name_Ok_Button_clicked()
         if (newNum != "") a->setNumArcs(newNum.toInt());
         break;
     }
-    case GObj_Type::TRIANGLE:
-        //TODO
+    case GObj_Type::TRIANGLE:{
+        auto t = static_cast<Triangle*>(gobj);
+        if (boxes[0]->checkState() == Qt::Checked) t->manage_bis()->make_visible();
+        else t->manage_bis()->hide();
+        if (boxes[1]->checkState() == Qt::Checked) t->manage_med()->make_visible();
+        else t->manage_med()->hide();
+        if (boxes[2]->checkState() == Qt::Checked) t->manage_hgt()->make_visible();
+        else t->manage_hgt()->hide();
+        if (boxes[3]->checkState() == Qt::Checked) t->manage_mdp()->make_visible();
+        else t->manage_mdp()->hide();
+        if (boxes[4]->checkState() == Qt::Checked) t->manage_eul()->make_visible();
+        else t->manage_eul()->hide();
+
+        if (boxes[5]->checkState() == Qt::Checked) t->manage_alpha()->make_visible();
+        else t->manage_alpha()->hide();
+        if (boxes[6]->checkState() == Qt::Checked) t->manage_beta()->make_visible();
+        else t->manage_beta()->hide();
+        if (boxes[7]->checkState() == Qt::Checked) t->manage_gamma()->make_visible();
+        else t->manage_gamma()->hide();
+
+        if (boxes[8]->checkState() == Qt::Checked) t->manage_in()->make_visible();
+        else t->manage_in()->hide();
+        if (boxes[9]->checkState() == Qt::Checked) t->manage_cir()->make_visible();
+        else t->manage_cir()->hide();
+        if (boxes[10]->checkState() == Qt::Checked) t->manage_Euler()->make_visible();
+        else t->manage_Euler()->hide();
         break;
+    }
     default:
         break;
     }

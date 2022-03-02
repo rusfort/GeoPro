@@ -18,22 +18,38 @@ Triangle::Triangle(GeoBoard* board, Point* p1, Point* p2, Point* p3) :
     GOBJ(board, GObj_Type::TRIANGLE, true, true, Qt::lightGray), mP1(p1), mP2(p2), mP3(p3)
 {
     bis_i = new Point(board);
+    bis_i->changeLabel("I");
+    bis_i->hide();
     med_i = new Point(board);
+    med_i->changeLabel("M");
+    med_i->hide();
     hgt_i = new Point(board);
+    hgt_i->changeLabel("H");
+    hgt_i->hide();
     mdp_i = new Point(board);
+    mdp_i->changeLabel("O");
+    mdp_i->hide();
     eul_c = new Point(board);
+    eul_c->changeLabel("E");
+    eul_c->hide();
     edge_a = new Segment(board, p2, p3);
     edge_b = new Segment(board, p3, p1);
     edge_c = new Segment(board, p1, p2);
     in = new Circle(board, bis_i, 100);
+    in->hide();
     cir = new Circle(board, mdp_i, 100);
+    cir->hide();
     Euler = new Circle(board, eul_c, 100);
+    Euler->hide();
     _alpha = new Angle(board, mP3, mP1, mP2);
     _alpha->setNumArcs(1);
+    _alpha->hide();
     _beta  = new Angle(board, p1, p2, p3);
     _beta->setNumArcs(2);
+    _beta->hide();
     _gamma = new Angle(board, p2, p3, p1);
     _gamma->setNumArcs(3);
+    _gamma->hide();
     board->connect_objects(this, bis_i,  Child_Type::InTriangle);
     board->connect_objects(this, med_i,  Child_Type::InTriangle);
     board->connect_objects(this, hgt_i,  Child_Type::InTriangle);
