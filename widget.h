@@ -11,6 +11,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QTextStream>
 
 #include "service.h"
 
@@ -49,6 +50,8 @@ public:
     void mouseMoveEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
     void wheelEvent(QWheelEvent* e) override;
+    void saveToCache();
+    void cacheStream(QTextStream& stream);
 private:
     QColor mColor;
     bool active_grid = false;

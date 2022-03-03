@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <iostream>
 #include <QMessageBox>
+#include <QTextStream>
 
 #include "line.h"
 #include "point.h"
@@ -56,6 +57,8 @@ void GeoBoard::paintEvent(QPaintEvent*)
         obj->draw();   
         if (was_caught) obj->setSelected(false);
     }
+
+    saveToCache();
 }
 
 void GeoBoard::drawGrid(QPainter* p){
@@ -493,4 +496,23 @@ bool GeoBoard::onOneLine(const Point* p1, const Point* p2, const Point* p3){
 
     if (std::abs(d) < EPS || (std::abs(a1) < EPS && std::abs(a2) < EPS)) return true;
     return false;
+}
+
+void GeoBoard::saveToCache(){
+    QFile cache(".//cache.gprc");
+
+    if(!cache.open(QFile::WriteOnly | QFile::Text)){
+        QMessageBox::critical(this, "Cache error", "Cannot write to cache");
+        return;
+    }
+
+    QTextStream stream(&cache);
+
+    cacheStream(stream);
+
+    cache.close();
+}
+
+void GeoBoard::cacheStream(QTextStream& stream){
+    stream << "GEOPRO\nTEST";
 }
