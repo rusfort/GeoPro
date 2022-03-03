@@ -61,6 +61,7 @@ public:
     GObj_Type trytoadd = GObj_Type::NONE;
     int numitemstoadd = 0;
     Point *lastPoint = 0;
+    Point *lastPoint2 = 0;
     qreal scale = 1;   //for screen move & scale view
     QPointF mouseG;    //for screen move & scale view
     QPointF shift;     //for screen move & scale view

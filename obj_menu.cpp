@@ -373,7 +373,7 @@ void Obj_menu::ui_setup_angle(){
 }
 
 void Obj_menu::ui_setup_triangle(){
-    resize(450, 550);
+    resize(550, 550);
     auto t = static_cast<Triangle*>(gobj);
     QString a = QString::number(t->a());
     QString b = QString::number(t->b());

@@ -745,6 +745,12 @@ void GeoPro::on_actionAngle_by_the_ray_and_degree_measure_triggered()
 
 void GeoPro::on_actionTriangle_triggered()
 {
+    if (b->num_obj_selected == 0){
+        b->trytoadd = GObj_Type::TRIANGLE;
+        b->numitemstoadd = 3;
+        b->setMouseTracking(true);
+        return;
+    }
     if(!getThreePoints("TRIANGLE", "Cannot build a triangle! Need 3 points.")) return;
     if (b->onOneLine(threePoints[0], threePoints[1], threePoints[2])){
         b->unselectAll();

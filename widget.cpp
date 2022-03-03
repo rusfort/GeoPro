@@ -3,6 +3,7 @@
 #include "math.h"
 #include <QPainter>
 #include <iostream>
+#include <QMessageBox>
 
 #include "line.h"
 #include "point.h"
@@ -10,6 +11,7 @@
 #include "segment.h"
 #include "circle.h"
 #include "angle.h"
+#include "triangle.h"
 
 #include "obj_menu.h"
 
@@ -27,6 +29,7 @@ void GeoBoard::paintEvent(QPaintEvent*)
         if (trytoadd == GObj_Type::RAY)     p.drawText(QPointF(offset, offset), "Adding ray");
         if (trytoadd == GObj_Type::LINE)    p.drawText(QPointF(offset, offset), "Adding line");
         if (trytoadd == GObj_Type::CIRCLE)  p.drawText(QPointF(offset, offset), "Adding circle");
+        if (trytoadd == GObj_Type::TRIANGLE)  p.drawText(QPointF(offset, offset), "Adding triangle");
     }
     if (numitemstoadd > 0){
         p.setBrush(QBrush(Qt::black));
@@ -341,6 +344,57 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
             C->basePoints.push_back(lastPoint);
             C->basePoints.push_back(p);
             C->recalculate();
+        }
+        numitemstoadd--;
+        update();
+    }
+        break;
+    case GObj_Type::TRIANGLE:{
+        if (numitemstoadd > 2){
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                lastPoint2 = static_cast<Point*>(selected_and_caught);
+                lastPoint2->setSelected(true);
+            } else {
+                lastPoint2 = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) lastPoint2->setFixOnFigure(selected_and_caught);
+                addObject(lastPoint2);
+            }
+        } else if (numitemstoadd > 1){
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                lastPoint = static_cast<Point*>(selected_and_caught);
+                lastPoint->setSelected(true);
+            } else {
+                lastPoint = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) lastPoint->setFixOnFigure(selected_and_caught);
+                addObject(lastPoint);
+            }
+        } else {
+            Point *p = 0;
+            if (selected_and_caught && selected_and_caught->type_is() == GObj_Type::POINT)
+            {
+                p = static_cast<Point*>(selected_and_caught);
+                p->setSelected(true);
+                num_obj_selected++;
+            } else {
+                p = new Point(this, Pos.x(), Pos.y());
+                if (selected_and_caught) p->setFixOnFigure(selected_and_caught);
+                addObject(p);
+            }
+            if (onOneLine(lastPoint2, lastPoint, p)){
+                QMessageBox::critical(this, "TRIANGLE ERROR", "Cannot build a triangle! 3 points on the same line!");
+                numitemstoadd = 0;
+                update();
+                break;
+            }
+            Triangle* T = new Triangle(this, lastPoint2, lastPoint, p);
+            T->exists = true;
+            connect_objects(lastPoint2, T, Child_Type::Triangle);
+            connect_objects(lastPoint, T, Child_Type::Triangle);
+            connect_objects(p, T, Child_Type::Triangle);
+            addObject(T);
+            T->recalculate();
         }
         numitemstoadd--;
         update();

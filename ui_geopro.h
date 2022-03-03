@@ -373,6 +373,9 @@ public:
         actionAngle_by_the_ray_and_point->setText(QApplication::translate("GeoPro", "Angle by the ray and point", nullptr));
         actionAngle_by_the_ray_and_degree_measure->setText(QApplication::translate("GeoPro", "Angle by the ray and degree measure", nullptr));
         actionTriangle->setText(QApplication::translate("GeoPro", "Triangle", nullptr));
+#ifndef QT_NO_SHORTCUT
+        actionTriangle->setShortcut(QApplication::translate("GeoPro", "T", nullptr));
+#endif // QT_NO_SHORTCUT
         menuFile->setTitle(QApplication::translate("GeoPro", "&File", nullptr));
         menuEdit->setTitle(QApplication::translate("GeoPro", "&Edit", nullptr));
         menuBackground->setTitle(QApplication::translate("GeoPro", "Background...", nullptr));
