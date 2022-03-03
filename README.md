@@ -2,10 +2,11 @@
 
 GeoPro is a professional geometry toolkit for teachers & students made by Nick Rusfort (Nikolay Kozakov). 
 
-![Снимок экрана от 2022-02-15 23-08-29](https://user-images.githubusercontent.com/81856641/154209815-4287b874-d0c6-44c4-a1d9-c4af4a7855f9.png)
+![Снимок экрана от 2022-03-03 14-50-01](https://user-images.githubusercontent.com/81856641/156559542-242e513a-2d26-4416-a875-df8837f128af.png)
 
 Here is what you can do with this software right now:
-- Build classic geometry figures (points, lines, rays, segments and circles)
+- Build classic geometry figures (points, lines, rays, segments, circles and angles)
+- BUILD TRIANGLES
 - Make intersections
 - Find a middle
 - Build parallel, perpendicular lines, bisectors
@@ -23,10 +24,11 @@ For fast and experienced GeoPro users there're some keyboard shorcuts added:
 - R - add a Ray
 - S - add a Segment
 - C - add a Circle (center & some point)
+- T - add a Triangle
 - Ctrl+I - make an intersection
 - Ctrl+M - create a middle
 
-There will be a label with the type of added object on the left top corner.
+There will be a label with the type of added object on the left top screen corner.
 
 ### Constructions
 
@@ -34,15 +36,25 @@ To add parallel or perpendicular line click on a point and a line first and then
 
 To add a bisector or circle by 3 points choose three points first and then click "Bisector" or "Circle by 3 points" on the toolbar.
 
+To add a triangle select 3 points and click "Triangle" on the toolbar or press "T" on the keyboard. You can also click first and than choose/add 3 points.
+
+To add an angle select 3 points and click "Angle by 3 points" on the toolbar or select a ray & point and click "Angle by the ray and point" on the toolbar.
+
 ### Managing objects
 
 You can easily hide or delete objects in GeoPro.
 
 To hide objects select them by clicking and then press "Hide selected objects" or Ctrl+H. You can always show all hidden objects by clicking on eponymous toolbar button or Ctrl+Shift+H.
 
-To delete objects select them by clicking and then press Delete on the keyboard (or in Menu -> "Edit"). You can delete all objects by "Clear all" button or Ctrl+Delete (You have to confirm clearing all). Notice: deleting the object with some child objects causes child objects deletion!
+To delete objects select them by clicking and then press Delete/Backspace on the keyboard (or in Menu -> "Edit"). You can delete all objects by "Clear all" button or Ctrl+Delete (You have to confirm clearing all). Notice: deleting the object with some child objects causes child objects deletion!
 
-To change point name you can use "Change object label" on the toolbar after you've chosen a point. In the small window type a new name, press "Ok" to save and then close it.
+To change object settings right-button-click on it or select the object and click "Open object settings" on the toolbar.
+
+### Managing TRIANGLES
+
+Right-button-click on a triangle and enjoy it's fantastic menu! 
+
+You can add any base triangle points (aka bisectors intersection) and circles (aka inscribed or Euler)! 
 
 ### Changing the view
 
@@ -52,17 +64,19 @@ If you "walked too far away" from your initial position, press "Back to original
 
 ### Bugs!
 
-Yes, there're some. As I've already found that in 0.0.2 there are some troubles when circle intersects with a segment or a ray (line is still ok).
-
-Will be removed soon!
+If you find any bugs, contact us: https://vk.com/geoproapp
 
 
 ## What's new?
 
-Version 0.0.1 (alpha)
-- Classic geometry figures added (points, lines, rays, segments and circles)
-- Intersections added
-- Middle point added
+Version 0.0.3 (alpha)
+- Angle object added
+- Triangle object added
+- Object menu & settings added
+- Warnings added: "Three points on one line" and "Are you sure you want to ..."
+- A point under mouse appears any time a user builds a new object
+- An object can be deleted either clicking on Delete or Backspace
+- Major bugfix
 
 Version 0.0.2 (alpha)
 - Parallel and perpendicular lines added
@@ -72,3 +86,9 @@ Version 0.0.2 (alpha)
 - Keyboard shortcuts
 - Point names
 - Debug
+
+Version 0.0.1 (alpha)
+- Classic geometry figures added (points, lines, rays, segments and circles)
+- Intersections added
+- Middle point added
+
