@@ -260,8 +260,8 @@ void GeoPro::on_actionCircle_by_3_points_triggered()
     b->connect_objects(p1, cen, Child_Type::OnThreePoints);
     b->connect_objects(p2, cen, Child_Type::OnThreePoints);
     b->connect_objects(p3, cen, Child_Type::OnThreePoints);
-    b->addObject(C);
     b->addObject(cen);
+    //b->addObject(C);
     C->basePoints.push_back(p1);
     C->basePoints.push_back(p2);
     C->basePoints.push_back(p3);

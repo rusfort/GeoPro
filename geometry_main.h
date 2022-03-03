@@ -75,10 +75,7 @@ public:
             emit selectionChanged();
         }
     }
-    void eraseInfoAboutChild(GOBJ* obj){
-        auto res = childObjects.find(obj);
-        if (res != childObjects.end()) childObjects.erase(res);
-    }
+    void eraseInfoAboutChild(GOBJ* obj);
     QString getLabel() const {return obj_label.label;}
     void changeLabel(const QString& new_label) {obj_label.label = new_label;}
     virtual bool labelCaught(QPoint p);

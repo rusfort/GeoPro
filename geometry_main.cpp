@@ -35,6 +35,11 @@ void GOBJ::delObj(){
     mBoard->delObject(this);
 }
 
+void GOBJ::eraseInfoAboutChild(GOBJ* obj){
+    auto res = childObjects.find(obj);
+    if (res != childObjects.end()) childObjects.erase(res);
+}
+
 void GOBJ::checkExistance(){
     for (auto& obj : parentObjects){
         if(obj->exists != true){
