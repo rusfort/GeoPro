@@ -56,6 +56,10 @@ Right-button-click on a triangle and enjoy it's fantastic menu!
 
 You can add any base triangle points (aka bisectors intersection) and circles (aka inscribed or Euler)! 
 
+### Managing segments & angles
+
+If you want to show that some angles/segments are equal to aech other, you can add an arc(-s) or a stick(-s) to them using the object menu. Type a number of sticks (from 0 to 3) to make them seem equal.
+
 ### Changing the view
 
 If you need to change the background, use Menu -> "Edit" -> "Background".
@@ -64,7 +68,9 @@ If you "walked too far away" from your initial position, press "Back to original
 
 ### Bugs!
 
-If you find any bugs, contact us: https://vk.com/geoproapp
+In 0.0.3 (Linux & Win): circle on 3 points is added twice => when user deletes it the app crashes (already fixed, but the fix'll be in a next update).
+
+If you find any other bugs, contact us: https://vk.com/geoproapp
 
 
 ## What's new?
@@ -76,6 +82,7 @@ Version 0.0.3 (alpha)
 - Warnings added: "Three points on one line" and "Are you sure you want to ..."
 - A point under mouse appears any time a user builds a new object
 - An object can be deleted either clicking on Delete or Backspace
+- Sticks & arcs can be added to segments or angles to make them seem equal
 - Major bugfix
 
 Version 0.0.2 (alpha)
