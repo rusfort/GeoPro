@@ -68,6 +68,16 @@ QString GOBJ::dumpData(){
     return "-1 NO DATA PROVIDED FOR THIS OBJECT";
 }
 
+QString GOBJ::generalDumpData(){
+    QString data = QString::number(obj_id) + " "
+            + QString::number((int)type) + " "
+            + mColor.name(QColor::HexArgb) + " "
+            + QString::number(visible) + " "
+            + QString::number(exists) + " "
+            + QString::number(depending) + " "
+            + QString::number((int)child_type) + " ";
+    return data;
+}
 
 ///-----------------------------
 

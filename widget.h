@@ -53,10 +53,13 @@ public:
     void saveToCache();
     void cacheStream(QTextStream& stream);
     void saveStream(QTextStream& stream);
+    void inc_id() {++current_id;}
+    int get_cur_id() {return current_id;}
 private:
     QColor mColor;
     bool active_grid = false;
     std::vector<GOBJ*> mObjects;
+    int current_id = 0;
     std::vector<Point*> threeOrderedPoints; //for bisector (order is important)
     bool board_grabbed = false;
 public:

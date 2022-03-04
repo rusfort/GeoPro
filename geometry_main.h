@@ -92,6 +92,9 @@ public:
     virtual void changeView() = 0;
     virtual void recalculate() = 0;
     virtual QString dumpData();
+    QString generalDumpData();
+    void set_id(int id) {obj_id = id;}
+    int id() {return obj_id;}
 signals:
     void selectionChanged();
 protected:
@@ -100,6 +103,7 @@ protected:
     GeoBoard* mBoard;
     bool mIsSelected;
     ObjLabel obj_label;
+    int obj_id = 0; //for dumps & saves
 public:
     bool depending;
     std::map<GOBJ*, Child_Type> childObjects;

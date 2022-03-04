@@ -90,6 +90,8 @@ void GeoBoard::drawGrid(QPainter* p){
 
 void GeoBoard::addObject(GOBJ* obj) {
     mObjects.push_back(obj);
+    inc_id();
+    obj->set_id(get_cur_id());
     if (!obj->childObjects.empty()){
         for (auto ob : obj->childObjects){
             addObject(ob.first);
@@ -518,10 +520,8 @@ void GeoBoard::cacheStream(QTextStream& stream){
     stream << scale << "\n";
     stream << shift.x() << " " << shift.y() << "\n";
     stream << mObjects.size() << "\n";
-    int i = 0;
     for (auto obj : mObjects){
-        ++i;
-        stream << i << " " << obj->dumpData() << "\n";
+        stream << obj->generalDumpData() << " " << obj->dumpData() << "\n";
     }
 }
 
