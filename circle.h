@@ -20,6 +20,7 @@ public:
     const Point* getcenter() const {return center;}
     void set_r(qreal newr) {_r = newr;}
     QString dumpData() override;
+    bool dumpParse(QTextStream& stream) override;
 signals:
     void posChanged();
 private:

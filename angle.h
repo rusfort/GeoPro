@@ -24,6 +24,7 @@ public:
     Point* getSecondPoint() const {return mP2;}
     void setNumArcs(int n) {num_arcs = (n < 4 && n > -1) ? n : 3;}
     QString dumpData() override;
+    bool dumpParse(QTextStream& stream) override;
 signals:
     void posChanged();
 private:

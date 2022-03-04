@@ -620,3 +620,9 @@ QString Point::dumpData(){
 
     return data;
 }
+
+bool Point::dumpParse(QTextStream& stream){
+    if (!generalDumpParse(stream)) return false;;
+    //TODO
+    return true;
+}

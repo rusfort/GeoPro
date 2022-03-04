@@ -174,3 +174,9 @@ QString Line::dumpData(){
     else data += QString::number(mP2->id()) + " ";
     return data;
 }
+
+bool Line::dumpParse(QTextStream& stream){
+    if (!generalDumpParse(stream)) return false;;
+    //TODO
+    return true;
+}

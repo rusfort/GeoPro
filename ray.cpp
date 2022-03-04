@@ -114,3 +114,9 @@ QString Ray::dumpData(){
                                                   + QString::number(mP2->id()) + " ";
     return data;
 }
+
+bool Ray::dumpParse(QTextStream& stream){
+    if (!generalDumpParse(stream)) return false;;
+    //TODO
+    return true;
+}

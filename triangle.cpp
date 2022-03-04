@@ -200,3 +200,9 @@ qreal Triangle::gamma() const{
 QString Triangle::dumpData(){
     return "1 0 ";
 }
+
+bool Triangle::dumpParse(QTextStream& stream){
+    if (!generalDumpParse(stream)) return false;;
+    //TODO
+    return true;
+}

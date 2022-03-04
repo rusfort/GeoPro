@@ -34,6 +34,7 @@ public:
     Angle*  manage_beta()  {return _beta;}
     Angle*  manage_gamma() {return _gamma;}
     QString dumpData() override;
+    bool dumpParse(QTextStream& stream) override;
 signals:
     void posChanged();
 private:

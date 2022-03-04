@@ -89,3 +89,9 @@ QString Circle::dumpData(){
     if (child_type == Child_Type::OnThreePoints) data += QString::number(basePoints[2]->id()) + " ";
     return data;
 }
+
+bool Circle::dumpParse(QTextStream& stream){
+    if (!generalDumpParse(stream)) return false;;
+    //TODO
+    return true;
+}

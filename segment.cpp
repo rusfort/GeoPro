@@ -96,3 +96,9 @@ void Segment::move(QPointF newPos){
 QString Segment::dumpData(){
     return "1 0 ";
 }
+
+bool Segment::dumpParse(QTextStream& stream){
+    if (!generalDumpParse(stream)) return false;;
+    //TODO
+    return true;
+}

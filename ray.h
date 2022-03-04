@@ -22,6 +22,7 @@ public:
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
     QString dumpData() override;
+    bool dumpParse(QTextStream& stream) override;
 signals:
     void posChanged();
 private:

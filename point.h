@@ -24,6 +24,7 @@ public:
     bool labelCaught(QPoint p) override;
     void moveLabel(QPointF newpos) override;
     QString dumpData() override;
+    bool dumpParse(QTextStream& stream) override;
 signals:
     void posChanged();
 private:
