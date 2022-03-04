@@ -94,5 +94,5 @@ void Segment::move(QPointF newPos){
 }
 
 QString Segment::dumpData(){
-    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+    return "1 0 ";
 }

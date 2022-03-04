@@ -18,3 +18,4 @@ moc_segment.cpp
 moc_angle.cpp
 moc_triangle.cpp
 cache.gprc
+cache_test.gprc

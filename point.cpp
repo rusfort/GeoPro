@@ -588,5 +588,35 @@ void Point::setFixOnFigure(GOBJ* Figure){
 }
 
 QString Point::dumpData(){
-    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+    QString data = "1 " + QString::number(mRadius);
+    switch(child_type){
+    case Child_Type::Unknown:
+    {
+        data += QString::number(X) + " " + QString::number(Y) + " ";
+        break;
+    }
+    case Child_Type::Intersection:
+    case Child_Type::Intersection2:
+    {
+
+        auto it1 = parents_intersected.begin();
+        auto it2 = it1;
+        ++it2;
+        data += QString::number((int)inters_type) + " "
+                + QString::number(it1->second->id()) + " " + QString::number(it2->second->id()) + " ";
+        break;
+    }
+    case Child_Type::Middle:
+    {
+        data += QString::number(parentObjects.at(0)->id()) + " " + QString::number(parentObjects.at(1)->id()) + " ";
+        break;
+    }
+    default:
+    {
+        QString::number(parentObjects.at(0)->id()) + " ";
+        break;
+    }
+    }
+
+    return data;
 }

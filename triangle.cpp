@@ -198,5 +198,5 @@ qreal Triangle::gamma() const{
 }
 
 QString Triangle::dumpData(){
-    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+    return "1 0 ";
 }
