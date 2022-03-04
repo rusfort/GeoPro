@@ -133,5 +133,10 @@ void Angle::move(QPointF newPos){
 }
 
 QString Angle::dumpData(){
-    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+    QString data = "1 " + QString::number(num_arcs) + " "
+            + QString::number(fixed_degrees) + " "
+            + QString::number(vertex->id()) + " "
+            + QString::number(mP1->id()) + " "
+            + QString::number(mP2->id()) + " ";
+    return data;
 }

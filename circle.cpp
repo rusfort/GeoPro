@@ -83,5 +83,9 @@ void Circle::move(QPointF newPos){
 }
 
 QString Circle::dumpData(){
-    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+    QString data = "1 " + QString::number(center->id()) + " ";
+    if (child_type != Child_Type::InTriangle) data += QString::number(basePoints[0]->id()) + " "
+                                                     + QString::number(basePoints[1]->id()) + " ";
+    if (child_type == Child_Type::OnThreePoints) data += QString::number(basePoints[2]->id()) + " ";
+    return data;
 }

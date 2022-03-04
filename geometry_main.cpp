@@ -68,7 +68,7 @@ QString GOBJ::dumpData(){
     return "-1 NO DATA PROVIDED FOR THIS OBJECT";
 }
 
-QString GOBJ::generalDumpData(){
+QString GOBJ::generalDumpData(){ // id | type | color | visible | exists | depending | child type | num of parents | parent id1 | ... | parent idN
     QString data = QString::number(obj_id) + " "
             + QString::number((int)type) + " "
             + mColor.name(QColor::HexArgb) + " "
@@ -76,6 +76,10 @@ QString GOBJ::generalDumpData(){
             + QString::number(exists) + " "
             + QString::number(depending) + " "
             + QString::number((int)child_type) + " ";
+    data += QString::number(parentObjects.size()) + " ";
+    for (auto ch_ob : parentObjects){
+        data += QString::number(ch_ob->id()) + " ";
+    }
     return data;
 }
 
