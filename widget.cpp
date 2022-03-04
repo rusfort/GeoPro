@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QDateTime>
 
 #include "line.h"
 #include "point.h"
@@ -508,11 +509,31 @@ void GeoBoard::saveToCache(){
 
     QTextStream stream(&cache);
 
-    cacheStream(stream);
+    //cacheStream(stream);
+    saveStream(stream);
 
     cache.close();
 }
 
 void GeoBoard::cacheStream(QTextStream& stream){
-    stream << "GEOPRO\nTEST";
+    stream << scale << "\n";
+    stream << shift.x() << " " << shift.y() << "\n";
+    stream << mObjects.size() << "\n";
+    for (auto obj : mObjects){
+        stream << "TEST\n";
+    }
+}
+
+void GeoBoard::saveStream(QTextStream& stream){
+    stream << "GEOPRO SAVE DATA\n0.0.4\n";
+    QDateTime dt = QDateTime::currentDateTime();
+    stream << dt.toString("dd.MM.yyyy hh:mm") << "\n";
+    stream << "3\n";
+    stream << "#####\n#####\n#####\n";
+
+    cacheStream(stream);
+
+    stream << "3\n";
+    stream << "#####\n#####\n#####\n";
+    stream << "END GEOPRO DATA";
 }

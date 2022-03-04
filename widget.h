@@ -52,6 +52,7 @@ public:
     void wheelEvent(QWheelEvent* e) override;
     void saveToCache();
     void cacheStream(QTextStream& stream);
+    void saveStream(QTextStream& stream);
 private:
     QColor mColor;
     bool active_grid = false;
