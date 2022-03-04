@@ -27,12 +27,16 @@ void GOBJ::delObj(){
             break;
         }
     }
-    for (auto& obj : parentObjects){ //deleting all mentions about this object
-        obj->eraseInfoAboutChild(this);
-    }
-
     if (mIsSelected) mBoard->num_obj_selected--;
-    mBoard->delObject(this);
+    if (child_type != Child_Type::InTriangle){
+        for (auto& obj : parentObjects){ //deleting all mentions about this object
+            obj->eraseInfoAboutChild(this);
+        }
+        mBoard->delObject(this);
+    } else { //child_type == Child_Type::InTriangle
+        if (mIsSelected) mIsSelected = false;
+        visible = false;
+    }
 }
 
 void GOBJ::eraseInfoAboutChild(GOBJ* obj){
