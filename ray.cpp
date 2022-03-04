@@ -109,5 +109,8 @@ void Ray::move(QPointF newPos){
 }
 
 QString Ray::dumpData(){
-    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+    QString data = "1 ";
+    if (child_type != Child_Type::Bisector) data += QString::number(mP1->id()) + " "
+                                                  + QString::number(mP2->id()) + " ";
+    return data;
 }

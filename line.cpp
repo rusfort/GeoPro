@@ -169,5 +169,8 @@ void Line::move(QPointF newPos){
 }
 
 QString Line::dumpData(){
-    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+    QString data = "1 " + QString::number(mP1->id()) + " ";
+    if (child_type == Child_Type::Parallel || child_type == Child_Type::Perpendicular) data += QString::number(baseline->id()) + " ";
+    else data += QString::number(mP2->id()) + " ";
+    return data;
 }
