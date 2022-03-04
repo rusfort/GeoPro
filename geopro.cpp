@@ -28,6 +28,9 @@ GeoPro::GeoPro(QWidget *parent) : QMainWindow(parent), ui(new Ui::GeoPro) {
     auto ex = new QShortcut(this);
     ex->setKey(Qt::Key_Backspace);
     connect(ex, SIGNAL(activated()), this, SLOT(on_actionDelete_selected_objects_triggered()));
+    auto res = new QShortcut(this);
+    res->setKey(Qt::Key_U);
+    connect(res, SIGNAL(activated()), this, SLOT(restoreFromDump())); // TEST!
 
     b = new GeoBoard(this);
     setCentralWidget(b);
@@ -777,5 +780,49 @@ void GeoPro::on_actionTriangle_triggered()
     b->unselectAll();
     b->update();
     return;
+}
+
+void GeoPro::restoreFromDump(){
+    QFile dump(".//cache_test.gprc");
+
+    if(!dump.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::critical(this, "Dump error", "Cannot restore from dump");
+        return;
+    }
+
+    QTextStream stream(&dump);
+
+    //QString buffer = stream.readAll(); //FUTURE: use readLine() !
+
+    //header parsing
+    qreal tmp;
+    stream >> tmp;
+    b->scale = tmp;
+    stream >> tmp;
+    b->shift.rx() = tmp;
+    stream >> tmp;
+    b->shift.ry() = tmp;
+    int n;
+    stream >> n; //number of objects
+
+    b->parsedObjects.clear();
+    b->getAllObj().clear();
+
+    //objects parsing
+    for (int i = 0; i < n; ++i) {
+        if (!b->parseObject(stream)){
+            QMessageBox::critical(this, "Dump error", "Cannot parse correctly");
+            return;
+        }
+    }
+
+    //updating the board
+    for(auto obj : b->getAllObj())
+    {
+        obj->changeView();
+    }
+    b->update();
+    dump.flush();
+    dump.close();
 }
 

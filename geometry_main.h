@@ -92,7 +92,9 @@ public:
     virtual void changeView() = 0;
     virtual void recalculate() = 0;
     virtual QString dumpData();
+    virtual bool dumpParse(QTextStream& stream);
     QString generalDumpData();
+    bool generalDumpParse(QTextStream& stream);
     void set_id(int id) {obj_id = id;}
     int id() {return obj_id;}
 signals:

@@ -55,6 +55,7 @@ public:
     void saveStream(QTextStream& stream);
     void inc_id() {++current_id;}
     int get_cur_id() {return current_id;}
+    bool parseObject(QTextStream& stream);
 private:
     QColor mColor;
     bool active_grid = false;
@@ -74,6 +75,7 @@ public:
     QPointF shift;     //for screen move & scale view
     int num_obj_selected = 0;
     QPoint lastMousePos;//for point drawing (when adding)
+    std::map<int, GOBJ*> parsedObjects;
 };
 
 #endif // WIDGET_H

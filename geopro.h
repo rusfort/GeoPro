@@ -80,6 +80,8 @@ private slots:
 
     void on_actionTriangle_triggered();
 
+    void restoreFromDump();
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;

@@ -68,6 +68,10 @@ QString GOBJ::dumpData(){
     return "-1 NO DATA PROVIDED FOR THIS OBJECT";
 }
 
+bool GOBJ::dumpParse(QTextStream& stream){
+    return generalDumpParse(stream);
+}
+
 QString GOBJ::generalDumpData(){ // id | type | color | visible | exists | depending | label | child type
                                  // | num of parents | parent id1 | ... | parent idN
     auto L = getLabel() == "" ? "~" : getLabel();
@@ -84,6 +88,33 @@ QString GOBJ::generalDumpData(){ // id | type | color | visible | exists | depen
         data += QString::number(ch_ob->id()) + " ";
     }
     return data;
+}
+
+bool GOBJ::generalDumpParse(QTextStream &stream){
+    QString col;
+    stream >> col;
+    mColor = QColor(col);
+    int tmp;
+    stream >> tmp;
+    exists = tmp;
+    stream >> tmp;
+    depending = tmp;
+
+    QString l;
+    stream >> l;
+    if (l != "~") changeLabel(l);
+
+    stream >> tmp;
+    child_type = (Child_Type)tmp;
+
+    int n;
+    stream >> n;
+
+    for (int i = 0; i < n; ++i) {
+        stream >> tmp;
+        mBoard->connect_objects(mBoard->parsedObjects[tmp], this, child_type);
+    }
+    return true;
 }
 
 ///-----------------------------

@@ -538,3 +538,128 @@ void GeoBoard::saveStream(QTextStream& stream){
     stream << "#####\n#####\n#####\n";
     stream << "END GEOPRO DATA";
 }
+
+bool GeoBoard::parseObject(QTextStream& stream){
+    int id;
+    stream >> id;
+    QString t;
+    stream >> t;
+    GObj_Type type = (GObj_Type)t.toInt();
+
+    switch (type) {
+    case GObj_Type::POINT:{
+        auto obj = new Point(this);
+        if (obj->dumpParse(stream)){
+            addObject(obj);
+            obj->set_id(id);
+            parsedObjects[obj->id()] = obj;
+        } else {
+            delete obj;
+            return false;
+        }
+        break;
+    }
+    case GObj_Type::SEGMENT:{
+        auto p1 = new Point(this);
+        auto p2 = new Point(this);
+        auto obj = new Segment(this, p1, p2);
+        if (obj->dumpParse(stream)){
+            addObject(obj);
+            obj->set_id(id);
+            parsedObjects[obj->id()] = obj;
+        } else {
+            delete obj;
+            delete p1;
+            delete p2;
+            return false;
+        }
+        break;
+    }
+    case GObj_Type::RAY:{
+        auto p1 = new Point(this);
+        auto p2 = new Point(this);
+        auto obj = new Ray(this, p1, p2);
+        if (obj->dumpParse(stream)){
+            addObject(obj);
+            obj->set_id(id);
+            parsedObjects[obj->id()] = obj;
+        } else {
+            delete obj;
+            delete p1;
+            delete p2;
+            return false;
+        }
+        break;
+    }
+    case GObj_Type::LINE:{
+        auto p1 = new Point(this);
+        auto p2 = new Point(this);
+        auto obj = new Line(this, p1, p2);
+        if (obj->dumpParse(stream)){
+            addObject(obj);
+            obj->set_id(id);
+            parsedObjects[obj->id()] = obj;
+        } else {
+            delete obj;
+            delete p1;
+            delete p2;
+            return false;
+        }
+        break;
+    }
+    case GObj_Type::CIRCLE:{
+        auto p = new Point(this);
+        auto obj = new Circle(this, p, 1);
+        if (obj->dumpParse(stream)){
+            addObject(obj);
+            obj->set_id(id);
+            parsedObjects[obj->id()] = obj;
+        } else {
+            delete obj;
+            delete p;
+            return false;
+        }
+        break;
+    }
+    case GObj_Type::ANGLE:{
+        auto p1 = new Point(this);
+        auto p2 = new Point(this);
+        auto p3 = new Point(this);
+        auto obj = new Angle(this, p1, p2, p3);
+        if (obj->dumpParse(stream)){
+            addObject(obj);
+            obj->set_id(id);
+            parsedObjects[obj->id()] = obj;
+        } else {
+            delete obj;
+            delete p1;
+            delete p2;
+            delete p3;
+            return false;
+        }
+        break;
+    }
+    case GObj_Type::TRIANGLE:{
+        auto p1 = new Point(this);
+        auto p2 = new Point(this);
+        auto p3 = new Point(this);
+        auto obj = new Triangle(this, p1, p2, p3);
+        if (obj->dumpParse(stream)){
+            addObject(obj);
+            obj->set_id(id);
+            parsedObjects[obj->id()] = obj;
+        } else {
+            delete obj;
+            delete p1;
+            delete p2;
+            delete p3;
+            return false;
+        }
+        break;
+    }
+    default:
+        return false;
+    }
+
+    return true;
+}
