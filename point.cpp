@@ -586,3 +586,7 @@ void Point::setFixOnFigure(GOBJ* Figure){
     parentObjects.push_back(Figure);
     recalculate();
 }
+
+QString Point::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}

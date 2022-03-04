@@ -22,6 +22,7 @@ public:
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
     void setNumSticks(int n) {num_sticks = (n < 4 && n > -1) ? n : 3;}
+    QString dumpData() override;
 signals:
     void posChanged();
 private:

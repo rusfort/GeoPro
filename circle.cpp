@@ -81,3 +81,7 @@ void Circle::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
 }
+
+QString Circle::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}

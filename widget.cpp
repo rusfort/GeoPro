@@ -509,8 +509,7 @@ void GeoBoard::saveToCache(){
 
     QTextStream stream(&cache);
 
-    //cacheStream(stream);
-    saveStream(stream);
+    cacheStream(stream);
 
     cache.close();
 }
@@ -519,8 +518,10 @@ void GeoBoard::cacheStream(QTextStream& stream){
     stream << scale << "\n";
     stream << shift.x() << " " << shift.y() << "\n";
     stream << mObjects.size() << "\n";
+    int i = 0;
     for (auto obj : mObjects){
-        stream << "TEST\n";
+        ++i;
+        stream << i << " " << obj->dumpData() << "\n";
     }
 }
 

@@ -23,6 +23,7 @@ public:
     void recalculate() override;
     bool labelCaught(QPoint p) override;
     void moveLabel(QPointF newpos) override;
+    QString dumpData() override;
 signals:
     void posChanged();
 private:

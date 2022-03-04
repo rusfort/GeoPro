@@ -21,6 +21,7 @@ public:
     bool isVertical() const {return is_vertical;}
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
+    QString dumpData() override;
 signals:
     void posChanged();
 private:

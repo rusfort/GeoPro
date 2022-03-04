@@ -196,3 +196,7 @@ qreal Triangle::beta() const{
 qreal Triangle::gamma() const{
     return _gamma->degrees();
 }
+
+QString Triangle::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}

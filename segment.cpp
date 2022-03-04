@@ -92,3 +92,7 @@ void Segment::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
 }
+
+QString Segment::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}

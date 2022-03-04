@@ -131,3 +131,7 @@ void Angle::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
 }
+
+QString Angle::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}

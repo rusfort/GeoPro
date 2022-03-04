@@ -64,6 +64,13 @@ void GOBJ::moveLabel(QPointF newpos){
     Q_UNUSED(newpos);
 }
 
+QString GOBJ::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}
+
+
+///-----------------------------
+
 
 std::pair<QPointF, qreal> getCircleCenterAndRadius(const Point* p1, const Point* p2, const Point* p3){
     qreal x = 0;

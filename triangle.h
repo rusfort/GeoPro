@@ -33,6 +33,7 @@ public:
     Angle*  manage_alpha() {return _alpha;}
     Angle*  manage_beta()  {return _beta;}
     Angle*  manage_gamma() {return _gamma;}
+    QString dumpData() override;
 signals:
     void posChanged();
 private:

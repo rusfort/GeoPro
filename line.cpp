@@ -167,3 +167,7 @@ void Line::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
 }
+
+QString Line::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}

@@ -26,6 +26,7 @@ public:
     void setBasePoint(Point* p){mP1 = p;}
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
+    QString dumpData() override;
 signals:
     void posChanged();
 private:

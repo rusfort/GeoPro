@@ -107,3 +107,7 @@ void Ray::move(QPointF newPos){
     Q_UNUSED(newPos);
     return;
 }
+
+QString Ray::dumpData(){
+    return "-1 NO DATA PROVIDED FOR THIS OBJECT";
+}

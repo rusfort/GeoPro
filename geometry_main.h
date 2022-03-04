@@ -91,6 +91,7 @@ public:
     virtual void move(QPointF dr) = 0;
     virtual void changeView() = 0;
     virtual void recalculate() = 0;
+    virtual QString dumpData();
 signals:
     void selectionChanged();
 protected:
