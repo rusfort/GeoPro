@@ -83,9 +83,9 @@ QString GOBJ::generalDumpData(){ // id | type | color | visible | exists | depen
             + QString::number(depending) + " "
             + L + " "
             + QString::number((int)child_type) + " ";
-    data += QString::number(parentObjects.size()) + " ";
+    data += QString::number(parentObjects.size());
     for (auto ch_ob : parentObjects){
-        data += QString::number(ch_ob->id()) + " ";
+        data += " " + QString::number(ch_ob->id());
     }
     return data;
 }
@@ -95,6 +95,8 @@ bool GOBJ::generalDumpParse(QTextStream &stream){
     stream >> col;
     mColor = QColor(col);
     int tmp;
+    stream >> tmp;
+    visible = tmp;
     stream >> tmp;
     exists = tmp;
     stream >> tmp;
@@ -112,7 +114,8 @@ bool GOBJ::generalDumpParse(QTextStream &stream){
 
     for (int i = 0; i < n; ++i) {
         stream >> tmp;
-        mBoard->connect_objects(mBoard->parsedObjects[tmp], this, child_type);
+        if (child_type != Child_Type::InTriangle) mBoard->connect_objects(mBoard->parsedObjects[tmp], this, child_type);
+        else parentObjects.push_back(mBoard->parsedObjects[tmp]);
     }
     return true;
 }

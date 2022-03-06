@@ -56,6 +56,7 @@ public:
     void inc_id() {++current_id;}
     int get_cur_id() {return current_id;}
     bool parseObject(QTextStream& stream);
+    void embedObject(GOBJ* obj, int id); //is used in parsing
 private:
     QColor mColor;
     bool active_grid = false;

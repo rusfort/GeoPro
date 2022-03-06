@@ -55,4 +55,22 @@ enum class Intersection_Type{
     Circle_Circle
 };
 
+enum class Triangle_Obj{
+    Not_in_Triangle,
+    I,
+    M,
+    H,
+    O,
+    E,
+    In_C,
+    Cir_C,
+    Eul_C,
+    Ed_a,
+    Ed_b,
+    Ed_c,
+    An_alp,
+    An_bet,
+    An_gam
+};
+
 #endif // SERVICE_H

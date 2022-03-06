@@ -111,6 +111,7 @@ public:
     std::map<GOBJ*, Child_Type> childObjects;
     std::vector<GOBJ*> parentObjects;                    //vector of all parents
     Child_Type child_type = Child_Type::Unknown;         //if this object is a child of smth
+    Triangle_Obj tr_type = Triangle_Obj::Not_in_Triangle;//if this object is in a Triangle
     bool exists;   //e.g. intersection can be none (if the user tries to intersect two parallel lines)
 };
 

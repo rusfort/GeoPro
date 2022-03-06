@@ -18,6 +18,7 @@ public:
     qreal x0() const {return _x0;}
     qreal y0() const {return _y0;}
     const Point* getcenter() const {return center;}
+    void setcenter(Point *p) {center = p;}
     void set_r(qreal newr) {_r = newr;}
     QString dumpData() override;
     bool dumpParse(QTextStream& stream) override;

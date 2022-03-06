@@ -176,7 +176,14 @@ QString Line::dumpData(){
 }
 
 bool Line::dumpParse(QTextStream& stream){
-    if (!generalDumpParse(stream)) return false;;
-    //TODO
+    if (!generalDumpParse(stream)) return false;
+    int check_num;
+    stream >> check_num;
+    if (check_num != 1){
+        stream.readLine();
+        return false;
+    }
+    //for tests!
+    stream.readLine(); //remove later!!!
     return true;
 }

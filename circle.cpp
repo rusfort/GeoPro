@@ -86,12 +86,32 @@ QString Circle::dumpData(){
     QString data = "1 " + QString::number(center->id()) + " ";
     if (child_type != Child_Type::InTriangle) data += QString::number(basePoints[0]->id()) + " "
                                                      + QString::number(basePoints[1]->id()) + " ";
+    else {
+        data += QString::number((int)tr_type) + " ";
+    }
     if (child_type == Child_Type::OnThreePoints) data += QString::number(basePoints[2]->id()) + " ";
     return data;
 }
 
 bool Circle::dumpParse(QTextStream& stream){
-    if (!generalDumpParse(stream)) return false;;
-    //TODO
+    if (!generalDumpParse(stream)) return false;
+    int check_num;
+    stream >> check_num;
+    if (check_num != 1){
+        stream.readLine();
+        return false;
+    }
+
+    int tmp;
+    stream >> tmp;
+    setcenter(static_cast<Point*>(mBoard->parsedObjects[tmp]));
+
+    if (child_type == Child_Type::InTriangle){
+        stream >> tmp;
+        tr_type = (Triangle_Obj)tmp;
+        return true;
+    }
+    //for tests!
+    stream.readLine(); //remove later!!!
     return true;
 }

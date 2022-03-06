@@ -588,7 +588,7 @@ void Point::setFixOnFigure(GOBJ* Figure){
 }
 
 QString Point::dumpData(){
-    QString data = "1 " + QString::number(mRadius);
+    QString data = "1 " + QString::number(mRadius) + " ";
     switch(child_type){
     case Child_Type::Unknown:
     {
@@ -611,9 +611,14 @@ QString Point::dumpData(){
         data += QString::number(parentObjects.at(0)->id()) + " " + QString::number(parentObjects.at(1)->id()) + " ";
         break;
     }
+    case Child_Type::Triangle:
+    {
+        data += QString::number((int)tr_type) + " ";
+        break;
+    }
     default:
     {
-        QString::number(parentObjects.at(0)->id()) + " ";
+        QString::number(parentObjects.at(0)->id()) + " " + QString::number(k) + " ";
         break;
     }
     }
@@ -622,7 +627,62 @@ QString Point::dumpData(){
 }
 
 bool Point::dumpParse(QTextStream& stream){
-    if (!generalDumpParse(stream)) return false;;
-    //TODO
+    if (!generalDumpParse(stream)) return false;
+    int check_num;
+    stream >> check_num;
+    if (check_num != 1){
+        stream.readLine();
+        return false;
+    }
+    int tmp;
+    stream >> tmp;
+    mRadius = tmp;
+
+    switch(child_type){
+    case Child_Type::Unknown:
+    {
+        qreal z;
+        stream >> z;
+        X = z;
+        stream >> z;
+        Y = z;
+        break;
+    }
+    case Child_Type::Intersection:
+    case Child_Type::Intersection2:
+    {
+        stream >> tmp;
+        inters_type = (Intersection_Type)tmp;
+        stream >> tmp;
+        parents_intersected.insert(std::make_pair(mBoard->parsedObjects[tmp]->type_is(), mBoard->parsedObjects[tmp]));
+        stream >> tmp;
+        parents_intersected.insert(std::make_pair(mBoard->parsedObjects[tmp]->type_is(), mBoard->parsedObjects[tmp]));
+        break;
+    }
+    case Child_Type::Middle:
+    {
+        stream >> tmp;
+        parentObjects[0] = mBoard->parsedObjects[tmp];
+        stream >> tmp;
+        parentObjects[1] = mBoard->parsedObjects[tmp];
+        break;
+    }
+    case Child_Type::InTriangle:
+    {
+        stream >> tmp;
+        tr_type = (Triangle_Obj)tmp;
+        break;
+    }
+    default:
+    {
+        stream >> tmp;
+        parentObjects[0] = mBoard->parsedObjects[tmp];
+        stream >> k;
+        break;
+    }
+    }
+
+    //stream.readLine();
+
     return true;
 }

@@ -20,36 +20,50 @@ Triangle::Triangle(GeoBoard* board, Point* p1, Point* p2, Point* p3) :
     bis_i = new Point(board);
     bis_i->changeLabel("I");
     bis_i->hide();
+    bis_i->tr_type = Triangle_Obj::I;
     med_i = new Point(board);
     med_i->changeLabel("M");
     med_i->hide();
+    med_i->tr_type = Triangle_Obj::M;
     hgt_i = new Point(board);
     hgt_i->changeLabel("H");
     hgt_i->hide();
+    hgt_i->tr_type = Triangle_Obj::H;
     mdp_i = new Point(board);
     mdp_i->changeLabel("O");
     mdp_i->hide();
+    mdp_i->tr_type = Triangle_Obj::O;
     eul_c = new Point(board);
     eul_c->changeLabel("E");
     eul_c->hide();
+    eul_c->tr_type = Triangle_Obj::E;
     edge_a = new Segment(board, p2, p3);
+    edge_a->tr_type = Triangle_Obj::Ed_a;
     edge_b = new Segment(board, p3, p1);
+    edge_b->tr_type = Triangle_Obj::Ed_b;
     edge_c = new Segment(board, p1, p2);
+    edge_c->tr_type = Triangle_Obj::Ed_c;
     in = new Circle(board, bis_i, 100);
     in->hide();
+    in->tr_type = Triangle_Obj::In_C;
     cir = new Circle(board, mdp_i, 100);
     cir->hide();
+    cir->tr_type = Triangle_Obj::Cir_C;
     Euler = new Circle(board, eul_c, 100);
     Euler->hide();
+    Euler->tr_type = Triangle_Obj::Eul_C;
     _alpha = new Angle(board, mP3, mP1, mP2);
     _alpha->setNumArcs(1);
     _alpha->hide();
+    _alpha->tr_type = Triangle_Obj::An_alp;
     _beta  = new Angle(board, p1, p2, p3);
     _beta->setNumArcs(2);
     _beta->hide();
+    _beta->tr_type = Triangle_Obj::An_bet;
     _gamma = new Angle(board, p2, p3, p1);
     _gamma->setNumArcs(3);
     _gamma->hide();
+    _gamma->tr_type = Triangle_Obj::An_gam;
     board->connect_objects(this, bis_i,  Child_Type::InTriangle);
     board->connect_objects(this, med_i,  Child_Type::InTriangle);
     board->connect_objects(this, hgt_i,  Child_Type::InTriangle);
@@ -202,7 +216,78 @@ QString Triangle::dumpData(){
 }
 
 bool Triangle::dumpParse(QTextStream& stream){
-    if (!generalDumpParse(stream)) return false;;
-    //TODO
+    if (!generalDumpParse(stream)) return false;
+    int check_num;
+    stream >> check_num;
+    if (check_num != 1){
+        stream.readLine();
+        return false;
+    }
+
+    setBasePoints(static_cast<Point*>(parentObjects[0]), static_cast<Point*>(parentObjects[1]), static_cast<Point*>(parentObjects[2]));
+    //for tests!
+    stream.readLine(); //remove later!!!
     return true;
+}
+
+GOBJ* Triangle::setParamsToChild(Triangle_Obj trt, bool vis, int id, QColor col, QString label){
+    GOBJ* obj = 0;
+
+    switch (trt) {
+    case Triangle_Obj::E:
+        obj = eul_c;
+        break;
+    case Triangle_Obj::M:
+        obj = med_i;
+        break;
+    case Triangle_Obj::H:
+        obj = hgt_i;
+        break;
+    case Triangle_Obj::O:
+        obj = mdp_i;
+        break;
+    case Triangle_Obj::I:
+        obj = bis_i;
+        break;
+    case Triangle_Obj::In_C:
+        obj = in;
+        break;
+    case Triangle_Obj::Cir_C:
+        obj = cir;
+        break;
+    case Triangle_Obj::Eul_C:
+        obj = Euler;
+        break;
+    case Triangle_Obj::Ed_a:
+        obj = edge_a;
+        break;
+    case Triangle_Obj::Ed_b:
+        obj = edge_b;
+        break;
+    case Triangle_Obj::Ed_c:
+        obj = edge_c;
+        break;
+    case Triangle_Obj::An_alp:
+        obj = _alpha;
+        break;
+    case Triangle_Obj::An_bet:
+        obj = _beta;
+        break;
+    case Triangle_Obj::An_gam:
+        obj = _gamma;
+        break;
+    default:
+        return 0;
+    }
+
+    if (vis) obj->make_visible();
+    else obj->hide();
+
+    obj->setColor(col);
+
+    obj->set_id(id);
+
+    obj->changeLabel(label);
+
+    return obj;
 }

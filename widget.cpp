@@ -542,6 +542,10 @@ void GeoBoard::saveStream(QTextStream& stream){
 bool GeoBoard::parseObject(QTextStream& stream){
     int id;
     stream >> id;
+    if (id <= 0){
+        stream.readLine();
+        return true;
+    }
     QString t;
     stream >> t;
     GObj_Type type = (GObj_Type)t.toInt();
@@ -549,13 +553,10 @@ bool GeoBoard::parseObject(QTextStream& stream){
     switch (type) {
     case GObj_Type::POINT:{
         auto obj = new Point(this);
-        if (obj->dumpParse(stream)){
-            addObject(obj);
-            obj->set_id(id);
-            parsedObjects[obj->id()] = obj;
-        } else {
+        if (obj->dumpParse(stream)) embedObject(obj, id);
+        else {
             delete obj;
-            return false;
+            break; //return false;
         }
         break;
     }
@@ -563,15 +564,12 @@ bool GeoBoard::parseObject(QTextStream& stream){
         auto p1 = new Point(this);
         auto p2 = new Point(this);
         auto obj = new Segment(this, p1, p2);
-        if (obj->dumpParse(stream)){
-            addObject(obj);
-            obj->set_id(id);
-            parsedObjects[obj->id()] = obj;
-        } else {
+        if (obj->dumpParse(stream)) embedObject(obj, id);
+        else {
             delete obj;
             delete p1;
             delete p2;
-            return false;
+            break; //return false;
         }
         break;
     }
@@ -579,15 +577,12 @@ bool GeoBoard::parseObject(QTextStream& stream){
         auto p1 = new Point(this);
         auto p2 = new Point(this);
         auto obj = new Ray(this, p1, p2);
-        if (obj->dumpParse(stream)){
-            addObject(obj);
-            obj->set_id(id);
-            parsedObjects[obj->id()] = obj;
-        } else {
+        if (obj->dumpParse(stream)) embedObject(obj, id);
+        else {
             delete obj;
             delete p1;
             delete p2;
-            return false;
+            break; //return false;
         }
         break;
     }
@@ -595,29 +590,23 @@ bool GeoBoard::parseObject(QTextStream& stream){
         auto p1 = new Point(this);
         auto p2 = new Point(this);
         auto obj = new Line(this, p1, p2);
-        if (obj->dumpParse(stream)){
-            addObject(obj);
-            obj->set_id(id);
-            parsedObjects[obj->id()] = obj;
-        } else {
+        if (obj->dumpParse(stream)) embedObject(obj, id);
+        else {
             delete obj;
             delete p1;
             delete p2;
-            return false;
+            break; //return false;
         }
         break;
     }
     case GObj_Type::CIRCLE:{
         auto p = new Point(this);
         auto obj = new Circle(this, p, 1);
-        if (obj->dumpParse(stream)){
-            addObject(obj);
-            obj->set_id(id);
-            parsedObjects[obj->id()] = obj;
-        } else {
+        if (obj->dumpParse(stream)) embedObject(obj, id);
+        else {
             delete obj;
             delete p;
-            return false;
+            break; //return false;
         }
         break;
     }
@@ -626,16 +615,13 @@ bool GeoBoard::parseObject(QTextStream& stream){
         auto p2 = new Point(this);
         auto p3 = new Point(this);
         auto obj = new Angle(this, p1, p2, p3);
-        if (obj->dumpParse(stream)){
-            addObject(obj);
-            obj->set_id(id);
-            parsedObjects[obj->id()] = obj;
-        } else {
+        if (obj->dumpParse(stream)) embedObject(obj, id);
+        else {
             delete obj;
             delete p1;
             delete p2;
             delete p3;
-            return false;
+            break; //return false;
         }
         break;
     }
@@ -644,16 +630,13 @@ bool GeoBoard::parseObject(QTextStream& stream){
         auto p2 = new Point(this);
         auto p3 = new Point(this);
         auto obj = new Triangle(this, p1, p2, p3);
-        if (obj->dumpParse(stream)){
-            addObject(obj);
-            obj->set_id(id);
-            parsedObjects[obj->id()] = obj;
-        } else {
+        if (obj->dumpParse(stream)) embedObject(obj, id);
+        else {
             delete obj;
             delete p1;
             delete p2;
             delete p3;
-            return false;
+            break; //return false;
         }
         break;
     }
@@ -662,4 +645,16 @@ bool GeoBoard::parseObject(QTextStream& stream){
     }
 
     return true;
+}
+
+void GeoBoard::embedObject(GOBJ* obj, int id){
+    if (obj->child_type != Child_Type::InTriangle){
+        addObject(obj);
+        obj->set_id(id);
+        parsedObjects[obj->id()] = obj;
+    } else {
+        auto T = static_cast<Triangle*>(obj->parentObjects.at(0));
+        auto ob = T->setParamsToChild(obj->tr_type, obj->is_visible(), id, obj->color(), obj->getLabel());
+        if (ob) parsedObjects[id] = ob;
+    }
 }
