@@ -21,6 +21,10 @@ public:
     qreal y2() const {return _y2;}
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
+    void setEnds(Point *e1, Point *e2){
+        mP1 = e1;
+        mP2 = e2;
+    }
     void setNumSticks(int n) {num_sticks = (n < 4 && n > -1) ? n : 3;}
     QString dumpData() override;
     bool dumpParse(QTextStream& stream) override;

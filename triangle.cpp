@@ -215,6 +215,16 @@ QString Triangle::dumpData(){
     return "1 0 ";
 }
 
+void Triangle::setBasePoints(Point *p1, Point *p2, Point *p3){
+    mP1 = p1;
+    mP2 = p2;
+    mP3 = p3;
+    edge_a->setEnds(p2, p3);
+    edge_b->setEnds(p3, p1);
+    edge_c->setEnds(p1, p2);
+    //TODO!! Angle
+}
+
 bool Triangle::dumpParse(QTextStream& stream){
     if (!generalDumpParse(stream)) return false;
     int check_num;
@@ -225,6 +235,7 @@ bool Triangle::dumpParse(QTextStream& stream){
     }
 
     setBasePoints(static_cast<Point*>(parentObjects[0]), static_cast<Point*>(parentObjects[1]), static_cast<Point*>(parentObjects[2]));
+    recalculate();
 
     stream.readLine(); //reading '0'
     return true;

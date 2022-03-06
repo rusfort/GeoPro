@@ -36,11 +36,7 @@ public:
     QString dumpData() override;
     bool dumpParse(QTextStream& stream) override;
     GOBJ *setParamsToChild(Triangle_Obj trt, bool vis, int id, QColor col, QString label);
-    void setBasePoints(Point *p1, Point *p2, Point *p3){
-        mP1 = p1;
-        mP2 = p2;
-        mP3 = p3;
-    }
+    void setBasePoints(Point *p1, Point *p2, Point *p3);
 signals:
     void posChanged();
 private:
