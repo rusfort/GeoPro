@@ -225,8 +225,8 @@ bool Triangle::dumpParse(QTextStream& stream){
     }
 
     setBasePoints(static_cast<Point*>(parentObjects[0]), static_cast<Point*>(parentObjects[1]), static_cast<Point*>(parentObjects[2]));
-    //for tests!
-    stream.readLine(); //remove later!!!
+
+    stream.readLine(); //reading '0'
     return true;
 }
 

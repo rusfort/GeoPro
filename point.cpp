@@ -588,7 +588,8 @@ void Point::setFixOnFigure(GOBJ* Figure){
 }
 
 QString Point::dumpData(){
-    QString data = "1 " + QString::number(mRadius) + " ";
+    QString data = "1 " + QString::number(fixed) + " "
+                   + QString::number(mRadius) + " ";
     switch(child_type){
     case Child_Type::Unknown:
     {
@@ -611,14 +612,14 @@ QString Point::dumpData(){
         data += QString::number(parentObjects.at(0)->id()) + " " + QString::number(parentObjects.at(1)->id()) + " ";
         break;
     }
-    case Child_Type::Triangle:
+    case Child_Type::InTriangle:
     {
         data += QString::number((int)tr_type) + " ";
         break;
     }
     default:
     {
-        QString::number(parentObjects.at(0)->id()) + " " + QString::number(k) + " ";
+        data += QString::number(parentObjects.at(0)->id()) + " " + QString::number(k) + " ";
         break;
     }
     }
@@ -635,6 +636,8 @@ bool Point::dumpParse(QTextStream& stream){
         return false;
     }
     int tmp;
+    stream >> tmp;
+    fixed = tmp;
     stream >> tmp;
     mRadius = tmp;
 
@@ -677,7 +680,9 @@ bool Point::dumpParse(QTextStream& stream){
     {
         stream >> tmp;
         parentObjects[0] = mBoard->parsedObjects[tmp];
-        stream >> k;
+        QString getk;
+        stream >> getk;
+        k = getk.toDouble();
         break;
     }
     }

@@ -133,11 +133,14 @@ void Angle::move(QPointF newPos){
 }
 
 QString Angle::dumpData(){
-    QString data = "1 " + QString::number(num_arcs) + " "
+    QString data = "1 " + QString::number((int)tr_type) + " ";
+    if (tr_type == Triangle_Obj::Not_in_Triangle)
+        data += QString::number(num_arcs) + " "
             + QString::number(fixed_degrees) + " "
             + QString::number(vertex->id()) + " "
-            + QString::number(mP1->id()) + " "
-            + QString::number(mP2->id()) + " ";
+            + QString::number(mP1->id()) + " ";
+    if (!fixed_degrees) data += QString::number(mP2->id()) + " ";
+    else data += QString::number(_degrees) + " ";
     return data;
 }
 
@@ -149,7 +152,30 @@ bool Angle::dumpParse(QTextStream& stream){
         stream.readLine();
         return false;
     }
-    //for tests!
-    stream.readLine(); //remove later!!!
+
+    int tmp;
+    stream >> tmp;
+    tr_type = (Triangle_Obj)tmp;
+    if (tr_type != Triangle_Obj::Not_in_Triangle){
+        stream.readLine();
+        return true;
+    }
+
+    stream >> tmp;
+    num_arcs = tmp;
+    stream >> tmp;
+    fixed_degrees = tmp;
+    stream >> tmp;
+    vertex = static_cast<Point*>(mBoard->parsedObjects[tmp]);
+    stream >> tmp;
+    mP1 = static_cast<Point*>(mBoard->parsedObjects[tmp]);
+    if (!fixed_degrees){
+        stream >> tmp;
+        mP2 = static_cast<Point*>(mBoard->parsedObjects[tmp]);
+    } else {
+        QString d;
+        stream >> d;
+        _degrees = d.toDouble();
+    }
     return true;
 }

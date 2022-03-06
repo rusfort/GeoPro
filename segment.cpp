@@ -94,7 +94,9 @@ void Segment::move(QPointF newPos){
 }
 
 QString Segment::dumpData(){
-    return "1 0 ";
+    QString data = "1 ";
+    data += QString::number((int)tr_type) + " ";
+    return data;
 }
 
 bool Segment::dumpParse(QTextStream& stream){
@@ -105,7 +107,10 @@ bool Segment::dumpParse(QTextStream& stream){
         stream.readLine();
         return false;
     }
-    //for tests!
-    stream.readLine(); //remove later!!!
+
+    int tmp;
+    stream >> tmp;
+    tr_type = (Triangle_Obj)tmp;
+
     return true;
 }

@@ -183,7 +183,14 @@ bool Line::dumpParse(QTextStream& stream){
         stream.readLine();
         return false;
     }
-    //for tests!
-    stream.readLine(); //remove later!!!
+
+    int tmp;
+    stream >> tmp;
+    mP1 = static_cast<Point*>(mBoard->parsedObjects[tmp]);
+
+    stream >> tmp;
+    if (child_type == Child_Type::Parallel || child_type == Child_Type::Perpendicular) baseline = static_cast<Line*>(mBoard->parsedObjects[tmp]);
+    else mP2 = static_cast<Point*>(mBoard->parsedObjects[tmp]);
+
     return true;
 }

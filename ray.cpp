@@ -123,7 +123,15 @@ bool Ray::dumpParse(QTextStream& stream){
         stream.readLine();
         return false;
     }
-    //for tests!
-    stream.readLine(); //remove later!!!
+
+    if (child_type != Child_Type::Bisector){
+        int tmp;
+        stream >> tmp;
+        mP1 = static_cast<Point*>(mBoard->parsedObjects[tmp]);
+        stream >> tmp;
+        mP2 = static_cast<Point*>(mBoard->parsedObjects[tmp]);
+    } else {
+        mP1 = static_cast<Point*>(parentObjects.at(1));
+    }
     return true;
 }

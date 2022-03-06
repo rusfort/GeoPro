@@ -819,6 +819,7 @@ void GeoPro::restoreFromDump(){
     //updating the board
     for(auto obj : b->getAllObj())
     {
+        obj->recalculate();
         obj->changeView();
     }
     b->update();
