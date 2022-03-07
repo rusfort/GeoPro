@@ -84,6 +84,8 @@ private slots:
 
     void on_actionUndo_triggered();
 
+    void on_actionRedo_triggered();
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;

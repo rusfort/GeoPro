@@ -829,7 +829,21 @@ void GeoPro::restoreFromDump(){
 void GeoPro::on_actionUndo_triggered()
 {
     if (b->lastStates.empty()) return;
-    b->loadFromCache(b->lastStates.back());
+    auto cache = b->lastStates.back();
+    b->loadFromCache(cache);
     b->lastStates.pop_back();
+    b->nextStates.push_front(cache);
+    if (b->nextStates.size() > b->max_cache_size) b->nextStates.pop_back();
+}
+
+
+void GeoPro::on_actionRedo_triggered()
+{
+    if (b->nextStates.empty()) return;
+    auto cache = b->nextStates.front();
+    b->loadFromCache(cache);
+    b->nextStates.pop_front();
+    b->lastStates.push_back(cache);
+    if (b->lastStates.size() > b->max_cache_size) b->lastStates.pop_front();
 }
 

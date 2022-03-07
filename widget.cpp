@@ -524,9 +524,8 @@ void GeoBoard::saveToCache(){
     lastStates.push_back(getcache);
     nextStates.clear();
     cur_cache_state++;
-    size_t max_size = 20;
-    if (lastStates.size() > max_size) lastStates.pop_front();
-    if (cur_cache_state > max_size) cur_cache_state = max_size;
+    if (lastStates.size() > max_cache_size) lastStates.pop_front();
+    if (cur_cache_state > max_cache_size) cur_cache_state = max_cache_size;
 }
 
 void GeoBoard::loadFromCache(QString& dump){
@@ -544,7 +543,7 @@ void GeoBoard::loadFromCache(QString& dump){
     stream >> n; //number of objects
 
     parsedObjects.clear();
-    getAllObj().clear();
+    mObjects.clear();
 
     //objects parsing
     for (int i = 0; i < n; ++i) {

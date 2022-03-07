@@ -82,6 +82,7 @@ public:
     std::deque<QString> lastStates;
     std::deque<QString> nextStates;
     size_t cur_cache_state = 0;
+    const size_t max_cache_size = 20;
 };
 
 #endif // WIDGET_H
