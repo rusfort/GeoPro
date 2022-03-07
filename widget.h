@@ -14,6 +14,7 @@
 #include <QTextStream>
 
 #include "service.h"
+#include <deque>
 
 class GOBJ;
 class Point;
@@ -51,6 +52,7 @@ public:
     void mouseReleaseEvent(QMouseEvent* e) override;
     void wheelEvent(QWheelEvent* e) override;
     void saveToCache();
+    void loadFromCache(QString& dump);
     void cacheStream(QTextStream& stream);
     void saveStream(QTextStream& stream);
     void inc_id() {++current_id;}
@@ -77,6 +79,9 @@ public:
     int num_obj_selected = 0;
     QPoint lastMousePos;//for point drawing (when adding)
     std::map<int, GOBJ*> parsedObjects;
+    std::deque<QString> lastStates;
+    std::deque<QString> nextStates;
+    size_t cur_cache_state = 0;
 };
 
 #endif // WIDGET_H

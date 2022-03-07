@@ -792,8 +792,6 @@ void GeoPro::restoreFromDump(){
 
     QTextStream stream(&dump);
 
-    //QString buffer = stream.readAll(); //FUTURE: use readLine() !
-
     //header parsing
     qreal tmp;
     stream >> tmp;
@@ -825,5 +823,13 @@ void GeoPro::restoreFromDump(){
     b->update();
     dump.flush();
     dump.close();
+}
+
+
+void GeoPro::on_actionUndo_triggered()
+{
+    if (b->lastStates.empty()) return;
+    b->loadFromCache(b->lastStates.back());
+    b->lastStates.pop_back();
 }
 

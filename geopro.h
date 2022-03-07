@@ -82,6 +82,8 @@ private slots:
 
     void restoreFromDump();
 
+    void on_actionUndo_triggered();
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;

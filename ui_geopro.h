@@ -100,7 +100,7 @@ public:
         actionNew->setEnabled(false);
         actionUndo = new QAction(GeoPro);
         actionUndo->setObjectName(QString::fromUtf8("actionUndo"));
-        actionUndo->setEnabled(false);
+        actionUndo->setEnabled(true);
         actionRedo = new QAction(GeoPro);
         actionRedo->setObjectName(QString::fromUtf8("actionRedo"));
         actionRedo->setEnabled(false);

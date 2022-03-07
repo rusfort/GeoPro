@@ -58,8 +58,6 @@ void GeoBoard::paintEvent(QPaintEvent*)
         obj->draw();   
         if (was_caught) obj->setSelected(false);
     }
-
-    saveToCache();
 }
 
 void GeoBoard::drawGrid(QPainter* p){
@@ -110,6 +108,7 @@ void GeoBoard::wheelEvent(QWheelEvent* e){
         obj->changeView();
     }
     update();
+    saveToCache();
 }
 
 void GeoBoard::mousePressEvent(QMouseEvent* e)
@@ -453,6 +452,7 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
 void GeoBoard::mouseReleaseEvent(QMouseEvent* e){
     Q_UNUSED(e);
     if (board_grabbed) board_grabbed = false;
+    saveToCache();
 }
 
 QPointF GeoBoard::getScreenView (const QPointF& math_point){
@@ -512,8 +512,55 @@ void GeoBoard::saveToCache(){
     QTextStream stream(&cache);
 
     cacheStream(stream);
-
     cache.close();
+
+    if(!cache.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::critical(this, "Cache error", "Cannot read from cache");
+        return;
+    }
+
+    QTextStream in(&cache);
+    QString getcache = in.readAll();
+    lastStates.push_back(getcache);
+    nextStates.clear();
+    cur_cache_state++;
+    size_t max_size = 20;
+    if (lastStates.size() > max_size) lastStates.pop_front();
+    if (cur_cache_state > max_size) cur_cache_state = max_size;
+}
+
+void GeoBoard::loadFromCache(QString& dump){
+    QTextStream stream(&dump);
+
+    //header parsing
+    qreal tmp;
+    stream >> tmp;
+    scale = tmp;
+    stream >> tmp;
+    shift.rx() = tmp;
+    stream >> tmp;
+    shift.ry() = tmp;
+    int n;
+    stream >> n; //number of objects
+
+    parsedObjects.clear();
+    getAllObj().clear();
+
+    //objects parsing
+    for (int i = 0; i < n; ++i) {
+        if (!parseObject(stream)){
+            QMessageBox::critical(this, "Dump error", "Cannot parse correctly");
+            return;
+        }
+    }
+
+    //updating the board
+    for(auto obj : mObjects)
+    {
+        obj->recalculate();
+        obj->changeView();
+    }
+    update();
 }
 
 void GeoBoard::cacheStream(QTextStream& stream){
