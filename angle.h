@@ -23,6 +23,11 @@ public:
     Point* getFirstPoint() const {return mP1;}
     Point* getSecondPoint() const {return mP2;}
     void setNumArcs(int n) {num_arcs = (n < 4 && n > -1) ? n : 3;}
+    void setThreePoints(Point *vert, Point *p1, Point *p2){
+        mP1 = p1;
+        mP2 = p2;
+        vertex = vert;
+    }
     QString dumpData() override;
     bool dumpParse(QTextStream& stream) override;
 signals:

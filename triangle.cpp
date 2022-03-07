@@ -52,15 +52,15 @@ Triangle::Triangle(GeoBoard* board, Point* p1, Point* p2, Point* p3) :
     Euler = new Circle(board, eul_c, 100);
     Euler->hide();
     Euler->tr_type = Triangle_Obj::Eul_C;
-    _alpha = new Angle(board, mP3, mP1, mP2);
+    _alpha = new Angle(board, p1, p3, p2);
     _alpha->setNumArcs(1);
     _alpha->hide();
     _alpha->tr_type = Triangle_Obj::An_alp;
-    _beta  = new Angle(board, p1, p2, p3);
+    _beta  = new Angle(board, p2, p1, p3);
     _beta->setNumArcs(2);
     _beta->hide();
     _beta->tr_type = Triangle_Obj::An_bet;
-    _gamma = new Angle(board, p2, p3, p1);
+    _gamma = new Angle(board, p3, p2, p1);
     _gamma->setNumArcs(3);
     _gamma->hide();
     _gamma->tr_type = Triangle_Obj::An_gam;
@@ -222,7 +222,9 @@ void Triangle::setBasePoints(Point *p1, Point *p2, Point *p3){
     edge_a->setEnds(p2, p3);
     edge_b->setEnds(p3, p1);
     edge_c->setEnds(p1, p2);
-    //TODO!! Angle
+    _alpha->setThreePoints(p1, p3, p2);
+    _beta->setThreePoints(p2, p1, p3);
+    _gamma->setThreePoints(p3, p2, p1);
 }
 
 bool Triangle::dumpParse(QTextStream& stream){
