@@ -23,7 +23,8 @@
 
 GeoPro::GeoPro(QWidget *parent) : QMainWindow(parent), ui(new Ui::GeoPro) {
     ui->setupUi(this);
-    setWindowTitle(cur_file_name + " - " + tr("GeoPro 0.0.4 [alpha] by Nikolay Kozakov"));
+    app_name = tr("GeoPro 0.0.4 [alpha] by Nikolay Kozakov");
+    setTitle(cur_file_name);
 
     auto ex = new QShortcut(this);
     ex->setKey(Qt::Key_Backspace);
@@ -818,5 +819,10 @@ void GeoPro::on_actionRedo_triggered()
     b->nextStates.pop_front();
     b->lastStates.push_back(cache);
     if (b->lastStates.size() > b->max_cache_size) b->lastStates.pop_front();
+}
+
+void GeoPro::setTitle(QString new_file_name){
+    cur_file_name = new_file_name;
+    setWindowTitle(cur_file_name + " - " + app_name);
 }
 
