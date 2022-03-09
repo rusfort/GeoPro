@@ -50,6 +50,7 @@ public:
     void mousePressEvent(QMouseEvent* e) override;
     void mouseMoveEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
+    void keyPressEvent(QKeyEvent *event) override;
     void wheelEvent(QWheelEvent* e) override;
     void saveToCache();
     void loadFromCache(QString& dump);
@@ -59,6 +60,7 @@ public:
     int get_cur_id() {return current_id;}
     bool parseObject(QTextStream& stream);
     void embedObject(GOBJ* obj, int id); //is used in parsing
+    void vision_changed() {smth_vision_changed = true;}
 private:
     QColor mColor;
     bool active_grid = false;
@@ -66,6 +68,9 @@ private:
     int current_id = 0;
     std::vector<Point*> threeOrderedPoints; //for bisector (order is important)
     bool board_grabbed = false;
+    bool smth_moved = false;
+    bool smth_added = false;
+    bool smth_vision_changed = false;
 public:
     QLineEdit *AddLabel;
     QPushButton *LabelButton;

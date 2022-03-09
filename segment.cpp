@@ -112,5 +112,9 @@ bool Segment::dumpParse(QTextStream& stream){
     stream >> tmp;
     tr_type = (Triangle_Obj)tmp;
 
+    if(tr_type == Triangle_Obj::Not_in_Triangle){
+        setEnds(static_cast<Point*>(parentObjects.at(0)), static_cast<Point*>(parentObjects.at(1)));
+    }
+
     return true;
 }

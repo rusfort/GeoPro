@@ -791,9 +791,11 @@ void GeoPro::restoreFromDump(){
     }
 
     QTextStream stream(&dump);
+    QString d = stream.readAll();
+    b->loadFromCache(d);
 
     //header parsing
-    qreal tmp;
+    /*qreal tmp;
     stream >> tmp;
     b->scale = tmp;
     stream >> tmp;
@@ -820,7 +822,7 @@ void GeoPro::restoreFromDump(){
         obj->recalculate();
         obj->changeView();
     }
-    b->update();
+    b->update();*/
     dump.flush();
     dump.close();
 }

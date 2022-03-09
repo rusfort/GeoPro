@@ -88,8 +88,10 @@ void GeoBoard::drawGrid(QPainter* p){
 
 void GeoBoard::addObject(GOBJ* obj) {
     mObjects.push_back(obj);
-    inc_id();
-    obj->set_id(get_cur_id());
+    if (obj->id() == 0){
+        inc_id();
+        obj->set_id(get_cur_id());
+    }
     if (!obj->childObjects.empty()){
         for (auto ob : obj->childObjects){
             addObject(ob.first);
@@ -100,7 +102,11 @@ void GeoBoard::addObject(GOBJ* obj) {
 void GeoBoard::wheelEvent(QWheelEvent* e){
     auto pos = e->pos();
     auto zoom = pow(1.001, e->delta());
-    if (scale * zoom > 5.0 || scale * zoom < 0.2) zoom = 1.0;
+    bool zoomchaged = true;
+    if (scale * zoom > 5.0 || scale * zoom < 0.2){
+        zoom = 1.0;
+        zoomchaged = false;
+    }
     shift = pos * (1 - zoom) + shift * zoom;
     scale *= zoom;
     for(auto obj : mObjects)
@@ -108,7 +114,7 @@ void GeoBoard::wheelEvent(QWheelEvent* e){
         obj->changeView();
     }
     update();
-    saveToCache();
+    if (zoomchaged) saveToCache();
 }
 
 void GeoBoard::mousePressEvent(QMouseEvent* e)
@@ -408,6 +414,9 @@ void GeoBoard::mousePressEvent(QMouseEvent* e)
     default:
         break;
     }
+
+    if (trytoadd != GObj_Type::NONE) smth_added = true;
+
     if (numitemstoadd == 0){
         trytoadd = GObj_Type::NONE;
         setMouseTracking(false);
@@ -430,6 +439,7 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
         if(obj->isSelected()){
             obj->move(e->pos());
             board_grabbed = false;
+            smth_moved = true;
         }
         if(obj->labelGrabbed()){
             obj->moveLabel(e->pos());
@@ -444,15 +454,29 @@ void GeoBoard::mouseMoveEvent(QMouseEvent* e)
         {
             obj->changeView();
         }
+        smth_moved = true;
         update();
     }
     update();
 }
 
+void GeoBoard::keyPressEvent(QKeyEvent *event){
+    if (event->key() == Qt::Key_H){
+        if (smth_vision_changed){
+            smth_vision_changed = false;
+            saveToCache();
+        }
+    }
+}
+
 void GeoBoard::mouseReleaseEvent(QMouseEvent* e){
     Q_UNUSED(e);
     if (board_grabbed) board_grabbed = false;
-    saveToCache();
+    if (smth_moved || smth_added){
+        smth_moved = false;
+        smth_added = false;
+        saveToCache();
+    }
 }
 
 QPointF GeoBoard::getScreenView (const QPointF& math_point){
@@ -544,6 +568,7 @@ void GeoBoard::loadFromCache(QString& dump){
 
     parsedObjects.clear();
     mObjects.clear();
+    current_id = 0;
 
     //objects parsing
     for (int i = 0; i < n; ++i) {
@@ -552,6 +577,8 @@ void GeoBoard::loadFromCache(QString& dump){
             return;
         }
     }
+
+    current_id = mObjects.back()->id() + 1;
 
     //updating the board
     for(auto obj : mObjects)

@@ -49,9 +49,11 @@ public:
         return visible;
     }
     inline void hide(){
+        if (visible) mBoard->vision_changed();
         visible = false;
     }
     inline void make_visible(){
+        if (!visible) mBoard->vision_changed();
         visible = true;
     }
     inline GObj_Type type_is() const{
