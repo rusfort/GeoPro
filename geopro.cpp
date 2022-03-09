@@ -826,3 +826,51 @@ void GeoPro::setTitle(QString new_file_name){
     setWindowTitle(cur_file_name + " - " + app_name);
 }
 
+
+void GeoPro::on_actionOpen_triggered()
+{
+    if (!b->getAllObj().empty()){
+        QMessageBox::StandardButton reply = QMessageBox::question(this, "DISCARD CHANGES", "Are you sure you want to clear the board and open a new file?",
+                                                                  QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::No){
+            return;
+        }
+    }
+    b->getAllObj().clear();
+    b->update();
+
+    //TODO
+}
+
+
+void GeoPro::on_actionSave_triggered()
+{
+    if (!initially_saved) on_actionSave_as_triggered();
+    else {
+        //TODO
+    }
+}
+
+
+void GeoPro::on_actionSave_as_triggered()
+{
+    //TODO
+    initially_saved = true;
+}
+
+
+void GeoPro::on_actionNew_triggered()
+{
+    if (!b->getAllObj().empty()){
+        QMessageBox::StandardButton reply = QMessageBox::question(this, "DISCARD CHANGES", "Are you sure you want to clear the board and create a new file?",
+                                                                  QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::No){
+            return;
+        }
+    }
+    b->getAllObj().clear();
+    b->update();
+
+    //TODO
+}
+

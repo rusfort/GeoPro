@@ -88,12 +88,21 @@ private slots:
 
     void setTitle(QString new_file_name);
 
+    void on_actionOpen_triggered();
+
+    void on_actionSave_triggered();
+
+    void on_actionSave_as_triggered();
+
+    void on_actionNew_triggered();
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;
     std::vector<Point*> threePoints;
     QString cur_file_name = "Untitled";
     QString app_name = "GeoPro";
+    bool initially_saved = false;
 public:
     GeoBoard *b;
 };
