@@ -96,6 +96,8 @@ private slots:
 
     void on_actionNew_triggered();
 
+    void on_actionPrint_triggered();
+
 private:
     Ui::GeoPro *ui;
     Obj_menu *menu;
@@ -105,6 +107,7 @@ private:
     bool initially_saved = false;
 public:
     GeoBoard *b;
+    QImage image;
 };
 
 #endif // GEOPRO_H

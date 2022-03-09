@@ -121,7 +121,7 @@ public:
         actionClear_all->setShortcutContext(Qt::WindowShortcut);
         actionPrint = new QAction(GeoPro);
         actionPrint->setObjectName(QString::fromUtf8("actionPrint"));
-        actionPrint->setEnabled(false);
+        actionPrint->setEnabled(true);
         actionPrint->setVisible(true);
         actionDelete_selected_objects = new QAction(GeoPro);
         actionDelete_selected_objects->setObjectName(QString::fromUtf8("actionDelete_selected_objects"));
