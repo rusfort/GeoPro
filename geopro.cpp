@@ -23,7 +23,7 @@
 
 GeoPro::GeoPro(QWidget *parent) : QMainWindow(parent), ui(new Ui::GeoPro) {
     ui->setupUi(this);
-    setWindowTitle(tr("GeoPro 0.0.3 [alpha] by Nikolay Kozakov"));
+    setWindowTitle(cur_file_name + " - " + tr("GeoPro 0.0.4 [alpha] by Nikolay Kozakov"));
 
     auto ex = new QShortcut(this);
     ex->setKey(Qt::Key_Backspace);
@@ -794,35 +794,6 @@ void GeoPro::restoreFromDump(){
     QString d = stream.readAll();
     b->loadFromCache(d);
 
-    //header parsing
-    /*qreal tmp;
-    stream >> tmp;
-    b->scale = tmp;
-    stream >> tmp;
-    b->shift.rx() = tmp;
-    stream >> tmp;
-    b->shift.ry() = tmp;
-    int n;
-    stream >> n; //number of objects
-
-    b->parsedObjects.clear();
-    b->getAllObj().clear();
-
-    //objects parsing
-    for (int i = 0; i < n; ++i) {
-        if (!b->parseObject(stream)){
-            QMessageBox::critical(this, "Dump error", "Cannot parse correctly");
-            return;
-        }
-    }
-
-    //updating the board
-    for(auto obj : b->getAllObj())
-    {
-        obj->recalculate();
-        obj->changeView();
-    }
-    b->update();*/
     dump.flush();
     dump.close();
 }

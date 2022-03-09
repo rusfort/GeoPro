@@ -90,6 +90,7 @@ private:
     Ui::GeoPro *ui;
     Obj_menu *menu;
     std::vector<Point*> threePoints;
+    QString cur_file_name = "Untitled";
 public:
     GeoBoard *b;
 };
