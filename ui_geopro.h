@@ -83,13 +83,13 @@ public:
         GeoPro->setWindowIcon(icon);
         actionOpen = new QAction(GeoPro);
         actionOpen->setObjectName(QString::fromUtf8("actionOpen"));
-        actionOpen->setEnabled(false);
+        actionOpen->setEnabled(true);
         actionSave = new QAction(GeoPro);
         actionSave->setObjectName(QString::fromUtf8("actionSave"));
-        actionSave->setEnabled(false);
+        actionSave->setEnabled(true);
         actionSave_as = new QAction(GeoPro);
         actionSave_as->setObjectName(QString::fromUtf8("actionSave_as"));
-        actionSave_as->setEnabled(false);
+        actionSave_as->setEnabled(true);
         actionClose = new QAction(GeoPro);
         actionClose->setObjectName(QString::fromUtf8("actionClose"));
         QIcon icon1;
@@ -97,7 +97,7 @@ public:
         actionClose->setIcon(icon1);
         actionNew = new QAction(GeoPro);
         actionNew->setObjectName(QString::fromUtf8("actionNew"));
-        actionNew->setEnabled(false);
+        actionNew->setEnabled(true);
         actionUndo = new QAction(GeoPro);
         actionUndo->setObjectName(QString::fromUtf8("actionUndo"));
         actionUndo->setEnabled(true);
