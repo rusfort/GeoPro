@@ -35,6 +35,10 @@ GeoPro::GeoPro(QWidget *parent) : QMainWindow(parent), ui(new Ui::GeoPro) {
     app_name = tr("GeoPro 0.0.4 [alpha] by Nikolay Kozakov");
     setTitle(cur_file_name);
 
+    QDir dir;
+    dir.mkdir("saves");
+    dir.setCurrent(QDir::currentPath() + "/saves");
+
     auto ex = new QShortcut(this);
     ex->setKey(Qt::Key_Backspace);
     connect(ex, SIGNAL(activated()), this, SLOT(on_actionDelete_selected_objects_triggered()));
