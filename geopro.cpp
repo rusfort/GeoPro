@@ -808,6 +808,39 @@ void GeoPro::openFromFile(const QString& File_name){
     dump.close();
 }
 
+bool GeoPro::saveToFile()
+{
+    QString format = "gpr";
+    QByteArray fileFormat;
+    fileFormat += format;
+    QString initialPath = QDir::currentPath() + "/saves/Untitled." + fileFormat;
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"),
+                               initialPath,
+                               tr("%1 Files (*.%2);;All Files (*)")
+                               .arg(QString::fromLatin1(fileFormat.toUpper()))
+                               .arg(QString::fromLatin1(fileFormat)));
+
+    if (fileName.isEmpty()) {
+        QMessageBox::critical(this, "Saving error", "Cannot save the board");
+        return false;
+    } else {
+        QFile saver(fileName);
+
+        if(!saver.open(QFile::WriteOnly | QFile::Text)){
+            QMessageBox::critical(this, "Saving error", "Cannot save the board");
+            return false;
+        }
+
+        QTextStream stream(&saver);
+
+        b->saveStream(stream);
+        saver.close();
+        setTitle(fileName);
+    }
+    return true;
+}
+
 void GeoPro::restoreFromDump(){
     QFile dump(".//cache_test.gprc");
 
@@ -847,10 +880,26 @@ void GeoPro::on_actionRedo_triggered()
 }
 
 void GeoPro::setTitle(QString new_file_name){
-    cur_file_name = new_file_name;
+    cur_file_name = getbarefilename(new_file_name);
     setWindowTitle(cur_file_name + " - " + app_name);
 }
 
+QString GeoPro::getbarefilename(const QString& File_name){
+    int bg = 0;
+    int en = 0;
+    QString bare_name = "";
+
+    for (int i = 0; i < File_name.size(); ++i){
+        if (File_name.at(i) == '/' || File_name.at(i) == '\\') bg = i;
+        if (File_name.at(i) == '.') en = i;
+    }
+
+    for (int i = bg + 1; i < en; ++i){
+        bare_name += File_name.at(i);
+    }
+
+    return bare_name;
+}
 
 void GeoPro::on_actionOpen_triggered()
 {
@@ -868,6 +917,7 @@ void GeoPro::on_actionOpen_triggered()
                                        tr("Open File"), QDir::currentPath());
 
     if (!fileName.isEmpty()) openFromFile(fileName);
+    setTitle(fileName);
 }
 
 
@@ -882,15 +932,7 @@ void GeoPro::on_actionSave_triggered()
 
 void GeoPro::on_actionSave_as_triggered()
 {
-    QFileSystemModel *model = new QFileSystemModel;
-    QSplitter *splitter = new QSplitter;
-    model->setRootPath(QDir::currentPath());
-    QTreeView *tree = new QTreeView(splitter);
-    tree->setModel(model);
-    tree->setRootIndex(model->index(QDir::currentPath()));
-    splitter->setWindowTitle("Saving file...");
-    splitter->show();
-    //TODO
+    saveToFile();
     initially_saved = true;
 }
 

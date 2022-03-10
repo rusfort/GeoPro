@@ -84,6 +84,10 @@ private slots:
 
     void openFromFile(const QString& File_name);
 
+    bool saveToFile();
+
+    QString getbarefilename(const QString& File_name);
+
     void on_actionUndo_triggered();
 
     void on_actionRedo_triggered();
