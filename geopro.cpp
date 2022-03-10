@@ -792,6 +792,22 @@ void GeoPro::on_actionTriangle_triggered()
     return;
 }
 
+void GeoPro::openFromFile(const QString& File_name){
+    QFile dump(File_name);
+
+    if(!dump.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::critical(this, "Opening error", "Cannot open the file");
+        return;
+    }
+
+    QTextStream stream(&dump);
+    QString d = stream.readAll();
+    b->loadFromCache(d);
+
+    dump.flush();
+    dump.close();
+}
+
 void GeoPro::restoreFromDump(){
     QFile dump(".//cache_test.gprc");
 
@@ -848,7 +864,10 @@ void GeoPro::on_actionOpen_triggered()
     b->getAllObj().clear();
     b->update();
 
-    //TODO
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                       tr("Open File"), QDir::currentPath());
+
+    if (!fileName.isEmpty()) openFromFile(fileName);
 }
 
 
@@ -863,6 +882,14 @@ void GeoPro::on_actionSave_triggered()
 
 void GeoPro::on_actionSave_as_triggered()
 {
+    QFileSystemModel *model = new QFileSystemModel;
+    QSplitter *splitter = new QSplitter;
+    model->setRootPath(QDir::currentPath());
+    QTreeView *tree = new QTreeView(splitter);
+    tree->setModel(model);
+    tree->setRootIndex(model->index(QDir::currentPath()));
+    splitter->setWindowTitle("Saving file...");
+    splitter->show();
     //TODO
     initially_saved = true;
 }

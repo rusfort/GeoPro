@@ -82,6 +82,8 @@ private slots:
 
     void restoreFromDump();
 
+    void openFromFile(const QString& File_name);
+
     void on_actionUndo_triggered();
 
     void on_actionRedo_triggered();
