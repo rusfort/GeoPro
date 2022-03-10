@@ -54,6 +54,8 @@ public:
     void wheelEvent(QWheelEvent* e) override;
     void saveToCache();
     void loadFromCache(QString& dump);
+    void loadFromCache(QTextStream& stream);
+    void loadFromFile(QString& dump);
     void cacheStream(QTextStream& stream);
     void saveStream(QTextStream& stream);
     void inc_id() {++current_id;}

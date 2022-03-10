@@ -802,7 +802,7 @@ void GeoPro::openFromFile(const QString& File_name){
 
     QTextStream stream(&dump);
     QString d = stream.readAll();
-    b->loadFromCache(d);
+    b->loadFromFile(d);
 
     dump.flush();
     dump.close();
@@ -813,7 +813,7 @@ bool GeoPro::saveToFile()
     QString format = "gpr";
     QByteArray fileFormat;
     fileFormat += format;
-    QString initialPath = QDir::currentPath() + "/saves/Untitled." + fileFormat;
+    QString initialPath = QDir::currentPath() + "Untitled." + fileFormat;
 
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"),
                                initialPath,
@@ -885,8 +885,8 @@ void GeoPro::setTitle(QString new_file_name){
 }
 
 QString GeoPro::getbarefilename(const QString& File_name){
-    int bg = 0;
-    int en = 0;
+    int bg = -1;
+    int en = File_name.size();
     QString bare_name = "";
 
     for (int i = 0; i < File_name.size(); ++i){
@@ -903,6 +903,9 @@ QString GeoPro::getbarefilename(const QString& File_name){
 
 void GeoPro::on_actionOpen_triggered()
 {
+    QString format = "gpr";
+    QByteArray fileFormat;
+    fileFormat += format;
     if (!b->getAllObj().empty()){
         QMessageBox::StandardButton reply = QMessageBox::question(this, "DISCARD CHANGES", "Are you sure you want to clear the board and open a new file?",
                                                                   QMessageBox::Yes | QMessageBox::No);
@@ -914,7 +917,9 @@ void GeoPro::on_actionOpen_triggered()
     b->update();
 
     QString fileName = QFileDialog::getOpenFileName(this,
-                                       tr("Open File"), QDir::currentPath());
+                                       tr("Open File"), QDir::currentPath(), tr("%1 Files (*.%2);;All Files (*)")
+                                                    .arg(QString::fromLatin1(fileFormat.toUpper()))
+                                                    .arg(QString::fromLatin1(fileFormat)));
 
     if (!fileName.isEmpty()) openFromFile(fileName);
     setTitle(fileName);

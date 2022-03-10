@@ -552,10 +552,8 @@ void GeoBoard::saveToCache(){
     if (cur_cache_state > max_cache_size) cur_cache_state = max_cache_size;
 }
 
-void GeoBoard::loadFromCache(QString& dump){
-    QTextStream stream(&dump);
-
-    //header parsing
+void GeoBoard::loadFromCache(QTextStream& stream){
+    //Cache header parsing
     qreal tmp;
     stream >> tmp;
     scale = tmp;
@@ -578,7 +576,8 @@ void GeoBoard::loadFromCache(QString& dump){
         }
     }
 
-    current_id = mObjects.back()->id() + 1;
+    if (!mObjects.empty()) current_id = mObjects.back()->id() + 1;
+    else current_id = 0;
 
     //updating the board
     for(auto obj : mObjects)
@@ -587,6 +586,47 @@ void GeoBoard::loadFromCache(QString& dump){
         obj->changeView();
     }
     update();
+
+    stream.readLine(); //to end the cache part
+}
+
+void GeoBoard::loadFromCache(QString& dump){
+    QTextStream stream(&dump);
+
+    loadFromCache(stream);
+}
+
+void GeoBoard::loadFromFile (QString& dump){
+    QTextStream stream(&dump);
+
+    //File header parsing
+    QString tmp;
+    tmp = stream.readLine();
+    if (tmp != "GEOPRO SAVE DATA"){
+        QMessageBox::critical(this, "File parsing error", "Incorrect data in the file!");
+        return;
+    }
+    tmp = stream.readLine(); //version check?
+    tmp = stream.readLine(); //date & time
+    int n;
+    tmp = stream.readLine();
+    n = tmp.toInt();
+    for (int i = 0; i < n; ++i) {
+        tmp = stream.readLine(); //skipping n rows
+    }
+
+    loadFromCache(stream);
+
+    tmp = stream.readLine();
+    n = tmp.toInt();
+    for (int i = 0; i < n; ++i) {
+        tmp = stream.readLine(); //skipping n rows
+    }
+    tmp = stream.readLine();
+    if (tmp != "END GEOPRO DATA"){
+        QMessageBox::critical(this, "File parsing error", "Incorrect data in the file!");
+        return;
+    }
 }
 
 void GeoBoard::cacheStream(QTextStream& stream){
