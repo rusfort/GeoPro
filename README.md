@@ -68,13 +68,18 @@ If you "walked too far away" from your initial position, press "Back to original
 
 ### Bugs!
 
-In 0.0.3 (Linux & Win): circle on 3 points is added twice => when user deletes it the app crashes (already fixed, but the fix'll be in a next update).
+There can be some bugs in Undo/Redo on MacOS 0.0.4.
 
-If you find any other bugs, contact us: https://vk.com/geoproapp
+If you find any bugs, contact us: https://vk.com/geoproapp
 
 
 ## What's new?
 
+Version 0.0.4 (alpha)
+- Added Save/Open file
+- Added Undo/Redo
+- Circle & Triangle bugfix
+ 
 Version 0.0.3 (alpha)
 - Angle object added
 - Triangle object added
